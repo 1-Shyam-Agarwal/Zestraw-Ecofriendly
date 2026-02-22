@@ -5,6 +5,12 @@ interface User {
     fullName: string;
     email: string;
     accountType: string;
+    shippingAddress?: {
+        address: string;
+        city: string;
+        state: string;
+        zip: string;
+    };
 }
 
 interface AuthContextType {

@@ -14,39 +14,52 @@ import Cart from "./pages/Cart";
 import OurStory from "./pages/OurStory";
 import Impact from "./pages/Impact";
 import BulkOrders from "./pages/BulkOrders";
+import ProductDetails from "./pages/ProductDetails";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Dashboard from "./pages/dashboard";
+import Orders from "./pages/Orders";
+import Profile from "./pages/Profile";
+import Marketplace from "./pages/Marketplace";
 import OpenRoute from "./components/auth/OpenRoute";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <CartProvider>
-          <Sonner position="top-right" closeButton richColors />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/login" element={<OpenRoute><Login /></OpenRoute>} />
-              <Route path="/signup" element={<OpenRoute><Signup /></OpenRoute>} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<OpenRoute><ResetPassword /></OpenRoute>} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/our-story" element={<OurStory />} />
-              <Route path="/impact" element={<Impact />} />
-              <Route path="/bulk-orders" element={<BulkOrders />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </CartProvider>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <CartProvider>
+            <Sonner position="top-right" closeButton richColors />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/login" element={<OpenRoute><Login /></OpenRoute>} />
+                <Route path="/signup" element={<OpenRoute><Signup /></OpenRoute>} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<OpenRoute><ResetPassword /></OpenRoute>} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/marketplace" element={<Marketplace />} />
+                <Route path="/our-story" element={<OurStory />} />
+                <Route path="/impact" element={<Impact />} />
+                <Route path="/bulk-orders" element={<BulkOrders />} />
+                <Route path="/product/:id" element={<ProductDetails />} />
+
+                {/* Protected User Routes */}
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </CartProvider>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

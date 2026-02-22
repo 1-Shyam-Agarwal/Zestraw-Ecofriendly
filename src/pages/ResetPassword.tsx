@@ -51,7 +51,7 @@ export default function ResetPasswordPage() {
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                     <Lock className="w-6 h-6 text-primary" />
                 </div>
-                <h1 className="text-2xl font-bold mb-2">Set New Password</h1>
+                <h1 className="text-2xl font-bold font-lora mb-2">Set New Password</h1>
                 <p className="text-sm text-muted-foreground mb-6">
                     Create a strong password to secure your ZESTRAW account.
                 </p>

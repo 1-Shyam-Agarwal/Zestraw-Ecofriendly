@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export interface CartItem {
   id: string;
@@ -7,13 +7,20 @@ export interface CartItem {
   quantity: number;
   image: string;
   category: string;
+  size?: string;
+  sustainabilityMetrics?: {
+    carbonFootprint: number;
+    plasticUse: number;
+    plasticAvoided: number;
+  };
 }
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  addToCart: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
+  // ... (rest same)
+  removeItem: (id: string, size?: string) => void;
+  updateQuantity: (id: string, quantity: number, size?: string) => void;
   clearCart: () => void;
   totalItems: number;
   subtotal: number;
@@ -22,33 +29,40 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([
-    { id: "9", name: "Rice Straw Round Plate (Set of 25)", price: 18.50, quantity: 2, image: "plates", category: "Dinnerware" },
-    { id: "8", name: "Compostable Straws - Natural Finish", price: 12.00, quantity: 1, image: "straws", category: "Accessories" },
-    { id: "6", name: "Sturdy Rice Husk Bowls (Small)", price: 24.99, quantity: 1, image: "bowls", category: "Dinnerware" },
-  ]);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    const savedCart = localStorage.getItem("zestraw_cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
-  const addItem = (item: Omit<CartItem, "quantity">) => {
+  useEffect(() => {
+    localStorage.setItem("zestraw_cart", JSON.stringify(items));
+  }, [items]);
+
+  const addToCart = (item: Omit<CartItem, "quantity">, quantity: number = 1) => {
     setItems(prev => {
-      const existing = prev.find(i => i.id === item.id);
+      const existing = prev.find(i => i.id === item.id && i.size === item.size);
       if (existing) {
-        return prev.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
+        return prev.map(i =>
+          (i.id === item.id && i.size === item.size)
+            ? { ...i, ...item, quantity: i.quantity + quantity }
+            : i
+        );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...item, quantity }];
     });
   };
 
-  const removeItem = (id: string) => setItems(prev => prev.filter(i => i.id !== id));
-  const updateQuantity = (id: string, quantity: number) => {
-    if (quantity <= 0) { removeItem(id); return; }
-    setItems(prev => prev.map(i => i.id === id ? { ...i, quantity } : i));
+  const removeItem = (id: string, size?: string) => setItems(prev => prev.filter(i => !(i.id === id && i.size === size)));
+  const updateQuantity = (id: string, quantity: number, size?: string) => {
+    if (quantity <= 0) { removeItem(id, size); return; }
+    setItems(prev => prev.map(i => (i.id === id && i.size === size) ? { ...i, quantity } : i));
   };
   const clearCart = () => setItems([]);
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, totalItems, subtotal }}>
+    <CartContext.Provider value={{ items, addToCart, removeItem, updateQuantity, clearCart, totalItems, subtotal }}>
       {children}
     </CartContext.Provider>
   );

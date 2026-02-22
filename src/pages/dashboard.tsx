@@ -1,185 +1,148 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Leaf, Recycle, Download, Shield } from "lucide-react";
+import { Leaf, Recycle, Download, Shield, Truck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const location = useLocation();
   const guests = 150;
   const courses = 3;
   const potentialSaving = (guests * courses * 0.0084).toFixed(1);
 
-  return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-8">
-          {/* Sidebar */}
-          <div>
-            <div className="bg-card border border-border rounded-2xl p-5 mb-4 text-center">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3 overflow-hidden">
-                <span className="text-primary font-bold text-xl">{user?.fullName?.split(' ').map(n => n[0]).join('') || "U"}</span>
-              </div>
-              <div className="text-base font-bold text-foreground">{user?.fullName || "Guest User"}</div>
-              <div className="text-xs text-muted-foreground mb-2">Conscious Member since 2024</div>
-              <span className="inline-flex items-center gap-1 bg-eco/10 border border-eco/20 text-eco text-xs font-bold px-2.5 py-1 rounded-full">
-                <Leaf size={10} /> Eco-Warrior Status
-              </span>
-            </div>
-            <nav className="space-y-1">
-              {[
-                { icon: <Leaf size={14} />, label: "Impact Tracker", active: true, href: "/dashboard" },
-                { icon: <Shield size={14} />, label: "Order History", href: "/dashboard" },
-                { icon: <Recycle size={14} />, label: "Subscriptions", href: "/dashboard" },
-                { icon: <Shield size={14} />, label: "Profile Settings", href: "/dashboard" },
-              ].map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.href}
-                  className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${item.active ? "bg-primary text-white" : "text-muted-foreground hover:bg-warm-sand hover:text-foreground"}`}
-                >
-                  {item.icon} {item.label}
-                </Link>
-              ))}
-            </nav>
-            <div className="mt-4 bg-primary/10 border border-primary/20 rounded-xl p-3">
-              <div className="text-xs font-bold text-primary mb-1">REMINDER</div>
-              <div className="text-xs text-muted-foreground">You have an upcoming event! Don't forget to place your eco order.</div>
-            </div>
-          </div>
+  const statsProps = [
+    { label: "CO₂ Emissions Saved", icon: <Leaf size={16} className="text-secondary" />, value: "158.4 kg", sub: "Equivalent to planting 8 trees", change: "+12% vs last month" },
+    { label: "Parali Repurposed", icon: <Recycle size={16} className="text-secondary" />, value: "420 kg", sub: "Rice straw diverted from burning", change: "+8% vs last month" },
+    { label: "Plastic Plates Displaced", icon: <Shield size={16} className="text-secondary" />, value: "2,450 units", sub: "Keeping our oceans cleaner", change: "" },
+  ];
 
-          {/* Main */}
+  const sidebarLinks = [
+    { label: "Impact Tracker", icon: <Leaf size={18} />, href: "/dashboard" },
+    { label: "Track Orders", icon: <Truck size={18} />, href: "/orders" },
+    { label: "Subscriptions", icon: <Recycle size={18} />, href: "/subscriptions" },
+    { label: "Profile Settings", icon: <Shield size={18} />, href: "/profile" },
+  ];
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      <Navbar />
+      <main className="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+          {/* Sidebar */}
+          <aside className="lg:block">
+            <div className="bg-card border border-border rounded-2xl p-6 sticky top-24">
+              <div className="flex items-center gap-3 mb-8 px-2">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                  {user?.fullName?.[0] || 'U'}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold truncate max-w-[150px]">{user?.fullName || 'User'}</span>
+                  <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Account Active</span>
+                </div>
+              </div>
+              <nav className="space-y-1">
+                {sidebarLinks.map((item) => (
+                  <Link
+                    key={item.label}
+                    to={item.href}
+                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${location.pathname === item.href ? "bg-primary text-white shadow-md shadow-primary/20" : "text-muted-foreground hover:bg-warm-sand hover:text-foreground"}`}
+                  >
+                    {item.icon} {item.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </aside>
+
+          {/* Main Content */}
           <div className="space-y-6">
             <div>
-              <h1 className="font-display text-2xl font-bold text-foreground mb-1">Your Environmental Impact</h1>
-              <p className="text-sm text-muted-foreground">Tracking your journey towards a circular economy and plastic-free dining.</p>
+              <h1 className="font-lora text-3xl font-bold text-foreground mb-1">Your Environmental Impact</h1>
+              <p className="text-sm text-muted-foreground italic font-medium">Tracking your journey towards a circular economy and plastic-free dining.</p>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { label: "CO₂ Emissions Saved", icon: <Leaf size={16} className="text-eco" />, value: "158.4 kg", sub: "Equivalent to planting 8 trees", change: "+12% vs last month" },
-                { label: "Parali Repurposed", icon: <Recycle size={16} className="text-primary" />, value: "420 kg", sub: "Rice straw diverted from burning", change: "+8% vs last month" },
-                { label: "Plastic Plates Displaced", icon: <Shield size={16} className="text-eco" />, value: "2,450 units", sub: "Keeping our oceans cleaner", change: "" },
-              ].map((stat, i) => (
-                <div key={i} className="bg-card border border-border rounded-2xl p-5">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-muted-foreground font-medium">{stat.label}</span>
-                    {stat.icon}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {statsProps.map((stat, i) => (
+                <div key={i} className="bg-card border border-border rounded-2xl p-6 group hover:border-primary/50 transition-colors shadow-sm">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</span>
+                    <div className="p-1.5 bg-primary/5 rounded-lg">{stat.icon}</div>
                   </div>
-                  <div className="font-display text-2xl font-bold text-foreground mb-0.5">{stat.value}</div>
-                  <div className="text-xs text-muted-foreground">{stat.sub}</div>
-                  {stat.change && <div className="text-xs text-eco font-medium mt-1">↗ {stat.change}</div>}
+                  <div className="font-lora text-2xl font-bold text-foreground mb-1">{stat.value}</div>
+                  <p className="text-[11px] text-muted-foreground font-medium">{stat.sub}</p>
+                  {stat.change && <div className="text-[11px] text-primary font-bold mt-2 flex items-center gap-1">↗ {stat.change} <span className="text-muted-foreground">growth</span></div>}
                 </div>
               ))}
             </div>
 
-            {/* Impact Progress Chart */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-5">
+            {/* Chart */}
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="font-display text-lg font-bold text-foreground">Impact Progress</h2>
-                  <p className="text-xs text-muted-foreground">Monthly growth in sustainability metrics</p>
+                  <h2 className="font-lora text-xl font-bold text-foreground">Sustainability Progress</h2>
+                  <p className="text-xs text-muted-foreground font-medium italic">Monthly growth in your eco-footprint</p>
                 </div>
-                <button className="flex items-center gap-1.5 text-xs font-semibold text-foreground border border-border rounded-lg px-3 py-1.5 hover:bg-warm-sand transition-colors">
-                  <Download size={12} /> Export Report
+                <button className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-foreground border border-border rounded-full px-4 py-2 hover:bg-warm-sand transition-colors">
+                  <Download size={14} /> Export Stats
                 </button>
               </div>
-              {/* Simple line chart visualization */}
-              <div className="relative h-48">
+              <div className="relative h-56 w-full opacity-90 group">
                 <svg viewBox="0 0 600 180" className="w-full h-full" preserveAspectRatio="none">
-                  {/* Grid lines */}
                   {[12, 47, 82, 117, 152].map((val, i) => (
                     <g key={i}>
-                      <line x1="0" y1={180 - (val / 152) * 160} x2="600" y2={180 - (val / 152) * 160} stroke="hsl(42,20%,90%)" strokeWidth="1" />
-                      <text x="0" y={180 - (val / 152) * 160 - 3} fontSize="10" fill="hsl(0,0%,60%)">{val}</text>
+                      <line x1="0" y1={180 - (val / 152) * 160} x2="600" y2={180 - (val / 152) * 160} stroke="hsl(var(--border))" strokeOpacity="0.5" strokeWidth="1" />
                     </g>
                   ))}
-                  {/* CO2 line (amber) */}
-                  <polyline
+                  <motion.polyline
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.5, ease: "easeInOut" }}
                     points="50,168 150,155 250,140 350,120 450,90 550,45"
                     fill="none"
-                    stroke="hsl(38,90%,52%)"
-                    strokeWidth="2.5"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                  {/* Parali line (green) */}
-                  <polyline
-                    points="50,175 150,170 250,165 350,158 450,150 550,140"
-                    fill="none"
-                    stroke="hsl(98,38%,40%)"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  {/* Dots */}
-                  {[50, 150, 250, 350, 450, 550].map((x, i) => (
-                    <g key={i}>
-                      <circle cx={x} cy={[168, 155, 140, 120, 90, 45][i]} r="4" fill="hsl(38,90%,52%)" />
-                      <circle cx={x} cy={[175, 170, 165, 158, 150, 140][i]} r="4" fill="hsl(98,38%,40%)" />
-                    </g>
-                  ))}
-                  {/* X axis labels */}
-                  {["Jan", "Feb", "Mar", "Apr", "May", "Jun"].map((m, i) => (
-                    <text key={m} x={50 + i * 100} y="178" textAnchor="middle" fontSize="10" fill="hsl(0,0%,60%)">{m}</text>
-                  ))}
                 </svg>
               </div>
-              <div className="flex items-center gap-5 mt-3">
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <div className="w-3 h-0.5 bg-eco" />
-                  CO₂ Saved (kg)
-                </div>
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <div className="w-3 h-0.5 bg-primary" />
-                  Parali Repurposed (kg)
-                </div>
-              </div>
             </div>
 
-            {/* Eco Event Calculator */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <h2 className="font-display text-lg font-bold text-foreground mb-1">Plan Your Next Eco-Event</h2>
-              <p className="text-sm text-muted-foreground mb-5">Calculate the environmental savings for your upcoming party or wedding.</p>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-xs font-semibold text-foreground block mb-1.5" htmlFor="eventGuests">Number of Guests</label>
-                    <input id="eventGuests" type="number" defaultValue={150} placeholder="e.g. 150" className="w-full text-sm px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary" />
+            {/* Calculator */}
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 pointer-events-none" />
+              <h2 className="font-lora text-xl font-bold text-foreground mb-2">Plan Your Next Eco-Event</h2>
+              <p className="text-sm text-muted-foreground mb-8">Measure the green impact of your upcoming gathering.</p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block" htmlFor="eventGuests">Expected Guests</label>
+                    <input id="eventGuests" type="number" defaultValue={150} className="w-full text-sm px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                   </div>
-                  <div>
-                    <label className="text-xs font-semibold text-foreground block mb-1.5" htmlFor="mealCourses">Meal Course Count</label>
-                    <input id="mealCourses" type="number" defaultValue={3} className="w-full text-sm px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary" />
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block" htmlFor="mealCourses">Meal Courses</label>
+                    <input id="mealCourses" type="number" defaultValue={3} className="w-full text-sm px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                   </div>
-                  <button className="w-full bg-primary text-primary-foreground font-semibold rounded-lg py-3 hover:opacity-90 transition-opacity">Calculate Footprint</button>
+                  <button className="w-full bg-primary text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-primary/20 active:scale-95 transition-all text-sm uppercase tracking-widest leading-none">Calculate Savings</button>
                 </div>
-                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-5 flex flex-col items-center justify-center text-center">
-                  <Leaf size={28} className="text-primary mb-2" />
-                  <div className="text-xs text-muted-foreground mb-1 font-semibold uppercase">Potential Saving</div>
-                  <div className="font-display text-4xl font-bold text-primary">{potentialSaving} kg</div>
-                  <div className="text-xs text-muted-foreground mt-2 leading-relaxed">
-                    Enter event details to see how many plastic plates you'll save from landfills.
+
+                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-inner">
+                  <Leaf size={40} className="text-primary mb-3 animate-pulse" />
+                  <div className="text-[10px] text-primary/70 mb-1 font-black uppercase tracking-tighter">Projected Plastic Saving</div>
+                  <div className="font-lora text-5xl font-bold text-primary">{potentialSaving} kg</div>
+                  <div className="text-xs text-muted-foreground mt-4 font-medium max-w-[200px]">
+                    Switching to ZESTRAW will divert this much waste from landfills.
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Spread the Impact */}
-            <div className="text-center py-8">
-              <Leaf size={28} className="text-primary mx-auto mb-3" />
-              <h2 className="font-display text-xl font-bold text-foreground mb-2">Spread the Impact</h2>
-              <p className="text-sm text-muted-foreground mb-5 max-w-md mx-auto">
-                Invite friends to ZESTRAW. For every successful referral, we repurpose an additional 10kg of Parali in your name.
-              </p>
-              <button className="bg-eco text-white font-semibold text-sm px-6 py-3 rounded-full hover:opacity-90 transition-opacity">
-                Invite Your Friends
-              </button>
             </div>
           </div>
         </div>
-      </div>
+      </main>
       <Footer />
     </div>
   );

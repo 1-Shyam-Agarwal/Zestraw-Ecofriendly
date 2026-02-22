@@ -2,7 +2,117 @@ import { toast } from "sonner";
 import { apiConnector } from "../apiConnector";
 import { endpoints } from "../apis";
 
-const { REIGSTER_API, LOGIN_API, FORGOT_PASSWORD_API, RESET_PASSWORD_API } = endpoints;
+const { REIGSTER_API, LOGIN_API, FORGOT_PASSWORD_API, RESET_PASSWORD_API, UPDATE_ADDRESS_API, GET_USER_DETAILS_API, UPDATE_PROFILE_API, UPDATE_PASSWORD_API } = endpoints;
+
+export async function changePassword(token, passwordData) {
+    const toastId = toast.loading("Updating your security credentials...", {
+        description: "Connecting to secure server."
+    });
+    try {
+        const response = await apiConnector("PUT", UPDATE_PASSWORD_API, passwordData, {
+            Authorization: `Bearer ${token}`
+        });
+
+        if (!response.data.success) {
+            throw new Error(response.data.error);
+        }
+
+        toast.success("Password Updated", {
+            id: toastId,
+            description: "Your security credentials have been updated successfully.",
+            duration: 3000,
+        });
+        return true;
+    } catch (error) {
+        const errorMessage = error.response?.data?.error || error.message || "Failed to update password";
+        toast.error("Process Error", {
+            id: toastId,
+            description: errorMessage,
+            duration: 4000
+        });
+        return false;
+    }
+}
+
+export async function updateProfile(token, profileData, setAuth) {
+    const toastId = toast.loading("Updating your profile...", {
+        description: "Connecting to secure server."
+    });
+    try {
+        const response = await apiConnector("PUT", UPDATE_PROFILE_API, profileData, {
+            Authorization: `Bearer ${token}`
+        });
+
+        if (!response.data.success) {
+            throw new Error(response.data.error);
+        }
+
+        toast.success("Profile Updated", {
+            id: toastId,
+            description: "Your details have been updated successfully.",
+            duration: 3000,
+        });
+
+        // Update auth state with new user data
+        setAuth(response.data.data, token);
+        return true;
+    } catch (error) {
+        const errorMessage = error.response?.data?.error || error.message || "Failed to update profile";
+        toast.error("Process Error", {
+            id: toastId,
+            description: errorMessage,
+            duration: 4000
+        });
+        return false;
+    }
+}
+
+export async function updateShippingAddress(token, addressData, setAuth) {
+    const toastId = toast.loading("Updating your shipping address...", {
+        description: "Connecting to secure server."
+    });
+    try {
+        const response = await apiConnector("PUT", UPDATE_ADDRESS_API, addressData, {
+            Authorization: `Bearer ${token}`
+        });
+
+        if (!response.data.success) {
+            throw new Error(response.data.error);
+        }
+
+        toast.success("Address Updated", {
+            id: toastId,
+            description: "Your selection has been saved for future orders.",
+            duration: 3000,
+        });
+
+        // Update auth state with new user data
+        setAuth(response.data.data, token);
+        return true;
+    } catch (error) {
+        const errorMessage = error.response?.data?.error || error.message || "Failed to update address";
+        toast.error("Process Error", {
+            id: toastId,
+            description: errorMessage,
+            duration: 4000
+        });
+        return false;
+    }
+}
+
+export async function getUserDetails(token, setAuth) {
+    try {
+        const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
+            Authorization: `Bearer ${token}`
+        });
+
+        if (response.data.success) {
+            setAuth(response.data.data, token);
+        }
+    } catch (error) {
+        console.error("Get user details error:", error);
+    }
+}
 
 export async function getPasswordResetToken(email, setEmailSent) {
     const toastId = toast.loading("Verifying email and sending reset link...", {

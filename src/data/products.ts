@@ -1,14 +1,35 @@
 export interface Product {
-  id: string;
-  name: string;
+  _id?: string; // Database ID
+  id?: string;  // Static ID (legacy support)
+  productName?: string; // Database field
+  name?: string; // Legacy field
   category: string;
-  type: "Plates" | "Bowls" | "Trays" | "Combo Packs" | "Cutlery";
-  price: number;
-  bulkPrice: number;
-  image: string;
-  size?: string;
+  productPrice?: number; // Database field
+  price?: number; // Legacy field
+  sizesAvailable?: Array<{ size: number | string; price: number }>;
+  images?: string[];
+  image?: string; // Legacy single image
   badge?: string;
   ecoScore?: number;
+  type?: string;
+  bulkPrice?: number;
+  size?: string;
+  sustainabilityMetrics?: {
+    carbonFootprint: number;
+    plasticUse: number;
+    plasticAvoided: number;
+  };
+  details?: {
+    description: {
+      heading: string;
+      primaryContent: string;
+      secondaryContent: string;
+    };
+    keyFeatures: string[];
+    technicalSpecifications: string[];
+  };
+  faqs?: Array<{ question: string; answer: string }>;
+  stock?: number;
 }
 
 export const products: Product[] = [

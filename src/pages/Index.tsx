@@ -9,6 +9,8 @@ import productBowls from "@/assets/product-bowls.jpg";
 import productTray from "@/assets/product-tray.jpg";
 import productCombo from "@/assets/product-combo.jpg";
 import riceField from "@/assets/rice-field.jpg";
+import { products } from "@/data/products";
+import ProductCard from "@/components/ProductCard";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -58,7 +60,7 @@ const Index = () => {
                   Shop Now
                 </Link>
               </motion.div>
-             
+
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -148,48 +150,33 @@ const Index = () => {
           </motion.div>
         </div>
       </section>
-
       {/* Conscious Collections */}
       <section className="py-20">
-        <div className="container mx-auto px-2 md:px-6">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <div className="flex justify-between items-end mb-10  px-4 md:px-6">
+            <div className="flex justify-between items-end mb-10">
               <div>
-                <motion.h2 variants={fadeUp} className="text-3xl font-lora font-bold">Conscious Collections</motion.h2>
+                <motion.h2 variants={fadeUp} className="text-3xl font-lora font-bold text-foreground">Conscious Collections</motion.h2>
                 <motion.p variants={fadeUp} className="text-muted-foreground mt-1">High-performance tableware that doesn't cost the Earth.</motion.p>
               </div>
               <motion.div variants={fadeUp}>
-                <Link to="/shop" className="hidden md:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
-                  View Full Catalog <ChevronRight className="w-4 h-4" />
+                <Link to="/shop" className="hidden md:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline group">
+                  View Full Catalog <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </motion.div>
             </div>
-            <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {[
-                { name: "Classic Dinner Plate", price: "$24.00", img: productPlates, badge: "Best" },
-                { name: "Organic Bowl Set", price: "$18.00", img: productBowls, badge: "New" },
-                { name: "Deep Rectangle Tray", price: "$32.00", img: productTray },
-                { name: "The Event Combo", price: "$85.00", img: productCombo, badge: "Bulk Only" },
-              ].map((product) => (
-                <Link key={product.name} to="/shop" className="group">
-                  <div className="relative bg-card rounded-xl overflow-hidden border border-border hover:shadow-md transition-shadow">
-                    {product.badge && (
-                      <span className="absolute top-3 left-3 z-10 px-2 py-0.5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full uppercase">
-                        {product.badge}
-                      </span>
-                    )}
-                    <div className="aspect-square overflow-hidden">
-                      <img src={product.img} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    </div>
-                    <div className="p-4">
-                      <h3 className="text-sm font-medium">{product.name}</h3>
-                      <p className="text-sm font-bold text-foreground mt-1">{product.price}</p>
-                      <p className="text-xs text-muted-foreground">Pack of 25</p>
-                    </div>
-                  </div>
-                </Link>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {products.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
               ))}
-            </motion.div>
+            </div>
+
+            <div className="mt-10 text-center md:hidden">
+              <Link to="/shop" className="inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                View All Products <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>

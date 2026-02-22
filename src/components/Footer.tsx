@@ -25,7 +25,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src={logo} alt="logo" className="w-28 md:w-32 h-auto"/>
+              <img src={logo} alt="logo" className="w-28 md:w-32 h-auto" />
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed mb-4">
               Revolutionizing dining with tableware crafted from agricultural residue. Join us in turning parali into purposeful plates.

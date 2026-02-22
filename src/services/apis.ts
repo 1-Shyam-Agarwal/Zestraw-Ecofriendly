@@ -5,4 +5,18 @@ export const endpoints = {
     LOGIN_API: BASE_URL + "/auth/login",
     FORGOT_PASSWORD_API: BASE_URL + "/auth/forgot-password",
     RESET_PASSWORD_API: BASE_URL + "/auth/reset-password",
+    UPDATE_ADDRESS_API: BASE_URL + "/auth/update-address",
+    UPDATE_PROFILE_API: BASE_URL + "/auth/update-profile",
+    UPDATE_PASSWORD_API: BASE_URL + "/auth/update-password",
+    GET_USER_DETAILS_API: BASE_URL + "/auth/me",
+};
+
+export const productEndpoints = {
+    GET_ALL_PRODUCTS_API: BASE_URL + "/products",
+    GET_PRODUCT_DETAILS_API: BASE_URL + "/products/",
+};
+
+export const orderEndpoints = {
+    CREATE_ORDER_API: BASE_URL + "/orders",
+    GET_MY_ORDERS_API: BASE_URL + "/orders/myorders",
 };
