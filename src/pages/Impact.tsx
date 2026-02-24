@@ -1,18 +1,24 @@
 import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Leaf, Droplets, BarChart3, ChevronDown, Award, Shield, Zap, Heart } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
 const stagger = { visible: { transition: { staggerChildren: 0.15 } } };
 
 export default function ImpactPage() {
+  const location = useLocation();
   const [guestsPerEvent, setGuestsPerEvent] = useState(100);
   const [eventsPerYear, setEventsPerYear] = useState(12);
 
   const co2Saved = Math.round(guestsPerEvent * eventsPerYear * 2);
   const plasticDiverted = Math.round(guestsPerEvent * eventsPerYear * 15);
+
+  // Scroll to top on mount or when location changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname, location.search]);
 
   return (
     <Layout>
