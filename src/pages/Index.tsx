@@ -39,7 +39,7 @@ const Index = () => {
             <motion.div variants={stagger}>
               <motion.h1
                 variants={fadeUp}
-                className="text-5xl lg:text-7xl font-lora text-foreground leading-tight mb-6"
+                className="text-4xl lg:text-5xl font-normal font-lora text-foreground leading-tight  mb-6"
               >
                 Where <br /> Great Meals <br /> meets<br />
                 <span className="text-orange-600">Greener</span> Choices.
@@ -70,7 +70,7 @@ const Index = () => {
               <img
                 src={heroImage}
                 alt="ZESTRAW eco-friendly tableware collection"
-                className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3]"
+                className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3] rotate-2 shadow-[0_4px_10px_0_rgba(0,0,0,0.3)]"
               />
             </motion.div>
           </motion.div>

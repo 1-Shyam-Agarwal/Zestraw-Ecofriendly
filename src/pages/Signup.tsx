@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, ArrowRight, User, Building2, CheckCircle2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import heroImage from "@/assets/hero-tableware.jpg";
+import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff, ArrowRight, User, Building2, CheckCircle2, Wheat } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
+import { signUp } from "@/services/operations/authAPI";
+import { Checkbox } from "@/components/ui/checkbox";
+import heroImage from "@/assets/hero-tableware.jpg"
+import logo from "@/assets/logo.png"
 
 export default function SignupPage() {
   const [accountType, setAccountType] = useState<"retail" | "b2b">("retail");
@@ -15,7 +20,8 @@ export default function SignupPage() {
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -24,6 +30,7 @@ export default function SignupPage() {
     if (password.length < 8) errs.password = "Password must be at least 8 characters";
     if (password !== confirmPassword) errs.confirmPassword = "Passwords do not match";
     if (!agreed) errs.agreed = "You must agree to the terms";
+    if (!accountType) errs.accountType = "Account type is required";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -31,28 +38,22 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setLoading(false);
-    toast({ title: "Account created!", description: "Welcome to the ZESTRAW movement." });
+
+    // Using the service pattern requested
+    signUp(fullName, email, password, accountType, navigate);
   };
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Left Panel */}
-      <div className="hidden lg:flex flex-col justify-between bg-secondary p-12 relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-between bg-[#fff5ed] p-12 relative overflow-hidden">
         <div className="relative z-10">
           <Link to="/" className="flex items-center gap-2 mb-12">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary-foreground" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-              </svg>
-            </div>
-            <span className="font-display text-xl font-bold text-primary">ZESTRAW</span>
+            <img src={logo} alt="" className="w-28 md:w-32 h-auto" />
           </Link>
-          <h1 className="text-4xl font-bold leading-tight mb-4">
+          <h1 className="text-4xl font-bold font-lora leading-tight mb-4">
             Join the movement toward{" "}
-            <span className="text-gradient-primary italic">sustainable</span>{" "}
+            <span className="text-gradient-primary font-lora italic">sustainable</span>{" "}
             tableware.
           </h1>
           <p className="text-muted-foreground text-lg max-w-md">
@@ -76,9 +77,7 @@ export default function SignupPage() {
 
         {/* Decorative background */}
         <div className="absolute bottom-10 right-10 w-[200px] h-[200px] text-primary/5">
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-          </svg>
+          <Wheat className="w-full h-full" strokeWidth={0.5} />
         </div>
       </div>
 
@@ -88,7 +87,7 @@ export default function SignupPage() {
           ← Back to home
         </Link>
 
-        <h2 className="text-2xl font-bold mb-1">Create your account</h2>
+        <h2 className="text-2xl font-bold font-lora mb-1">Create your account</h2>
         <p className="text-muted-foreground text-sm mb-8">Welcome to the future of dining. Let's get started.</p>
 
         <form onSubmit={handleSignup} className="space-y-5">
@@ -99,9 +98,8 @@ export default function SignupPage() {
               <button
                 type="button"
                 onClick={() => setAccountType("retail")}
-                className={`flex flex-col items-start gap-2 p-4 rounded-xl border-2 text-left transition-colors ${
-                  accountType === "retail" ? "border-primary bg-primary/5" : "border-border hover:bg-accent"
-                }`}
+                className={`flex flex-col items-start gap-2 p-4 rounded-xl border-2 text-left transition-colors ${accountType === "retail" ? "border-primary bg-primary/5" : "border-border hover:bg-accent"
+                  }`}
               >
                 <User className={`w-6 h-6 ${accountType === "retail" ? "text-primary" : "text-muted-foreground"}`} />
                 <div>
@@ -113,9 +111,8 @@ export default function SignupPage() {
               <button
                 type="button"
                 onClick={() => setAccountType("b2b")}
-                className={`flex flex-col items-start gap-2 p-4 rounded-xl border-2 text-left transition-colors ${
-                  accountType === "b2b" ? "border-primary bg-primary/5" : "border-border hover:bg-accent"
-                }`}
+                className={`flex flex-col items-start gap-2 p-4 rounded-xl border-2 text-left transition-colors ${accountType === "b2b" ? "border-primary bg-primary/5" : "border-border hover:bg-accent"
+                  }`}
               >
                 <Building2 className={`w-6 h-6 ${accountType === "b2b" ? "text-primary" : "text-muted-foreground"}`} />
                 <div>
@@ -160,13 +157,18 @@ export default function SignupPage() {
             </div>
           </div>
 
-          <label className="flex items-start gap-2 cursor-pointer">
-            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-4 h-4 mt-0.5 rounded border-border text-primary" />
-            <span className="text-xs text-muted-foreground">
+          <div className="flex items-start gap-2">
+            <Checkbox
+              id="terms"
+              checked={agreed}
+              onCheckedChange={(checked) => setAgreed(checked === true)}
+              className="mt-0.5"
+            />
+            <label htmlFor="terms" className="text-xs text-muted-foreground cursor-pointer select-none">
               I agree to the <Link to="/legal" className="text-primary font-semibold hover:underline">Terms of Service</Link> and{" "}
               <Link to="/legal" className="text-primary font-semibold hover:underline">Privacy Policy</Link>, including our commitment to 100% plastic-free logistics.
-            </span>
-          </label>
+            </label>
+          </div>
           {errors.agreed && <p className="text-xs text-destructive">{errors.agreed}</p>}
 
           <button
@@ -188,13 +190,13 @@ export default function SignupPage() {
         </form>
 
         {/* Certifications */}
-        <div className="flex flex-wrap items-center gap-6 mt-8 text-xs text-muted-foreground">
+        {/* <div className="flex flex-wrap items-center gap-6 mt-8 text-xs text-muted-foreground">
           {["VERIFIED ORGANIC", "B-CORP CERTIFIED", "CLIMATE NEUTRAL"].map((cert) => (
             <span key={cert} className="flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" /> {cert}
             </span>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

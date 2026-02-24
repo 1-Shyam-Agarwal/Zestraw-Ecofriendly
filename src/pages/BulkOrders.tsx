@@ -32,7 +32,7 @@ export default function BulkOrdersPage() {
     setLoading(true);
     await new Promise(r => setTimeout(r, 2000));
     setLoading(false);
-    toast({ title: "Inquiry submitted!", description: "Our enterprise team will get back to you within 24 hours." });
+    toast({ title: "Inquiry submitted!", description: "Our enterprise team will get back to you within 24 hours.", variant: "success" });
   };
 
   const toggleProduct = (product: string) => {

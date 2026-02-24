@@ -2,37 +2,31 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, ArrowRight, ChevronLeft } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { getPasswordResetToken } from "@/services/operations/authAPI";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
-  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !email.includes("@")) {
-      toast({ title: "Please enter a valid email address", variant: "destructive" });
+      toast.error("Invalid Email", {
+        description: "Please enter a valid email address to continue."
+      });
       return;
     }
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setLoading(false);
-    setSent(true);
-    toast({ title: "Reset link sent!", description: "Check your email for instructions." });
+
+    getPasswordResetToken(email, setSent);
   };
 
   return (
     <div className="min-h-screen bg-secondary flex flex-col items-center justify-center px-6">
       {/* Logo */}
-      <Link to="/" className="flex items-center gap-2 mb-12">
-        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-          <svg viewBox="0 0 24 24" className="w-6 h-6 text-primary-foreground" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-          </svg>
-        </div>
-        <span className="font-display text-xl font-bold text-primary">ZESTRAW</span>
+      <Link to="/" className="text-sm text-muted-foreground mb-6 hover:text-foreground flex items-center gap-1">
+        ← Back to home
       </Link>
 
       <motion.div
@@ -43,7 +37,7 @@ export default function ForgotPasswordPage() {
         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
           <Mail className="w-6 h-6 text-primary" />
         </div>
-        <h1 className="text-2xl font-bold mb-2">Restore Access</h1>
+        <h1 className="text-2xl font-bold mb-2 font-lora">Restore Access</h1>
         <p className="text-sm text-muted-foreground mb-6">
           Enter your registered email address and we'll send you instructions to reset your password.
         </p>
