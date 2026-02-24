@@ -1,14 +1,19 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";
-import { Droplets, Leaf, Shield, Flame, ChevronRight, Star } from "lucide-react";
+import { Droplets, Leaf, Shield, Flame, ChevronRight, Handshake, Flag, Recycle, Star } from "lucide-react";
 import heroImage from "@/assets/hero-tableware.jpg";
+import ReactCountryFlag from "react-country-flag";
 import paraliImage from "@/assets/parali-crisis.jpg";
-import productPlates from "@/assets/product-plates.jpg";
-import productBowls from "@/assets/product-bowls.jpg";
-import productTray from "@/assets/product-tray.jpg";
-import productCombo from "@/assets/product-combo.jpg";
+import productPlates from "@/assets/plate.png";
+import productBowls from "@/assets/bowls.png";
+import productTray from "@/assets/section_plate.png";
+import productCombo from "@/assets/combo.png";
+import cup from "@/assets/cups.png";
+import cutleries from "@/assets/cutlery.png";
 import riceField from "@/assets/rice-field.jpg";
+import { Button } from "@/components/ui/button";
+import sampleBox from "@/assets/Sample-box.webp";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -34,22 +39,18 @@ const Index = () => {
             <motion.div variants={stagger}>
               <motion.h1
                 variants={fadeUp}
-                className="text-4xl lg:text-5xl font-bold font-lora text-foreground leading-relaxed mb-6"
+                className="text-5xl lg:text-7xl font-lora text-foreground leading-tight mb-6"
               >
-                Meals made with love deserve thoughtful plates.
+                Where <br /> Great Meals <br /> meets<br />
+                <span className="text-orange-600">Greener</span> Choices.
               </motion.h1>
-              <motion.p
-                variants={fadeUp}
-                className="text-lg text-muted-foreground mb-8 max-w-md leading-relaxed"
-              >
-                Premium, biodegradable tableware crafted from rice straw residue. Combatting air pollution while elevating your dining experience.
-              </motion.p>
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-4 mb-8">
+
+              <motion.div variants={fadeUp} className="flex flex-wrap gap-6 mb-8 mt-20">
                 <Link
                   to="/shop"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 transition-colors"
                 >
-                  Book a Sample Kit
+                  Order a Sample Kit
                 </Link>
                 <Link
                   to="/impact"
@@ -58,7 +59,7 @@ const Index = () => {
                   Shop Now
                 </Link>
               </motion.div>
-             
+
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -77,23 +78,43 @@ const Index = () => {
       </section>
 
       {/* Impact in Numbers */}
-      <section className="py-20">
+      <section className="py-">
         <div className="container mx-auto px-6 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.h2 variants={fadeUp} className="text-3xl font-bold font-lora mb-3">Impact in Numbers</motion.h2>
-            <motion.p variants={fadeUp} className="text-muted-foreground mb-12 max-w-lg mx-auto">
-              Every ZESTRAW plate you use directly contributes to a healthier planet.
-            </motion.p>
-            <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.div
+              variants={fadeUp}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto"
+            >
               {[
-                { icon: <Leaf className="w-6 h-6 text-eco bg-auto" />, value: "1,240 Tons", label: "CO₂ EMISSIONS SAVED" },
-                { icon: <Flame className="w-6 h-6 text-primary bg-auto" />, value: "4,500 Acres", label: "STUBBLE BURNING AVOIDED" },
-                { icon: <Droplets className="w-6 h-6 text-eco bg-auto" />, value: "15,000", label: "TREES EQUIVALENT SAVED" },
-              ].map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center gap-3 p-6 border border-border rounded-2xl shadow-[0_4px_10px_0_rgba(0,0,0,0.1)]">
-                  <div className="w-12 h-12 rounded-full bg-eco-light flex items-center justify-center">{stat.icon}</div>
-                  <span className="text-3xl font-bold">{stat.value}</span>
-                  <span className="text-xs text-muted-foreground tracking-wide uppercase">{stat.label}</span>
+                {
+                  icon: <Leaf className="w-8 h-8 text-eco" />,
+                  value: "Plastic-Free & Compostable",
+                },
+                {
+                  icon: <Flag className="w-8 h-8 text-primary" />,
+                  value: "Proudly Made in India",
+                },
+                {
+                  icon: <Handshake className="w-8 h-8 text-eco" />,
+                  value: "Supporting Local",
+                },
+              ].map((stat, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center gap-4 p-6 border border-border rounded-2xl shadow-[0_4px_10px_0_rgba(0,0,0,0.1)]"
+                >
+                  <div className="w-12 h-12 rounded-full bg-eco-light flex items-center justify-center">
+                    {stat.icon}
+                  </div>
+
+                  <span className="text-lg lg:text-xl font-semibold leading-snug">
+                    {stat.value}
+                  </span>
                 </div>
               ))}
             </motion.div>
@@ -101,57 +122,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* From Smog to Sustainable Splendor */}
-      <section className="py-16 bg-card">
-        <div className="container mx-auto px-4 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={stagger}
-            className="grid lg:grid-cols-2 gap-12 items-center"
-          >
-            <motion.div variants={fadeUp} className="relative rounded-2xl overflow-hidden">
-              <img src={riceField} alt="Rice fields - from smog to sustainability" className="w-full object-cover aspect-[4/3] rounded-2xl" />
-              <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-xl p-4 max-w-[200px]">
-                <p className="text-xs text-muted-foreground italic">"Solving the Haze"</p>
-                <p className="text-xs text-muted-foreground mt-1">Every year, thousands of acres of rice straw are burned, creating severe smog.</p>
-              </div>
-            </motion.div>
-            <motion.div variants={stagger}>
-              <motion.span variants={fadeUp} className="inline-flex px-3 py-1 bg-amber-light text-primary text-xs font-semibold rounded-full mb-4">OUR STORY</motion.span>
-              <motion.h2 variants={fadeUp} className="text-3xl lg:text-4xl font-lora font-bold mb-4">
-                From Smog to Sustainable Splendor.
-              </motion.h2>
-              <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed mb-6">
-                The "Parali" problem isn't just an agricultural issue—it's a public health crisis. By providing farmers an alternative to burning, ZESTRAW creates a circular economy. Our innovative heat-press molding technology converts raw rice straw into durable, premium tableware that returns to the earth in 90 days.
-              </motion.p>
-              <motion.div variants={fadeUp} className="grid grid-cols-2 gap-6 mb-8">
-                <div>
-                  <p className="text-2xl font-lora font-bold text-foreground">90 Days</p>
-                  <p className="text-sm text-muted-foreground">Home Compostable</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-lora font-bold text-foreground">0%</p>
-                  <p className="text-sm text-muted-foreground">Plastic or Chemicals</p>
-                </div>
-              </motion.div>
-              <motion.div variants={fadeUp}>
-                <Link
-                  to="/our-story"
-                  className="inline-flex items-center gap-2 px-6 py-3 border border-primary text-primary rounded-full font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                >
-                  Discover Our Process
-                </Link>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Conscious Collections */}
-      <section className="py-20">
-        <div className="container mx-auto px-2 md:px-6">
+      <section className="py-24 bg-muted/20">
+        <div className="max-w-6xl mx-auto px-8 md:px-16">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
             <div className="flex justify-between items-end mb-10  px-4 md:px-6">
               <div>
@@ -164,27 +138,61 @@ const Index = () => {
                 </Link>
               </motion.div>
             </div>
-            <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <motion.div
+              variants={fadeUp}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12"
+            >
               {[
-                { name: "Classic Dinner Plate", price: "$24.00", img: productPlates, badge: "Best" },
-                { name: "Organic Bowl Set", price: "$18.00", img: productBowls, badge: "New" },
-                { name: "Deep Rectangle Tray", price: "$32.00", img: productTray },
-                { name: "The Event Combo", price: "$85.00", img: productCombo, badge: "Bulk Only" },
+                { name: "Plates", img: productPlates, badge: "Best Seller" },
+                { name: "Bowls", img: productBowls, badge: "New" },
+                { name: "Section-Plates", img: productTray },
+                { name: "Cutlery", img: cutleries },
+                { name: "Cups", img: cup },
+                { name: "Combo Pack", img: productCombo },
               ].map((product) => (
-                <Link key={product.name} to="/shop" className="group">
-                  <div className="relative bg-card rounded-xl overflow-hidden border border-border hover:shadow-md transition-shadow">
+                <Link key={product.name} to="/shop" className="group block">
+                  <div className="relative bg-white rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+
+                    {/* Badge */}
                     {product.badge && (
-                      <span className="absolute top-3 left-3 z-10 px-2 py-0.5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full uppercase">
+                      <span className="absolute top-4 left-4 z-10 px-3 py-1 bg-primary text-white text-[11px] font-semibold rounded-full uppercase tracking-wide shadow">
                         {product.badge}
                       </span>
                     )}
-                    <div className="aspect-square overflow-hidden">
-                      <img src={product.img} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+
+                    {/* Image */}
+                    <div className="aspect-[4/4] overflow-hidden">
+                      <img
+                        src={product.img}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
                     </div>
-                    <div className="p-4">
-                      <h3 className="text-sm font-medium">{product.name}</h3>
-                      <p className="text-sm font-bold text-foreground mt-1">{product.price}</p>
-                      <p className="text-xs text-muted-foreground">Pack of 25</p>
+
+                    {/* Content */}
+                    <div className="px-4 py-4 bg-white">
+                      <div className="flex items-center justify-between">
+
+                        {/* Title */}
+                        <h3 className="text-lg font-semibold font-lora tracking-tight text-neutral-900 group-hover:text-primary transition-colors duration-300">
+                          {product.name}
+                        </h3>
+
+                        {/* CTA */}
+                        <div className="flex items-center gap-2 overflow-hidden">
+
+                          {/* Sliding Text */}
+                          <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-medium text-primary transition-all duration-500 group-hover:max-w-[90px]">
+                            Shop Now
+                          </span>
+
+                          {/* Arrow */}
+                          <div className="w-9 h-9 rounded-full border border-primary flex items-center justify-center group-hover:bg-primary transition-all duration-300">
+                            <ChevronRight className="w-4 h-4 text-primary group-hover:text-white transition-colors duration-300" />
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -192,97 +200,98 @@ const Index = () => {
             </motion.div>
           </motion.div>
         </div>
-      </section>
+      </section >
 
       {/* Why Choose ZESTRAW */}
-      <section className="py-20 bg-card">
-        <div className="container mx-auto px-6 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.h2 variants={fadeUp} className="text-3xl font-bold font-lora mb-3">Why Choose ZESTRAW?</motion.h2>
-            <motion.p variants={fadeUp} className="text-muted-foreground mb-12">Beyond sustainability, we deliver uncompromised quality.</motion.p>
-            <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {[
-                { icon: <Droplets className="w-6 h-6" />, title: "Water Resistant", desc: "Engineered to withstand liquids for 5+ hours without leaking." },
-                { icon: <Leaf className="w-6 h-6" />, title: "100% Compostable", desc: "Fully biodegradable in a backyard compost within 90 days." },
-                { icon: <Shield className="w-6 h-6" />, title: "Chemical-Free", desc: "Food-grade certified. No glue, liners, or plastic coatings." },
-                { icon: <Flame className="w-6 h-6" />, title: "Heat Resistant", desc: "Microwave and oven safe up to 180°C for retail locations." },
-              ].map((feature) => (
-                <div key={feature.title} className="flex flex-col items-center gap-3 p-4">
-                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-primary">{feature.icon}</div>
-                  <h3 className="font-semibold text-sm font-lora ">{feature.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{feature.desc}</p>
+      <section className="bg-card border-y border-border py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <h2 className="font-playfair text-3xl font-bold font-lora text-foreground mb-2">Why Choose ZESTRAW?</h2>
+            <p className="text-sm text-muted-foreground font-lora">Beyond sustainability, we deliver uncompromised quality.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            {[
+              { icon: <Droplets size={24} className="text-orange-500 " />, title: "Water Resistant", desc: "Engineered to withstand liquids for 3+ hours without warping." },
+              { icon: <Leaf size={24} className="text-orange-500" />, title: "100% Compostable", desc: "Fully biodegradable in backyard compost within 90 days." },
+              { icon: <Shield size={24} className="text-orange-500" />, title: "Chemical-Free", desc: "Food grade certified. No glues, chemical binders, or plastic coatings." },
+              { icon: <Recycle size={24} className="text-orange-500" />, title: "Durable Design", desc: "Sturdy construction that resists snapping and bending." },
+              { icon: <Flame size={24} className="text-orange-500" />, title: "Heat Resistant", desc: "Microwave and oven safe up to 140°C for short durations." },
+            ].map((item, i) => (
+              <div key={i} className="text-center space-y-3">
+                <div className="flex justify-center mb-4">
+                  {item.icon}
                 </div>
-              ))}
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
 
-      {/* Testimonial */}
-      <section className="py-20">
-        <div className="container mx-auto px-6 text-center max-w-2xl">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.div variants={fadeUp} className="w-10 h-10 mx-auto mb-6 text-primary">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" /></svg>
-            </motion.div>
-            <motion.blockquote variants={fadeUp} className="text-lg italic leading-relaxed mb-6">
-              "Switching to ZESTRAW was the best decision for our catering business. Our clients love the premium feel and the fact that we're actively helping clean up the air in northern India. It's a win-win."
-            </motion.blockquote>
-            <motion.div variants={fadeUp} className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-warm-sand" />
-              <div className="text-left">
-                <p className="text-sm font-semibold">Raman Mehta</p>
-                <p className="text-xs text-muted-foreground">Founder, GreenEvents India</p>
+                <div className="text-lg font-semibold text-foreground">
+                  {item.title}
+                </div>
+
+                <div className="text-base text-muted-foreground leading-relaxed max-w-[220px] mx-auto">
+                  {item.desc}
+                </div>
               </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Trusted Partners */}
-      <section className="py-12 border-t border-border">
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-8">Trusted by Leading Eco-Conscious Partners</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {["ECOHOTEL", "PUREEATS", "IMPACTCORP", "NATURA", "CATERWELL"].map((brand) => (
-              <span key={brand} className="text-sm font-semibold text-muted-foreground tracking-wider">{brand}</span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={riceField} alt="Rice field" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-primary/85" />
-        </div>
-        <div className="relative container mx-auto px-6 py-20 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold font-lora text-primary-foreground mb-4">
-              Ready to make the switch?
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-primary-foreground/80 mb-8 max-w-md mx-auto">
-              Join 5,000+ conscious households and businesses in the revolution. Get 10% off your first bulk order today.
-            </motion.p>
-            <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/shop"
-                className="px-6 py-3 rounded-full bg-card text-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
-              >
-                Shop Now
-              </Link>
-              <Link
-                to="/bulk-orders"
-                className="px-6 py-3 rounded-full border border-primary-foreground/30 text-primary-foreground font-semibold text-sm hover:bg-primary-foreground/10 transition-colors"
-              >
-                Bulk Orders
-              </Link>
-            </motion.div>
-          </motion.div>
+      {/* Order a sample kit */}
+      <section className="relative overflow-hidden bg-background py-24">
+
+        {/* Subtle Background Accent */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/5 via-transparent to-accent/10" />
+
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
+
+            {/* Left Content */}
+            <div className="space-y-8">
+
+              {/* Heading */}
+              <h2 className="text-4xl md:text-6xl font-bold leading-tight">
+                Not sure yet?
+                <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent py-8">
+                  Good — we've got a box for that.
+                </span>
+              </h2>
+
+              {/* Subtext */}
+
+
+              {/* CTA */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="px-8 text-base">
+                  Order a Sample Kit
+                </Button>
+
+              </div>
+
+
+            </div>
+
+            {/* Right Product Display */}
+            <div className="relative flex justify-center">
+
+              {/* Decorative Glow */}
+              <div className="absolute w-72 h-72 bg-primary/10 rounded-full blur-3xl -z-10" />
+
+              {/* Product Card */}
+              <div className=" p-8 backdrop-blur-sm">
+                <img
+                  src={sampleBox}
+                  alt="Sample Kit"
+                  className="w-full max-w-md mx-auto drop-shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-    </Layout>
+
+
+
+
+    </Layout >
   );
 };
 

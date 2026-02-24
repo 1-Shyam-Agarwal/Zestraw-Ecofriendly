@@ -14,6 +14,7 @@ import OurStory from "./pages/OurStory";
 import Impact from "./pages/Impact";
 import BulkOrders from "./pages/BulkOrders";
 import NotFound from "./pages/NotFound";
+import MarketPlace from "./pages/MarketPlace";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/our-story" element={<OurStory />} />
             <Route path="/impact" element={<Impact />} />
             <Route path="/bulk-orders" element={<BulkOrders />} />
+            <Route path="/marketplace" element={<MarketPlace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
