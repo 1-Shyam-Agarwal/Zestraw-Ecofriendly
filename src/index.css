@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* reCAPTCHA styling */
+#recaptcha-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0;
+  min-height: 90px;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.g_recaptcha_container,
+.g-recaptcha {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.g-recaptcha > div {
+  margin: 0 auto;
+}
+
+/* Mobile responsive reCAPTCHA */
+@media (max-width: 640px) {
+  #recaptcha-container {
+    min-height: 100px;
+    padding: 0.75rem;
+  }
+  
+  .g-recaptcha {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}
+
 @layer base {
   :root {
     --background: 38 50% 97%;

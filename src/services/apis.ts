@@ -9,6 +9,7 @@ export const endpoints = {
     UPDATE_PROFILE_API: BASE_URL + "/auth/update-profile",
     UPDATE_PASSWORD_API: BASE_URL + "/auth/update-password",
     GET_USER_DETAILS_API: BASE_URL + "/auth/me",
+    PHONE_AUTH_API: BASE_URL + "/auth/phone",
 };
 
 export const productEndpoints = {

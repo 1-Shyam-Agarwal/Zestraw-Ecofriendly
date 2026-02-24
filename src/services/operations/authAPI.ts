@@ -191,6 +191,36 @@ export async function login(email, password, navigate, setAuth) {
     }
 }
 
+export async function phoneAuth(phoneNumber, fullName, accountType, navigate, setAuth) {
+    const { PHONE_AUTH_API } = endpoints as any;
+    const toastId = toast.loading("Authenticating via phone...", {
+        description: "Verifying phone with server."
+    });
+    try {
+        const response = await apiConnector("POST", PHONE_AUTH_API, { phoneNumber, fullName, accountType });
+
+        if (!response.data.success) {
+            throw new Error(response.data.error);
+        }
+
+        toast.success("Signed in", { id: toastId, description: "Welcome back!" });
+        
+        // setAuth expects (user, token)
+        const userData = response.data.data || response.data;
+        setAuth(userData, response.data.token);
+        
+        // Redirect to dashboard or home
+        navigate("/");
+    } catch (error) {
+        const errorMessage = error.response?.data?.error || error.message || "Phone authentication failed";
+        toast.error("Authentication Error", {
+            id: toastId,
+            description: errorMessage,
+            duration: 4000
+        });
+    }
+}
+
 export async function signUp(
     fullName,
     email,
