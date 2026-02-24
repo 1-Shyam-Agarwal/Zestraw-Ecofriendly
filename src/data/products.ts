@@ -36,7 +36,7 @@ export const products: Product[] = [
   {
     id: "1",
     name: "Classic Rice Straw Dinner Plate",
-    category: "PLATES",
+    category: "Plates",
     type: "Plates",
     price: 24.0,
     bulkPrice: 18.5,
@@ -48,7 +48,7 @@ export const products: Product[] = [
   {
     id: "2",
     name: "Deep Harvest Cereal Bowl",
-    category: "BOWLS",
+    category: "Bowls",
     type: "Bowls",
     price: 18.0,
     bulkPrice: 14.0,
@@ -59,7 +59,7 @@ export const products: Product[] = [
   {
     id: "3",
     name: "Rectangle Serving Tray XL",
-    category: "TRAYS",
+    category: "Trays",
     type: "Trays",
     price: 32.0,
     bulkPrice: 26.0,
@@ -70,8 +70,8 @@ export const products: Product[] = [
   {
     id: "4",
     name: "Eco-Party Combo Pack (50pcs)",
-    category: "COMBO PACKS",
-    type: "Combo Packs",
+    category: "Combo Pack",
+    type: "Combo Pack",
     price: 85.0,
     bulkPrice: 72.0,
     image: "combo",
@@ -81,7 +81,7 @@ export const products: Product[] = [
   {
     id: "5",
     name: "Square Tapas Plate Set",
-    category: "PLATES",
+    category: "Plates",
     type: "Plates",
     price: 22.0,
     bulkPrice: 18.0,

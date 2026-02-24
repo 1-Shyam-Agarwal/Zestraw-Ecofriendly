@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Link } from "react-router-dom";
 import { Grid, List, ChevronRight, Leaf } from "lucide-react";
@@ -7,15 +8,29 @@ import riceField from "@/assets/rice-field.jpg";
 import ProductCard from "@/components/ProductCard";
 import { getAllProducts } from "@/services/operations/productAPI";
 
-const productTypes = ["All", "Plates", "Bowls", "Trays", "Combo Packs", "Cutlery"];
-const sortOptions = ["Newest Arrivals", "Price: Low to High", "Price: High to Low"];
+const productTypes = ["All", "Plates", "Bowls", "Section-Plates", "Cutlery", "Cups", "Combo Pack", ];
+const sortOptions = [ "Price: Low to High", "Price: High to Low"];
 
 export default function ShopPage() {
+  const location = useLocation();
+    // Scroll to top on mount or when location changes
+    useEffect(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [location.pathname, location.search]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedType, setSelectedType] = useState("All");
   const [priceRange, setPriceRange] = useState([1, 150]);
   const [sortBy, setSortBy] = useState("Newest Arrivals");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  // Read filter from query param on mount
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const typeParam = params.get("type");
+    if (typeParam && productTypes.includes(typeParam)) {
+      setSelectedType(typeParam);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const fetchProducts = async () => {

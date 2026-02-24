@@ -3,7 +3,6 @@ import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Droplets, Leaf, Shield, Flame, ChevronRight, Handshake, Flag, Recycle, Star } from "lucide-react";
 import heroImage from "@/assets/hero-tableware.jpg";
-import ReactCountryFlag from "react-country-flag";
 import paraliImage from "@/assets/parali-crisis.jpg";
 import productPlates from "@/assets/plate.png";
 import productBowls from "@/assets/bowls.png";
@@ -47,13 +46,13 @@ const Index = () => {
 
               <motion.div variants={fadeUp} className="flex flex-wrap gap-6 mb-8 mt-20">
                 <Link
-                  to="/shop"
+                  to="/shop?type=ComboPack"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 transition-colors"
                 >
                   Order a Sample Kit
                 </Link>
                 <Link
-                  to="/impact"
+                  to="/shop"
                   className="inline-flex items-center gap-2 px-7 py-3.5 border border-border bg-card text-foreground rounded-full font-semibold hover:bg-accent transition-colors"
                 >
                   Shop Now
@@ -150,7 +149,7 @@ const Index = () => {
                 { name: "Cups", img: cup },
                 { name: "Combo Pack", img: productCombo },
               ].map((product) => (
-                <Link key={product.name} to="/shop" className="group block">
+                <Link key={product.name} to={`/shop?type=${product.name}`} className="group block">
                   <div className="relative bg-white rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
 
                     {/* Badge */}
@@ -266,9 +265,12 @@ const Index = () => {
 
               {/* CTA */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="px-8 text-base">
+                <Link
+                  to="/shop?type=Combo%20Packs"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 transition-colors"
+                >
                   Order a Sample Kit
-                </Button>
+                </Link>
 
               </div>
 
