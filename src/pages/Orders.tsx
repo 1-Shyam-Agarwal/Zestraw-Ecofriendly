@@ -293,16 +293,6 @@ const Orders = () => {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Modal Footer */}
-                            <div className="p-8 border-t border-border bg-card/50 flex justify-center">
-                                <button
-                                    onClick={() => setSelectedOrder(null)}
-                                    className="px-10 py-4 bg-primary text-white font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:shadow-2xl hover:shadow-primary/20 transition-all active:scale-95"
-                                >
-                                    Dismiss Record
-                                </button>
-                            </div>
                         </motion.div>
                     </div>
                 )}

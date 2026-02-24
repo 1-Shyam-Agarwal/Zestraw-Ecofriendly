@@ -57,7 +57,7 @@ export function Navbar() {
     <header
       className={`sticky top-0 z-50 transition-all duration-300 w-full ${scrolled
         ? "bg-background/80 backdrop-blur-xl shadow-lg shadow-primary/5 py-1"
-        : "bg-transparent py-4"
+        : "bg-transparent py-1"
         }`}
     >
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
@@ -75,7 +75,7 @@ export function Navbar() {
                 to={item.href}
                 className="relative px-4 py-2 group"
               >
-                <span className={`text-sm font-bold tracking-tight transition-colors duration-300 ${isActive(item.href) ? "text-primary" : "text-foreground/70 group-hover:text-primary"
+                <span className={`text-sm font-normal    tracking-tight transition-colors duration-300 ${isActive(item.href) ? "text-primary" : "text-foreground/70 group-hover:text-primary"
                   }`}>
                   {item.label}
                 </span>
@@ -202,7 +202,6 @@ export function Navbar() {
                             }`}
                         >
                           {item.label}
-                          <Globe className={`w-4 h-4 opacity-50 ${isActive(item.href) ? "text-primary-foreground" : "text-primary"}`} />
                         </Link>
                       ))}
                     </nav>
@@ -257,10 +256,6 @@ export function Navbar() {
                     Sign in to Account
                   </Link>
                 )}
-                <div className="flex items-center justify-center gap-1.5 mt-4">
-                  <Heart className="w-3 h-3 text-red-500 fill-red-500" />
-                  <span className="text-[10px] font-bold text-muted-foreground">Proudly Plastic-Free India</span>
-                </div>
               </div>
             </motion.div>
           </>
@@ -268,27 +263,29 @@ export function Navbar() {
       </AnimatePresence>
 
       <AlertDialog open={showLogoutAlert} onOpenChange={setShowLogoutAlert}>
-        <AlertDialogContent className="rounded-[2.5rem] border-border bg-white p-8 shadow-2xl max-w-[400px]">
-          <AlertDialogHeader>
-            <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-4 mx-auto">
-              <LogOut className="w-8 h-8 text-red-500" />
+        <AlertDialogContent className="rounded-xl border-border bg-white p-0 shadow-2xl max-w-[400px] overflow-hidden">
+          <div className="p-8 text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <LogOut className="w-5 h-5 text-destructive" />
+              <AlertDialogTitle className="font-lora text-lg font-bold text-foreground m-0">Leaving already?</AlertDialogTitle>
             </div>
-            <AlertDialogTitle className="font-lora text-2xl font-black text-foreground text-center">Leaving already?</AlertDialogTitle>
-            <AlertDialogDescription className="text-foreground/70 text-center font-medium leading-relaxed">
+
+            <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
               We'll be here whenever you're ready to continue your sustainable journey. See you soon!
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex-col sm:flex-col gap-3 mt-8">
-            <AlertDialogAction
-              onClick={handleLogout}
-              className="w-full h-12 rounded-2xl bg-red-500 text-white font-black uppercase tracking-widest hover:bg-red-600 shadow-lg shadow-red-200"
-            >
-              Sign out
-            </AlertDialogAction>
-            <AlertDialogCancel className="w-full h-12 rounded-2xl bg-secondary border-none text-foreground font-black uppercase tracking-widest hover:bg-secondary/80">
-              Stay signed in
-            </AlertDialogCancel>
-          </AlertDialogFooter>
+            </p>
+
+            <div className="space-y-3">
+              <AlertDialogAction
+                onClick={handleLogout}
+                className="w-full py-4 bg-destructive text-white rounded-xl font-bold uppercase tracking-widest text-xs hover:opacity-90 transition-all shadow-lg active:scale-95"
+              >
+                Sign out
+              </AlertDialogAction>
+              <AlertDialogCancel className="w-full py-4 bg-secondary text-foreground rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-secondary/80 border-none transition-all active:scale-95">
+                Stay signed in
+              </AlertDialogCancel>
+            </div>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
     </header>

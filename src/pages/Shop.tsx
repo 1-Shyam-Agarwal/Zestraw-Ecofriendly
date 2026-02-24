@@ -153,8 +153,8 @@ export default function ShopPage() {
               ) : (
                 <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-3xl border-2 border-dashed border-muted">
                   <Leaf className="w-12 h-12 text-muted-foreground mb-4 opacity-20" />
-                  <h3 className="text-xl font-bold font-lora mb-2">No eco-friendly matches found</h3>
-                  <p className="text-muted-foreground text-sm max-w-xs mx-auto">
+                  <h3 className="text-xl font-normal font-lora mb-2">No eco-friendly matches found</h3>
+                  <p className="text-muted-foreground text-[12px] max-w-xs mx-auto">
                     We couldn't find products matching your current filters. Try adjusting the price range or category.
                   </p>
                   <button
@@ -162,7 +162,7 @@ export default function ShopPage() {
                       setSelectedType("All");
                       setPriceRange([1, 150]);
                     }}
-                    className="mt-6 text-sm font-bold text-primary hover:underline transition-all"
+                    className="mt-6 text-sm font-semibold text-primary hover:underline transition-all"
                   >
                     Clear all filters
                   </button>

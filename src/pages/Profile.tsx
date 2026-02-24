@@ -93,152 +93,144 @@ const Profile = () => {
                     </aside>
 
                     {/* Main Content */}
-                    <div className="space-y-8">
-                        <div>
-                            <h1 className="font-lora text-3xl font-bold text-foreground mb-1">Account Settings</h1>
-                            <p className="text-sm text-muted-foreground italic font-medium">Manage your personal details and security preferences.</p>
+                    <div className="max-w-3xl mx-auto w-full space-y-4">
+                        <div className="flex items-baseline justify-between mb-2">
+                            <h1 className="font-lora text-2xl font-bold text-foreground">Account Settings</h1>
+                            <p className="text-[10px] text-muted-foreground font-medium italic">Manage your profile & security</p>
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">
-                            <div className="space-y-8">
-                                {/* Profile Info */}
-                                <section className="bg-card border border-border rounded-3xl p-8 shadow-sm">
-                                    <div className="flex items-center gap-3 mb-8 border-b border-border pb-6">
-                                        <div className="p-2 bg-primary/5 rounded-xl"><User className="text-primary" size={20} /></div>
-                                        <h2 className="font-lora text-xl font-bold">Personal Information</h2>
+                        <div className="space-y-4">
+                            {/* Personal Details */}
+                            <section className="bg-white border border-border/50 rounded-2xl p-5 shadow-sm">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 bg-primary/5 rounded-lg flex items-center justify-center">
+                                        <User className="text-primary" size={16} />
                                     </div>
-                                    <form onSubmit={handleProfileUpdate} className="space-y-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Full Name</label>
+                                    <h2 className="font-lora text-lg font-bold leading-tight">Personal Details</h2>
+                                </div>
+
+                                <form onSubmit={handleProfileUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Full Name</label>
+                                        <Input
+                                            value={profileData.fullName}
+                                            onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })}
+                                            className="bg-neutral-50/50 border-neutral-200 rounded-xl h-10 focus:ring-primary/20 font-medium text-sm"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Email Address</label>
+                                        <div className="relative">
+                                            <Input disabled value={profileData.email} className="bg-neutral-50 border-neutral-200/60 rounded-xl h-10 cursor-not-allowed opacity-70 font-medium text-sm" />
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                                <CheckCircle2 size={12} className="text-primary/40" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="md:col-span-2 pt-1">
+                                        <Button type="submit" disabled={loading} className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-primary/5">
+                                            {loading ? "Saving..." : "Save Personal Info"}
+                                        </Button>
+                                    </div>
+                                </form>
+                            </section>
+
+                            {/* Shipping Address */}
+                            <section className="bg-white border border-border/50 rounded-2xl p-5 shadow-sm">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 bg-primary/5 rounded-lg flex items-center justify-center">
+                                        <MapPin className="text-primary" size={16} />
+                                    </div>
+                                    <h3 className="font-lora text-lg font-bold">Shipping Address</h3>
+                                </div>
+
+                                <form onSubmit={handleProfileUpdate} className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                                        <div className="md:col-span-2 space-y-1">
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Street Address</label>
+                                            <Input
+                                                value={profileData.shippingAddress.address}
+                                                onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, address: e.target.value } })}
+                                                className="bg-neutral-50/50 border-neutral-200 rounded-xl h-10 focus:ring-primary/20 font-medium text-sm"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">City</label>
+                                            <Input
+                                                value={profileData.shippingAddress.city}
+                                                onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, city: e.target.value } })}
+                                                className="bg-neutral-50/50 border-neutral-200 rounded-xl h-10 focus:ring-primary/20 font-medium text-sm"
+                                            />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="space-y-1">
+                                                <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">State</label>
                                                 <Input
-                                                    value={profileData.fullName}
-                                                    onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })}
-                                                    className="bg-muted/30 border-border rounded-xl h-12"
+                                                    value={profileData.shippingAddress.state}
+                                                    onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, state: e.target.value } })}
+                                                    className="bg-neutral-50/50 border-neutral-200 rounded-xl h-10 focus:ring-primary/20 font-medium text-sm"
                                                 />
                                             </div>
-                                            <div className="space-y-2 opacity-60">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Email Address</label>
-                                                <Input disabled value={profileData.email} className="bg-muted/10 border-border rounded-xl h-12 cursor-not-allowed" />
+                                            <div className="space-y-1">
+                                                <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Zip Code</label>
+                                                <Input
+                                                    value={profileData.shippingAddress.zip}
+                                                    onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, zip: e.target.value } })}
+                                                    className="bg-neutral-50/50 border-neutral-200 rounded-xl h-10 focus:ring-primary/20 font-medium text-sm"
+                                                />
                                             </div>
                                         </div>
-
-                                        <div className="pt-4">
-                                            <div className="flex items-center gap-3 mb-6">
-                                                <div className="p-2 bg-primary/5 rounded-xl"><MapPin className="text-primary" size={20} /></div>
-                                                <h3 className="font-lora text-lg font-bold">Default Delivery Address</h3>
-                                            </div>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                                <div className="md:col-span-2 space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Street Address</label>
-                                                    <Input
-                                                        value={profileData.shippingAddress.address}
-                                                        onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, address: e.target.value } })}
-                                                        className="bg-muted/30 border-border rounded-xl h-12"
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">City</label>
-                                                    <Input
-                                                        value={profileData.shippingAddress.city}
-                                                        onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, city: e.target.value } })}
-                                                        className="bg-muted/30 border-border rounded-xl h-12"
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">State</label>
-                                                    <Input
-                                                        value={profileData.shippingAddress.state}
-                                                        onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, state: e.target.value } })}
-                                                        className="bg-muted/30 border-border rounded-xl h-12"
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Zip Code</label>
-                                                    <Input
-                                                        value={profileData.shippingAddress.zip}
-                                                        onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, zip: e.target.value } })}
-                                                        className="bg-muted/30 border-border rounded-xl h-12"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <Button type="submit" disabled={loading} className="w-full h-12 rounded-xl text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-primary/20">
-                                            {loading ? "Processing..." : "Save Profile Details"}
-                                        </Button>
-                                    </form>
-                                </section>
-
-                                {/* Security */}
-                                <section className="bg-card border border-border rounded-3xl p-8 shadow-sm">
-                                    <div className="flex items-center gap-3 mb-8 border-b border-border pb-6">
-                                        <div className="p-2 bg-primary/5 rounded-xl"><Key className="text-primary" size={20} /></div>
-                                        <h2 className="font-lora text-xl font-bold">Security & Password</h2>
                                     </div>
-                                    <form onSubmit={handlePasswordUpdate} className="space-y-6">
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Current Password</label>
+                                    <Button type="submit" disabled={loading} className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-primary/5">
+                                        {loading ? "Updating..." : "Update Shipping Address"}
+                                    </Button>
+                                </form>
+                            </section>
+
+                            {/* Security Section */}
+                            <section className="bg-white border border-border/50 rounded-2xl p-5 shadow-sm">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 bg-primary/5 rounded-xl flex items-center justify-center">
+                                        <Key className="text-primary" size={16} />
+                                    </div>
+                                    <h2 className="font-lora text-lg font-bold leading-tight">Security</h2>
+                                </div>
+
+                                <form onSubmit={handlePasswordUpdate} className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Current Password</label>
                                             <Input
                                                 type="password"
                                                 value={passwords.currentPassword}
                                                 onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
-                                                className="bg-muted/30 border-border rounded-xl h-12"
+                                                className="bg-neutral-50/50 border-neutral-200 rounded-xl h-10 font-medium text-sm"
                                             />
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">New Password</label>
-                                                <Input
-                                                    type="password"
-                                                    value={passwords.newPassword}
-                                                    onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
-                                                    className="bg-muted/30 border-border rounded-xl h-12"
-                                                />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Confirm New Password</label>
-                                                <Input
-                                                    type="password"
-                                                    value={passwords.confirmPassword}
-                                                    onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
-                                                    className="bg-muted/30 border-border rounded-xl h-12"
-                                                />
-                                            </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">New Password</label>
+                                            <Input
+                                                type="password"
+                                                value={passwords.newPassword}
+                                                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
+                                                className="bg-neutral-50/50 border-neutral-200 rounded-xl h-10 font-medium text-sm"
+                                            />
                                         </div>
-                                        <Button type="submit" disabled={loading} variant="outline" className="w-full h-12 rounded-xl text-xs font-black uppercase tracking-[0.2em] border-primary text-primary hover:bg-primary/5">
-                                            Update Credentials
-                                        </Button>
-                                    </form>
-                                </section>
-                            </div>
-
-                            {/* Info Sidebar */}
-                            <div className="space-y-6">
-                                <div className="bg-primary/10 border border-primary/20 rounded-3xl p-6 text-center shadow-inner">
-                                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                                        <Shield className="text-primary" size={24} />
-                                    </div>
-                                    <h4 className="font-lora text-lg font-bold mb-2">Sustainable Member</h4>
-                                    <p className="text-xs text-muted-foreground font-medium italic mb-6">Your data is secured with AES-256 encryption and managed according to GDPR principles.</p>
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex items-center gap-2 text-[10px] font-bold text-primary bg-white/50 py-2 px-4 rounded-full justify-center">
-                                            <CheckCircle2 size={12} /> Email Verified
-                                        </div>
-                                        <div className="flex items-center gap-2 text-[10px] font-bold text-primary bg-white/50 py-2 px-4 rounded-full justify-center">
-                                            <CheckCircle2 size={12} /> Multi-Factor Enabled
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Confirm New</label>
+                                            <Input
+                                                type="password"
+                                                value={passwords.confirmPassword}
+                                                onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
+                                                className="bg-neutral-50/50 border-neutral-200 rounded-xl h-10 font-medium text-sm"
+                                            />
                                         </div>
                                     </div>
-                                </div>
-                                <div className="bg-secondary/30 border border-border rounded-3xl p-6 shadow-sm">
-                                    <h4 className="font-lora text-sm font-bold mb-3 flex items-center gap-2">
-                                        <Recycle size={14} className="text-primary" /> Why Update Profile?
-                                    </h4>
-                                    <p className="text-[11px] text-muted-foreground leading-relaxed font-semibold italic">
-                                        "Accurate shipping details ensure your parali-made tableware reaches you with the lowest carbon footprint possible."
-                                    </p>
-                                </div>
-                            </div>
+                                    <Button type="submit" disabled={loading} variant="outline" className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest border-primary/20 text-primary hover:bg-primary/5 transition-all">
+                                        {loading ? "Processing..." : "Update Password"}
+                                    </Button>
+                                </form>
+                            </section>
                         </div>
                     </div>
                 </div>

@@ -268,12 +268,27 @@ export default function CartPage() {
                         <div className="bg-card border border-border rounded-xl p-5 sm:p-6 space-y-4">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">First Name</label>
-                              <input value={address.firstName} onChange={e => setAddress({ ...address, firstName: e.target.value })} placeholder="Full name" className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" required />
+                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">Full Name</label>
+                              <div className="relative group">
+                                <input
+                                  value={address.firstName}
+                                  readOnly
+                                  className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-neutral-100 text-muted-foreground cursor-not-allowed focus:outline-none transition-all pr-10"
+                                />
+                                <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/40" />
+                              </div>
                             </div>
                             <div>
                               <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">Email Address</label>
-                              <input type="email" value={address.email} onChange={e => setAddress({ ...address, email: e.target.value })} placeholder="email@example.com" className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" required />
+                              <div className="relative group">
+                                <input
+                                  type="email"
+                                  value={address.email}
+                                  readOnly
+                                  className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-neutral-100 text-muted-foreground cursor-not-allowed focus:outline-none transition-all pr-10"
+                                />
+                                <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/40" />
+                              </div>
                             </div>
                           </div>
                           <div>

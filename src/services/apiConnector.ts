@@ -7,7 +7,10 @@ export const apiConnector = (method, url, bodyData = null, headers = null, param
         method: `${method}`,
         url: `${url}`,
         data: bodyData,
-        headers: headers,
+        headers: {
+            "ngrok-skip-browser-warning": "true",
+            ...headers,
+        },
         params: params,
     });
 };
