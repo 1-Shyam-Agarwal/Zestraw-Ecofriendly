@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { ChevronRight, Leaf, Truck, BarChart3 } from "lucide-react";
-import wholesaleHero from "@/assets/wholesale-hero.jpg";
+import wholesaleHero from "@/assets/bulkorder.webp";
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
 
@@ -45,22 +45,53 @@ export default function BulkOrdersPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-secondary py-16">
+      <section className="bg-secondary py-20">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-eco-light text-eco text-xs font-semibold mb-4">B2B & Enterprise Solutions</span>
-              <h1 className="text-4xl font-bold mb-4">Elevate Your Brand with <span className="text-gradient-primary">Eco-Conscious</span> Dining.</h1>
-              <p className="text-muted-foreground mb-6">Amplify your sustainability efforts with ZESTRAW's premium rice-straw tableware. Custom-branded, biodegradable, and designed for the high-volume demands of modern hospitality.</p>
+          <div className="grid md:grid-cols-2 gap--2 items-center">
+
+            {/* Left Content */}
+            <div className="max-w-xl">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                Elevate Your Brand with{" "}
+                <span className="text-gradient-primary">
+                  Eco-Conscious
+                </span>{" "}
+                Dining.
+              </h1>
+
+              <p className="text-muted-foreground mb-8">
+                Amplify your sustainability efforts with ZESTRAW's premium
+                rice-straw tableware. Custom-branded, biodegradable, and designed
+                for the high-volume demands of modern hospitality.
+              </p>
+
               <div className="flex flex-wrap gap-4">
-                <a href="#quote-form" className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm">Request Enterprise Quote</a>
-                <button className="px-6 py-3 rounded-full border border-border font-semibold text-sm hover:bg-accent transition-colors flex items-center gap-1">↓ Download B2B Catalog</button>
+                <a
+                  href="#quote-form"
+                  className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm"
+                >
+                  Request Enterprise Quote
+                </a>
+
+                <button className="px-6 py-3 rounded-full border border-border font-semibold text-sm hover:bg-accent transition-colors">
+                  ↓ Download B2B Catalog
+                </button>
               </div>
-              <p className="text-xs text-muted-foreground mt-4 flex items-center gap-1">
-                Trusted by <strong>200+</strong> Hotels & Restaurants across India
+
+              <p className="text-xs text-muted-foreground mt-5">
+                Trusted by <strong>20+</strong> Hotels & Restaurants across India
               </p>
             </div>
-            <img src={wholesaleHero} alt="Wholesale dining" className="rounded-2xl w-full object-cover" />
+
+            {/* Right Image */}
+            <div className="relative">
+              <img
+                src={wholesaleHero}
+                alt="Wholesale dining"
+                className="w-full h-[400px] md:h-[500px] object-cover rounded-3xl"
+              />
+            </div>
+
           </div>
         </div>
       </section>
@@ -70,9 +101,9 @@ export default function BulkOrdersPage() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: <Truck className="w-6 h-6" />, title: "Enterprise Logistics", desc: "Maintain a supply chain with predictable lead times. We offer storage solutions and scheduled recurring deliveries for stable operations." },
-              { icon: <Leaf className="w-6 h-6" />, title: "Custom Branding", desc: "Laser and mold-based logo embossing. Transform your tableware into a subtle but powerful brand touchpoint for your customers." },
-              { icon: <BarChart3 className="w-6 h-6" />, title: "Impact Reporting", desc: "Receive quarterly sustainability reports detailing the CO₂ offset and parali burning prevented through your specific business volume." },
+              { icon: <Truck className="w-6 h-6" />, title: "Enterprise Logistics", desc: "Reliable supply with fixed delivery times. Storage options and regular deliveries to keep your business running smoothly." },
+              { icon: <Leaf className="w-6 h-6" />, title: "Custom Branding", desc: "Add your logo with laser or mold printing. Turn your tableware into a strong brand identity for your customers." },
+              { icon: <BarChart3 className="w-6 h-6" />, title: "Impact Reporting", desc: "Get quarterly reports showing your CO₂ reduction and parali impact based on your order volume." },
             ].map((f) => (
               <div key={f.title} className="text-center">
                 <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-primary mx-auto mb-4">{f.icon}</div>
@@ -80,41 +111,6 @@ export default function BulkOrdersPage() {
                 <p className="text-sm text-muted-foreground">{f.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Table */}
-      <section className="py-16 bg-card">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-3">Transparent Tiers & Lead Times</h2>
-          <p className="text-muted-foreground text-center mb-10 max-w-lg mx-auto">We offer simplified logistics for businesses of all sizes. From local cafes to national hotel chains, we scale with you.</p>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border text-left">
-                  <th className="py-3 text-sm font-semibold">Product Category</th>
-                  <th className="py-3 text-sm font-semibold">MOQ (Minimum Order)</th>
-                  <th className="py-3 text-sm font-semibold">Est. Lead Time</th>
-                  <th className="py-3 text-sm font-semibold">Unit Price Range</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pricingTiers.map((tier) => (
-                  <tr key={tier.category} className="border-b border-border hover:bg-accent/30 transition-colors">
-                    <td className="py-4 text-sm">{tier.category}</td>
-                    <td className="py-4 text-sm text-muted-foreground">{tier.moq}</td>
-                    <td className="py-4 text-sm text-muted-foreground">{tier.lead}</td>
-                    <td className="py-4 text-sm font-medium text-primary">{tier.price}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex flex-wrap gap-4 mt-6 text-xs text-muted-foreground">
-            <span>✓ Pan-India Shipping</span>
-            <span>✓ ISO Certified Quality</span>
-            <span>✓ Carbon Neutral Logistics</span>
           </div>
         </div>
       </section>

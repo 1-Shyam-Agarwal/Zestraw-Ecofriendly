@@ -16,11 +16,11 @@ import Impact from "./pages/Impact";
 import BulkOrders from "./pages/BulkOrders";
 import ProductDetails from "./pages/ProductDetails";
 import NotFound from "./pages/NotFound";
+import Marketplace from "./pages/Marketplace";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Dashboard from "./pages/dashboard";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
-import Marketplace from "./pages/Marketplace";
 import OpenRoute from "./components/auth/OpenRoute";
 
 const queryClient = new QueryClient();
