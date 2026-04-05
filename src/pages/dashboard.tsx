@@ -12,7 +12,7 @@ const Dashboard = () => {
   const location = useLocation();
   const [eventGuests, setEventGuests] = useState(150);
   const [mealCourses, setMealCourses] = useState(3);
-  const potentialSaving = (eventGuests * mealCourses * 0.0084).toFixed(1);
+  const potentialSaving = ((eventGuests * mealCourses * 150 / 7) * 1.46 / 1000).toFixed(1);
 
   const [chartData, setChartData] = useState<any[]>([]);
   const [impactStats, setImpactStats] = useState({
@@ -37,9 +37,9 @@ const Dashboard = () => {
               const quantity = item.quantity || 0;
               const size = parseInt(item.size) || 1;
               const totalUnits = quantity * size;
-
-              parali += (totalUnits * 150) / 7; // 150g repurposed per unit, divided by 7 as requested
-              co2 += (parali * 1.46); // 84g saved per unit
+              const itemParali = (totalUnits * 150) / 7;
+              parali += itemParali;
+              co2 += (itemParali * 1.46);
               plastic += totalUnits;
             });
           });
@@ -75,8 +75,10 @@ const Dashboard = () => {
             if (monthData) {
               order.orderItems.forEach(item => {
                 const units = (item.quantity || 0) * (parseInt(item.size) || 1);
-                monthData.co2 += units * 84;
-                monthData.parali += (units * 150) / 7;
+
+                const itemParali = (units * 150) / 7;
+                monthData.parali += itemParali;
+                monthData.co2 += (itemParali * 1.46);
               });
             }
           });
