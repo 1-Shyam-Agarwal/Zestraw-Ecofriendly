@@ -46,7 +46,6 @@ export async function getUserOrders(token) {
         if (!response.data.success) {
             throw new Error(response.data.error);
         }
-
         return response.data.data;
     } catch (error) {
         console.error("GET_MY_ORDERS_API ERROR...", error);

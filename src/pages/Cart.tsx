@@ -119,6 +119,7 @@ export default function CartPage() {
         image: item.image,
         price: item.price,
         product: item.id,
+        weight: item.weight,
         size: item.size
       })),
       shippingAddress: {

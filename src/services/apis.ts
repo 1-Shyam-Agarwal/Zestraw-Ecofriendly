@@ -20,3 +20,7 @@ export const orderEndpoints = {
     CREATE_ORDER_API: BASE_URL + "/orders",
     GET_MY_ORDERS_API: BASE_URL + "/orders/myorders",
 };
+
+export const impactEndpoints = {
+    GET_IMPACT_STATS_API: BASE_URL + "/impact/stats",
+};

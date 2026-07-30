@@ -26,6 +26,7 @@ const Dashboard = () => {
     const fetchImpactData = async () => {
       if (token) {
         const orders = await getUserOrders(token);
+        console.log("orders" , orders);
         if (orders && Array.isArray(orders)) {
           let co2 = 0;
           let parali = 0;
@@ -37,9 +38,9 @@ const Dashboard = () => {
               const quantity = item.quantity || 0;
               const size = parseInt(item.size) || 1;
               const totalUnits = quantity * size;
-              const itemParali = (totalUnits * 150) / 7;
+              const itemParali = (totalUnits*item.weight *80) / 100;
               parali += itemParali;
-              co2 += (itemParali * 1.46);
+              co2 += (itemParali * 1.5);
               plastic += totalUnits;
             });
           });

@@ -2,7 +2,8 @@ import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Leaf, Droplets, BarChart3, ChevronDown, Award, Shield, Zap, Heart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getImpactStats, type ImpactStats } from "@/services/operations/impactAPI";
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
 const stagger = { visible: { transition: { staggerChildren: 0.15 } } };
@@ -10,9 +11,63 @@ const stagger = { visible: { transition: { staggerChildren: 0.15 } } };
 export default function ImpactPage() {
   const [guestsPerEvent, setGuestsPerEvent] = useState(100);
   const [eventsPerYear, setEventsPerYear] = useState(12);
+  const [impactStats, setImpactStats] = useState<ImpactStats | null>(null);
+  const [impactError, setImpactError] = useState(false);
 
   const co2Saved = Math.round(guestsPerEvent * eventsPerYear * 2);
   const plasticDiverted = Math.round(guestsPerEvent * eventsPerYear * 15);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadImpactStats = async () => {
+      try {
+        const stats = await getImpactStats();
+        if (isMounted) {
+          setImpactStats(stats);
+          setImpactError(false);
+        }
+      } catch (error) {
+        console.error("GET_IMPACT_STATS_API ERROR...", error);
+        if (isMounted) setImpactError(true);
+      }
+    };
+
+    loadImpactStats();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const keyStats = [
+    {
+      icon: <Leaf className="w-6 h-6 text-eco" />,
+      value: impactStats
+        ? `${impactStats.totalCo2EmissionsSaved.toLocaleString()} kg`
+        : impactError ? "Unavailable" : "Loading…",
+      label: "CO₂ EMISSIONS SAVED",
+      sub: impactStats
+        ? `Equivalent to ${Math.floor(impactStats.totalCo2EmissionsSaved / 20).toLocaleString()} trees planted`
+        : "Total environmental impact",
+    },
+    {
+      icon: <BarChart3 className="w-6 h-6 text-primary" />,
+      value: impactStats
+        ? `${impactStats.totalParaliUsed.toLocaleString()} kg`
+        : impactError ? "Unavailable" : "Loading…",
+      label: "PARALI REPURPOSED",
+      sub: "Rice straw diverted from burning",
+    },
+    {
+      icon: <Droplets className="w-6 h-6 text-eco" />,
+      value: impactStats
+        ? `${impactStats.plasticPlatesReplaced.toLocaleString()} million`
+        : impactError ? "Unavailable" : "Loading…",
+      label: "PLASTIC PLATES REPLACED",
+      sub: "Items diverted from landfills",
+    },
+  ];
 
   return (
     <Layout>
@@ -37,11 +92,7 @@ export default function ImpactPage() {
       <section className="py-16">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto text-center">
-            {[
-              { icon: <Leaf className="w-6 h-6 text-eco" />, value: "45,280 kg", label: "CO₂ EMISSIONS SAVED", sub: "Equivalent to 2,300 trees planted" },
-              { icon: <BarChart3 className="w-6 h-6 text-primary" />, value: "1,240 Acres", label: "STUBBLE BURNING PREVENTED", sub: "Reduced local air particulate matter" },
-              { icon: <Droplets className="w-6 h-6 text-eco" />, value: "8.4 Million", label: "PLASTIC REPLACED", sub: "Items diverted from landfills" },
-            ].map((stat) => (
+            {keyStats.map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-3 p-6">
                 <div className="w-12 h-12 rounded-full bg-eco-light flex items-center justify-center">{stat.icon}</div>
                 <span className="text-3xl font-bold">{stat.value}</span>
