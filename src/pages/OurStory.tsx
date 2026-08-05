@@ -12,9 +12,8 @@ const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, tra
 const stagger = { visible: { transition: { staggerChildren: 0.15 } } };
 
 const faqs = [
-  { q: "Is there any chemical binder used in ZESTRAW?", a: "No. Our innovation lies in the 'Natural Lignin Bond'. By applying specific pressure and temperature, we activate the natural lignin within the rice straw fibers, which acts as its own binder. This makes our plates 100% chemical-free and safe for direct food contact." },
-  { q: "How do you support the farmers?", a: "We purchase rice straw directly from farmers at fair market rates, providing them an alternative income source instead of burning the residue." },
-  { q: "Are the products microwave and oven safe?", a: "Yes, our products are heat-resistant up to 180°C (356°F), making them safe for microwave and conventional oven use." },
+  { q: "Is there any chemical binder used in ZESTRAW?", a: "ZeStraw does not use synthetic or toxic chemical binders. Made using natural rice straw fibers and food-grade ingredients." },
+  { q: "Are the products leak-proof?", a: "Yes. ZeStraw tableware is designed to handle oily, dry, and  wet foods without becoming soggy during normal use." },
 ];
 
 const processSteps = [
@@ -90,20 +89,6 @@ export default function OurStoryPage() {
 
       </section>
 
-      {/* Full Screen YouTube Video Section */}
-      <section className="relative w-full h-screen">
-
-        <iframe
-          className="absolute top-0 left-0 w-full h-full"
-          src="https://www.youtube.com/embed/eDsNyETrhE4?si=uKJoEMvq6B-5EHGu?autoplay=1&mute=1&controls=1&rel=0"
-          title="YouTube video"
-          frameBorder="0"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-
-      </section>
-
       {/* Parali Crisis */}
       <section className="py-20">
         <div className="container mx-auto px-6">
@@ -130,7 +115,7 @@ export default function OurStoryPage() {
         <div className="container mx-auto px-6 text-center">
 
           {/* Heading */}
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+          <h2 className="text-4xl md:text-5xl font-serif font-normal mb-4">
             The ZESTRAW Innovation Loop
           </h2>
 

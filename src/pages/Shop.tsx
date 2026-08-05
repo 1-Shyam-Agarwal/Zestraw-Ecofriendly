@@ -2,12 +2,19 @@ import { useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Link } from "react-router-dom";
-import { Grid, List, ChevronRight, Leaf } from "lucide-react";
+import { ChevronRight, Leaf, SlidersHorizontal, X } from "lucide-react";
 import { Product } from "@/data/products";
 import riceField from "@/assets/rice-field.jpg";
 import ProductCard from "@/components/ProductCard";
 import { getAllProducts } from "@/services/operations/productAPI";
 import { PageLoader } from "@/components/PageLoader";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 
 const productTypes = ["All", "Plates", "Bowls", "Section Plates", "Cups", "Cutlery", "ComboPack"];
 const sortOptions = ["Price: Low to High", "Price: High to Low"];
@@ -19,7 +26,7 @@ export default function ShopPage() {
   const [selectedType, setSelectedType] = useState("All");
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [sortBy, setSortBy] = useState("Price: Low to High");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -76,6 +83,60 @@ export default function ShopPage() {
     return result;
   }, [products, selectedType, priceRange, sortBy]);
 
+  const hasActiveFilters = selectedType !== "All" || priceRange[1] < 500;
+
+  const clearFilters = () => {
+    setSelectedType("All");
+    setPriceRange([0, 500]);
+  };
+
+  const filterControls = (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-semibold mb-3 font-lora">Product Type</h3>
+        <div className="space-y-2">
+          {productTypes.filter((t) => t !== "All").map((type) => (
+            <label key={type} className="flex items-center gap-2 text-sm cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selectedType === type}
+                onChange={() => setSelectedType(selectedType === type ? "All" : type)}
+                className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+              />
+              {type}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-semibold mb-3 font-lora">Price Range</h3>
+        <input
+          type="range"
+          min={0}
+          max={500}
+          value={priceRange[1]}
+          onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+          className="w-full accent-primary"
+        />
+        <div className="flex justify-between text-xs text-muted-foreground mt-1">
+          <span>₹{priceRange[0]}</span>
+          <span>₹{priceRange[1]}+</span>
+        </div>
+      </div>
+
+      <div className="bg-eco-light rounded-xl p-4">
+        <div className="flex items-center gap-2 mb-2">
+          <Leaf className="w-4 h-4 text-eco" />
+          <span className="text-sm font-semibold">Compostable Promise</span>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Every item in our shop is guaranteed 100% biodegradable and chemical-free.
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <Layout>
       {/* Header */}
@@ -87,24 +148,20 @@ export default function ShopPage() {
       <section>
         <div className="container mx-auto px-6">
           {/* Toolbar */}
-          <div className="flex flex-wrap items-center justify-end  gap-4 mb-8">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1 ml-4 text-muted-foreground">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-1.5 rounded-lg transition-colors ${viewMode === "grid" ? "bg-muted text-foreground" : "hover:bg-muted/50"}`}
-                >
-                  <Grid className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-1.5 rounded-lg transition-colors ${viewMode === "list" ? "bg-muted text-foreground" : "hover:bg-muted/50"}`}
-                >
-                  <List className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <button
+              type="button"
+              onClick={() => setFiltersOpen(true)}
+              className="lg:hidden inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-card text-sm font-medium hover:bg-muted/50 transition-colors"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters
+              {hasActiveFilters && (
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              )}
+            </button>
+
+            <div className="flex items-center gap-2 ml-auto">
               <span className="text-sm text-muted-foreground">Sort by:</span>
               <select
                 value={sortBy}
@@ -119,63 +176,49 @@ export default function ShopPage() {
           </div>
 
           <div className="flex gap-8">
-            {/* Sidebar Filters */}
-            <aside className="hidden lg:block w-56 shrink-0 space-y-6">
-              {/* Product Type */}
-              <div>
-                <h3 className="text-sm font-semibold mb-3 font-lora flex items-center justify-between">
-                  Product Type
-                </h3>
-                <div className="space-y-2">
-                  {productTypes.filter(t => t !== "All").map((type) => (
-                    <label key={type} className="flex items-center gap-2 text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={selectedType === type}
-                        onChange={() => setSelectedType(selectedType === type ? "All" : type)}
-                        className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
-                      />
-                      {type}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Price Range */}
-              <div>
-                <h3 className="text-sm font-semibold mb-3 font-lora flex items-center justify-between">
-                  Price Range
-                </h3>
-                <input
-                  type="range"
-                  min={0}
-                  max={500}
-                  value={priceRange[1]}
-                  onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                  className="w-full accent-primary"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                  <span>₹{priceRange[0]}</span>
-                  <span>₹{priceRange[1]}+</span>
-                </div>
-              </div>
-
-              {/* Compostable Promise */}
-              <div className="bg-eco-light rounded-xl p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Leaf className="w-4 h-4 text-eco" />
-                  <span className="text-sm font-semibold">Compostable Promise</span>
-                </div>
-                <p className="text-xs text-muted-foreground">Every item in our shop is guaranteed 100% biodegradable and chemical-free.</p>
-              </div>
+            {/* Desktop Sidebar Filters */}
+            <aside className="hidden lg:block w-56 shrink-0">
+              {filterControls}
             </aside>
+
+            {/* Mobile / Tablet Filters Sheet */}
+            <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
+              <SheetContent side="left" className="w-[85%] max-w-sm overflow-y-auto">
+                <SheetHeader className="text-left mb-6">
+                  <SheetTitle className="font-lora">Filters</SheetTitle>
+                  <SheetDescription>
+                    Narrow products by type and price.
+                  </SheetDescription>
+                </SheetHeader>
+                {filterControls}
+                <div className="mt-8 flex gap-3">
+                  {hasActiveFilters && (
+                    <button
+                      type="button"
+                      onClick={clearFilters}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg border border-border text-sm font-medium hover:bg-muted/50 transition-colors"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                      Clear
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setFiltersOpen(false)}
+                    className="flex-1 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+                  >
+                    Show {filteredAndSorted.length} results
+                  </button>
+                </div>
+              </SheetContent>
+            </Sheet>
 
             {/* Product Grid */}
             <div className="flex-1 p-2">
               {loading ? (
                 <PageLoader message="Loading products..." />
               ) : filteredAndSorted.length > 0 ? (
-                <div className={`grid ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"} gap-6`}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {filteredAndSorted.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
@@ -188,10 +231,7 @@ export default function ShopPage() {
                     We couldn't find products matching your current filters. Try adjusting the price range or category.
                   </p>
                   <button
-                    onClick={() => {
-                      setSelectedType("All");
-                      setPriceRange([1, 150]);
-                    }}
+                    onClick={clearFilters}
                     className="mt-6 text-sm font-semibold text-primary hover:underline transition-all"
                   >
                     Clear all filters

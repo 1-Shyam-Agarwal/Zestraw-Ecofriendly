@@ -16,7 +16,7 @@ import Impact from "./pages/Impact";
 import BulkOrders from "./pages/BulkOrders";
 import ProductDetails from "./pages/ProductDetails";
 import NotFound from "./pages/NotFound";
-import Marketplace from "./pages/Marketplace";
+import Marketplace from "./pages/MarketPlace";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import Dashboard from "./pages/dashboard";

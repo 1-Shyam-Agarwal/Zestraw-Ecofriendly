@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { getUserOrders } from "@/services/operations/orderAPI";
 import { PageLoader } from "@/components/PageLoader";
+import { calculateImpactFromItems, formatKg } from "@/lib/impactStats";
 
 const Dashboard = () => {
   const { user, token } = useAuth();
@@ -36,27 +37,13 @@ const Dashboard = () => {
         const orders = await getUserOrders(token);
         console.log("orders" , orders);
         if (orders && Array.isArray(orders)) {
-          let co2 = 0;
-          let parali = 0;
-          let plastic = 0;
-
-          // Process stats for cards
-          orders.forEach(order => {
-            order.orderItems.forEach(item => {
-              const quantity = item.quantity || 0;
-              const size = parseInt(item.size) || 1;
-              const totalUnits = quantity * size;
-              const itemParali = (totalUnits*item.weight *80) / 100;
-              parali += itemParali;
-              co2 += (itemParali * 1.5);
-              plastic += totalUnits;
-            });
-          });
+          const allItems = orders.flatMap((order) => order.orderItems);
+          const totals = calculateImpactFromItems(allItems);
 
           setImpactStats({
-            co2Saved: co2 / 1000, // grams -> kg
-            paraliRepurposed: parali / 1000, // grams -> kg
-            plasticAvoided: plastic,
+            co2Saved: totals.co2SavedKg,
+            paraliRepurposed: totals.paraliRepurposedKg,
+            plasticAvoided: totals.plasticAvoided,
             orderCount: orders.length
           });
 
@@ -82,13 +69,9 @@ const Dashboard = () => {
 
             const monthData = last6.find(m => m.month === orderMonth && m.year === orderYear);
             if (monthData) {
-              order.orderItems.forEach(item => {
-                const units = (item.quantity || 0) * (parseInt(item.size) || 1);
-                const weight = item.weight || 0;
-                const itemParaliGrams = (units * weight * 80) / 100;
-                monthData.parali += itemParaliGrams / 1000; // kg
-                monthData.co2 += (itemParaliGrams * 1.5) / 1000; // kg
-              });
+              const monthTotals = calculateImpactFromItems(order.orderItems);
+              monthData.parali += monthTotals.paraliRepurposedKg;
+              monthData.co2 += monthTotals.co2SavedKg;
             }
           });
 
@@ -101,9 +84,6 @@ const Dashboard = () => {
     fetchImpactData();
   }, [token]);
 
-  const formatKg = (value: number) =>
-    value.toLocaleString(undefined, { maximumFractionDigits: 3 });
-
   const chartMaxKg = chartData.length
     ? Math.max(...chartData.map((d) => Math.max(d.co2, d.parali)), 0)
     : 0;
@@ -114,6 +94,7 @@ const Dashboard = () => {
       label: "CO₂ Emissions Saved",
       icon: <Leaf size={16} className="text-secondary" />,
       value: `${formatKg(impactStats.co2Saved)} kg`,
+      sub: "Helping keep carbon out of the atmosphere",
     },
     {
       label: "Parali Repurposed",

@@ -64,7 +64,7 @@ export function Navbar() {
         {/* Left Section: Logo */}
         <div className="flex items-center gap-12">
           <Link to="/" className="relative z-10 hover:opacity-90 transition-opacity">
-            <img src={logo} alt="ZESTRAW" className="w-28 md:w-32 h-auto" />
+            <img src={logo} alt="ZESTRAW" className="w-24 md:w-28 h-auto" />
           </Link>
 
           {/* Center Section: Desktop Nav */}

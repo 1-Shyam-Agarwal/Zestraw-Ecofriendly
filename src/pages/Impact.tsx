@@ -5,6 +5,7 @@ import { Leaf, Droplets, BarChart3, ChevronDown, Award, Shield, Zap, Heart } fro
 import { useEffect, useState } from "react";
 import { getImpactStats, type ImpactStats } from "@/services/operations/impactAPI";
 import { PageLoader } from "@/components/PageLoader";
+import { formatPlasticReplaced } from "@/lib/impactStats";
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
 const stagger = { visible: { transition: { staggerChildren: 0.15 } } };
@@ -52,9 +53,7 @@ export default function ImpactPage() {
         ? `${impactStats.totalCo2EmissionsSaved.toLocaleString()} kg`
         : impactError ? "Unavailable" : "—",
       label: "CO₂ EMISSIONS SAVED",
-      sub: impactStats
-        ? `Equivalent to ${Math.floor(impactStats.totalCo2EmissionsSaved / 20).toLocaleString()} trees planted`
-        : "Total environmental impact",
+      sub: "Helping keep carbon out of the atmosphere",
     },
     {
       icon: <BarChart3 className="w-6 h-6 text-primary" />,
@@ -67,9 +66,9 @@ export default function ImpactPage() {
     {
       icon: <Droplets className="w-6 h-6 text-eco" />,
       value: impactStats
-        ? `${impactStats.plasticPlatesReplaced.toLocaleString()} million`
+        ? formatPlasticReplaced(impactStats.plasticPlatesReplaced)
         : impactError ? "Unavailable" : "—",
-      label: "PLASTIC PLATES REPLACED",
+      label: "PLASTIC ITEMS REPLACED",
       sub: "Items diverted from landfills",
     },
   ];

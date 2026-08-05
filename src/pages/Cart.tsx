@@ -8,9 +8,10 @@ import { useAuth } from "@/context/AuthContext";
 import { getProductImageSrc } from "@/lib/images";
 import { updateShippingAddress } from "@/services/operations/authAPI";
 import { createOrder } from "@/services/operations/orderAPI";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
-import { getDeliveryDate } from "@/lib/utils";
+import { formatPackLabel, getDeliveryDate } from "@/lib/utils";
+import { calculateImpactFromItems, formatKg } from "@/lib/impactStats";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, subtotal, totalItems, clearCart } = useCart();
@@ -21,6 +22,8 @@ export default function CartPage() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showOrderConfirmModal, setShowOrderConfirmModal] = useState(false);
   const navigate = useNavigate();
+
+  const cartImpact = useMemo(() => calculateImpactFromItems(items), [items]);
 
   // Checkout form state
   const [shippingMethod, setShippingMethod] = useState<"carbon" | "standard">("carbon");
@@ -202,8 +205,10 @@ export default function CartPage() {
                                   <h3 className="text-sm font-medium font-lora line-clamp-1">{item.name}</h3>
                                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
                                     <p className="text-xs font-bold text-foreground">₹{item?.price?.toFixed(2)}</p>
-                                    {item.size && (
-                                      <span className="text-[10px] bg-secondary px-2 py-0.5 rounded-full font-bold">PACK OF {item.size}</span>
+                                    {formatPackLabel(item.size) && (
+                                      <span className="text-[10px] bg-secondary px-2 py-0.5 rounded-full font-bold uppercase">
+                                        {formatPackLabel(item.size)}
+                                      </span>
                                     )}
                                   </div>
                                 </div>
@@ -425,61 +430,98 @@ export default function CartPage() {
                   {/* Sidebar Content Toggles */}
                   {step === "cart" ? (
                     /* Sustainability Impact Overview */
-                    <div className="bg-card rounded-2xl border border-border p-6 shadow-sm relative overflow-hidden group">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-12 -mt-12 transition-transform group-hover:scale-110" />
-                      <div className="flex items-center gap-2 mb-8 relative z-10">
-                        <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                          <Leaf className="w-5 h-5" />
+                    <div className="bg-card rounded-2xl border border-border p-6 shadow-sm relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.06] via-transparent to-[#8fb339]/[0.08] pointer-events-none" />
+                      <div className="flex items-center justify-between mb-6 relative z-10">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                            <Leaf className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <h3 className="text-base font-bold font-lora">Your Impact</h3>
+                            <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">From this cart</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-base font-bold font-lora">Your Impact</h3>
-                          <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Real-time Metrics</p>
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2.5 py-1 rounded-full">
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+                          </span>
+                          Live
+                        </span>
+                      </div>
+
+                      <div className="space-y-3 relative z-10">
+                        <div className="rounded-xl border border-border/70 bg-background/70 p-3.5">
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-[#8fb339]/15 text-[#6f8f2a] flex items-center justify-center flex-shrink-0">
+                              <Flame className="w-4 h-4" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-baseline justify-between gap-2">
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">CO₂ Saved</p>
+                                <p className="text-sm font-bold text-foreground font-lora">{formatKg(cartImpact.co2SavedKg)} <span className="text-[10px] font-semibold text-muted-foreground">kg</span></p>
+                              </div>
+                              <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden mt-2.5">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${Math.min(100, (cartImpact.co2SavedKg / 2) * 100)}%` }}
+                                  transition={{ duration: 0.6, ease: "easeOut" }}
+                                  className="h-full bg-[#8fb339] rounded-full"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="rounded-xl border border-border/70 bg-background/70 p-3.5">
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-[#4a7c59]/15 text-[#4a7c59] flex items-center justify-center flex-shrink-0">
+                              <Recycle className="w-4 h-4" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-baseline justify-between gap-2">
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Parali Used</p>
+                                <p className="text-sm font-bold text-foreground font-lora">{formatKg(cartImpact.paraliRepurposedKg)} <span className="text-[10px] font-semibold text-muted-foreground">kg</span></p>
+                              </div>
+                              <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden mt-2.5">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${Math.min(100, (cartImpact.paraliRepurposedKg / 1.5) * 100)}%` }}
+                                  transition={{ duration: 0.6, ease: "easeOut" }}
+                                  className="h-full bg-[#4a7c59] rounded-full"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="rounded-xl border border-border/70 bg-background/70 p-3.5">
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                              <Shield className="w-4 h-4" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-baseline justify-between gap-2">
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Plastic Displaced</p>
+                                <p className="text-sm font-bold text-foreground font-lora">{cartImpact.plasticAvoided.toLocaleString()} <span className="text-[10px] font-semibold text-muted-foreground">units</span></p>
+                              </div>
+                              <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden mt-2.5">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${Math.min(100, (cartImpact.plasticAvoided / 50) * 100)}%` }}
+                                  transition={{ duration: 0.6, ease: "easeOut" }}
+                                  className="h-full bg-primary rounded-full"
+                                />
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="space-y-6 relative z-10">
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                            <span>Plastic Avoided</span>
-                            <span className="text-primary">{(totalItems * 0.45).toFixed(2)} KG</span>
-                          </div>
-                          <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${Math.min(100, (totalItems / 20) * 100)}%` }}
-                              className="h-full bg-primary rounded-full"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                            <span>Carbon Saved</span>
-                            <span className="text-primary">{(totalItems * 1.8).toFixed(1)} KG</span>
-                          </div>
-                          <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${Math.min(100, (totalItems / 15) * 100)}%` }}
-                              className="h-full bg-[#8fb339] rounded-full"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                            <span>Trees Equivalent</span>
-                            <span className="text-primary">{(totalItems * 0.12).toFixed(2)}</span>
-                          </div>
-                          <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${Math.min(100, (totalItems / 50) * 100)}%` }}
-                              className="h-full bg-[#4a7c59] rounded-full"
-                            />
-                          </div>
-                        </div>
-                      </div>
+                      <p className="relative z-10 mt-4 text-[11px] text-muted-foreground leading-relaxed">
+                        Updates as you change pack sizes or quantities — same formulas as your Impact Tracker.
+                      </p>
                     </div>
 
                   ) : (
@@ -502,8 +544,16 @@ export default function CartPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-xs font-bold font-lora line-clamp-1">{item.name}</p>
-                              <div className="flex items-center gap-2 mt-1">
+                              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
                                 <span className="text-[10px] text-muted-foreground font-medium">Qty: {item.quantity}</span>
+                                {formatPackLabel(item.size) && (
+                                  <>
+                                    <span className="text-[10px] text-muted-foreground">•</span>
+                                    <span className="text-[10px] font-bold bg-secondary px-2 py-0.5 rounded-full uppercase">
+                                      {formatPackLabel(item.size)}
+                                    </span>
+                                  </>
+                                )}
                                 <span className="text-[10px] text-muted-foreground">•</span>
                                 <span className="text-[10px] font-bold text-primary">₹{(item.price * item.quantity).toFixed(2)}</span>
                               </div>

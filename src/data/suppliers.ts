@@ -22,4 +22,4 @@ export const suppliers: Supplier[] = [
     { id: 6, name: "BioHarvest India", category: "Power Plant", verified: true, location: "Amritsar", state: "Punjab", moq: 75, unit: "Tons", priceMin: 2100, priceMax: 2500, priceUnit: "Ton", sustainabilityRating: 71 },
 ];
 
-export const locations = ["Punjab", "Haryana", "Uttar Pradesh", "Rajasthan"];
+export const locations = ["Punjab", "Haryana", "Bihar", "Uttar Pradesh", "Rajasthan"];

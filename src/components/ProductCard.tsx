@@ -20,7 +20,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     const productImage = product.images?.[0];
     const productId = product._id ;
     const productWeight =
-        product.weight || 0;
+        product.weight ?? product.sustainabilityMetrics?.paraliUsed ?? 0;
     const productSize = defaultSize?.size != null ? String(defaultSize.size) : undefined;
 
     const handleAddToCart = (e: React.MouseEvent) => {

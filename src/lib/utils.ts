@@ -18,3 +18,10 @@ export function getDeliveryDate(days = 2) {
     month: "short",
   });
 }
+
+export function formatPackLabel(size?: string | number | null) {
+  if (size == null || size === "") return null;
+  const sizeStr = String(size).trim();
+  if (/^pack\s+of\s+/i.test(sizeStr)) return sizeStr;
+  return `Pack of ${sizeStr}`;
+}

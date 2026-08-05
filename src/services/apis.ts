@@ -24,3 +24,8 @@ export const orderEndpoints = {
 export const impactEndpoints = {
     GET_IMPACT_STATS_API: BASE_URL + "/impact/stats",
 };
+
+export const marketplaceEndpoints = {
+    GET_LISTINGS_API: BASE_URL + "/marketplace/listings",
+    SUBMIT_FARMER_DETAILS_API: BASE_URL + "/marketplace/farmer-submissions",
+};

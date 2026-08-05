@@ -70,7 +70,7 @@ const MarketplaceSidebar = ({
                 </div>
                 <div className="px-1">
                     <Slider
-                        defaultValue={capacityRange}
+                        value={capacityRange}
                         max={200}
                         step={10}
                         onValueChange={onCapacityChange}
