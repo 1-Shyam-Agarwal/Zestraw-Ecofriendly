@@ -8,6 +8,7 @@ export interface CartItem {
   image: string;
   category: string;
   size?: string;
+  weight?: number;
   sustainabilityMetrics?: {
     carbonFootprint: number;
     plasticUse: number;
@@ -41,14 +42,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addToCart = (item: Omit<CartItem, "quantity">, quantity: number = 1) => {
     setItems(prev => {
       const existing = prev.find(i => i.id === item.id && i.size === item.size);
-      if (existing) {
-        return prev.map(i =>
-          (i.id === item.id && i.size === item.size)
-            ? { ...i, ...item, quantity: i.quantity + quantity }
-            : i
-        );
-      }
-      return [...prev, { ...item, quantity }];
+      const nextItems = existing
+        ? prev.map(i =>
+            (i.id === item.id && i.size === item.size)
+              ? { ...i, ...item, quantity: i.quantity + quantity }
+              : i
+          )
+        : [...prev, { ...item, quantity }];
+
+      const addedItem = nextItems.find(i => i.id === item.id && i.size === item.size);
+      console.log("Added to cart:", addedItem);
+      console.log("Cart details:", nextItems);
+
+      return nextItems;
     });
   };
 

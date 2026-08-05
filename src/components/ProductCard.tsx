@@ -14,11 +14,14 @@ export default function ProductCard({ product }: ProductCardProps) {
     const { addToCart } = useCart();
 
     const productName = product.productName || product.name || "Unnamed Product";
-    const productPrice = product.productPrice || product.price || 0;
-    const productImage = product.images?.[0] || product.image || "no-photo.jpg";
-    const productId = product._id || product.id;
-    console.log(product.sustainabilityMetrics);
-
+    const defaultSize = product.sizesAvailable?.[0];
+    // Match ProductDetails: show price for the default pack size, not base productPrice
+    const productPrice = product.productPrice || defaultSize?.price
+    const productImage = product.images?.[0];
+    const productId = product._id ;
+    const productWeight =
+        product.weight || 0;
+    const productSize = defaultSize?.size != null ? String(defaultSize.size) : undefined;
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -30,7 +33,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 price: productPrice,
                 image: productImage,
                 category: product.category,
-                size: product.sizesAvailable?.[0]?.size ? String(product.sizesAvailable[0].size) : undefined,
+                size: productSize,
+                weight: productWeight,
                 sustainabilityMetrics: {
                     carbonFootprint: product.sustainabilityMetrics?.carbonFootprint ?? 12.5,
                     plasticUse: product.sustainabilityMetrics?.plasticUse ?? 0,

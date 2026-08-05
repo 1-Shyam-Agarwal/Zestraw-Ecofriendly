@@ -32,6 +32,7 @@ export interface Product {
     "last line"?: string[];
   };
   faqs?: Array<{ question: string; answer: string }>;
+  weight?: number;
   stock?: number;
 }
 

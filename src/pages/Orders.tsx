@@ -8,6 +8,7 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProductImageSrc } from "@/lib/images";
 import { getDeliveryDate } from "@/lib/utils";
+import { PageLoader } from "@/components/PageLoader";
 
 const Orders = () => {
     const { token, user } = useAuth();
@@ -94,9 +95,7 @@ const Orders = () => {
                         </div>
 
                         {loading ? (
-                            <div className="flex items-center justify-center py-20">
-                                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
-                            </div>
+                            <PageLoader message="Loading your orders..." />
                         ) : orders.length > 0 ? (
                             <div className="space-y-4">
                                 {orders.map((order: any) => (

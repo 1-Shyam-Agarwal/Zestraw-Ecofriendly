@@ -7,6 +7,7 @@ import { Product } from "@/data/products";
 import riceField from "@/assets/rice-field.jpg";
 import ProductCard from "@/components/ProductCard";
 import { getAllProducts } from "@/services/operations/productAPI";
+import { PageLoader } from "@/components/PageLoader";
 
 const productTypes = ["All", "Plates", "Bowls", "Section Plates", "Cups", "Cutlery", "ComboPack"];
 const sortOptions = ["Price: Low to High", "Price: High to Low"];
@@ -14,6 +15,7 @@ const sortOptions = ["Price: Low to High", "Price: High to Low"];
 export default function ShopPage() {
   const location = useLocation();
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState("All");
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [sortBy, setSortBy] = useState("Price: Low to High");
@@ -21,10 +23,12 @@ export default function ShopPage() {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       const data = await getAllProducts();
       if (data) {
         setProducts(data);
       }
+      setLoading(false);
     };
     fetchProducts();
 
@@ -44,7 +48,7 @@ export default function ShopPage() {
     let result = products.filter((p) => {
       const category = p.category || p.type || "";
       if (selectedType !== "All" && category.toLowerCase() !== selectedType.toLowerCase()) return false;
-      const price = p.productPrice || p.price || 0;
+      const price = p.sizesAvailable?.[0]?.price ?? p.productPrice ?? p.price ?? 0;
       if (price < priceRange[0] || price > priceRange[1]) return false;
       return true;
     });
@@ -59,8 +63,8 @@ export default function ShopPage() {
       if (!isACutlery && isBCutlery) return -1;
 
       // If both are same (both cutlery or both NOT cutlery), sort by price
-      const priceA = a.productPrice || a.price || 0;
-      const priceB = b.productPrice || b.price || 0;
+      const priceA = a.sizesAvailable?.[0]?.price ?? a.productPrice ?? a.price ?? 0;
+      const priceB = b.sizesAvailable?.[0]?.price ?? b.productPrice ?? b.price ?? 0;
 
       if (sortBy === "Price: Low to High") {
         return priceA - priceB;
@@ -168,7 +172,9 @@ export default function ShopPage() {
 
             {/* Product Grid */}
             <div className="flex-1 p-2">
-              {filteredAndSorted.length > 0 ? (
+              {loading ? (
+                <PageLoader message="Loading products..." />
+              ) : filteredAndSorted.length > 0 ? (
                 <div className={`grid ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"} gap-6`}>
                   {filteredAndSorted.map((product) => (
                     <ProductCard key={product._id} product={product} />

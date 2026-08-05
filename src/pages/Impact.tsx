@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Leaf, Droplets, BarChart3, ChevronDown, Award, Shield, Zap, Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getImpactStats, type ImpactStats } from "@/services/operations/impactAPI";
+import { PageLoader } from "@/components/PageLoader";
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
 const stagger = { visible: { transition: { staggerChildren: 0.15 } } };
@@ -12,6 +13,7 @@ export default function ImpactPage() {
   const [guestsPerEvent, setGuestsPerEvent] = useState(100);
   const [eventsPerYear, setEventsPerYear] = useState(12);
   const [impactStats, setImpactStats] = useState<ImpactStats | null>(null);
+  const [loading, setLoading] = useState(true);
   const [impactError, setImpactError] = useState(false);
 
   const co2Saved = Math.round(guestsPerEvent * eventsPerYear * 2);
@@ -22,6 +24,7 @@ export default function ImpactPage() {
 
     const loadImpactStats = async () => {
       try {
+        setLoading(true);
         const stats = await getImpactStats();
         if (isMounted) {
           setImpactStats(stats);
@@ -30,6 +33,8 @@ export default function ImpactPage() {
       } catch (error) {
         console.error("GET_IMPACT_STATS_API ERROR...", error);
         if (isMounted) setImpactError(true);
+      } finally {
+        if (isMounted) setLoading(false);
       }
     };
 
@@ -45,7 +50,7 @@ export default function ImpactPage() {
       icon: <Leaf className="w-6 h-6 text-eco" />,
       value: impactStats
         ? `${impactStats.totalCo2EmissionsSaved.toLocaleString()} kg`
-        : impactError ? "Unavailable" : "Loading…",
+        : impactError ? "Unavailable" : "—",
       label: "CO₂ EMISSIONS SAVED",
       sub: impactStats
         ? `Equivalent to ${Math.floor(impactStats.totalCo2EmissionsSaved / 20).toLocaleString()} trees planted`
@@ -55,7 +60,7 @@ export default function ImpactPage() {
       icon: <BarChart3 className="w-6 h-6 text-primary" />,
       value: impactStats
         ? `${impactStats.totalParaliUsed.toLocaleString()} kg`
-        : impactError ? "Unavailable" : "Loading…",
+        : impactError ? "Unavailable" : "—",
       label: "PARALI REPURPOSED",
       sub: "Rice straw diverted from burning",
     },
@@ -63,7 +68,7 @@ export default function ImpactPage() {
       icon: <Droplets className="w-6 h-6 text-eco" />,
       value: impactStats
         ? `${impactStats.plasticPlatesReplaced.toLocaleString()} million`
-        : impactError ? "Unavailable" : "Loading…",
+        : impactError ? "Unavailable" : "—",
       label: "PLASTIC PLATES REPLACED",
       sub: "Items diverted from landfills",
     },
@@ -91,6 +96,9 @@ export default function ImpactPage() {
       {/* Key Stats */}
       <section className="py-16">
         <div className="container mx-auto px-6">
+          {loading ? (
+            <PageLoader message="Loading impact metrics..." />
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto text-center">
             {keyStats.map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-3 p-6">
@@ -101,6 +109,7 @@ export default function ImpactPage() {
               </div>
             ))}
           </div>
+          )}
         </div>
       </section>
 

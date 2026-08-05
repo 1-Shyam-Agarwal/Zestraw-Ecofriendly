@@ -22,7 +22,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           loading: "group-[.toaster]:bg-white group-[.toaster]:text-black group-[.toaster]:border-border shadow-md",
         },
       }}
-      position="top-right"
+      position="bottom-right"
       expand={true}
       richColors
       closeButton

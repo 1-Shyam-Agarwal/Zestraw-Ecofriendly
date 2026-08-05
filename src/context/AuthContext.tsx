@@ -4,6 +4,7 @@ interface User {
     _id: string;
     fullName: string;
     email: string;
+    phoneNumber?: string;
     accountType: string;
     shippingAddress?: {
         address: string;

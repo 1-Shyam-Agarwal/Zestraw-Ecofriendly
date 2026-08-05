@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getProductDetails, getAllProducts } from "@/services/operations/productAPI";
 import { useAuth } from "@/context/AuthContext";
 import { getDeliveryDate } from "@/lib/utils";
+import { PageLoader } from "@/components/PageLoader";
 
 export default function ProductDetailPage() {
     const { id } = useParams();
@@ -110,10 +111,7 @@ export default function ProductDetailPage() {
     if (loading) {
         return (
             <Layout>
-                <div className="container mx-auto px-4 py-20 text-center">
-                    <div className="animate-spin w-10 h-10 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
-                    <p className="text-muted-foreground uppercase tracking-widest text-xs">Loading ZESTRAW Experience...</p>
-                </div>
+                <PageLoader message="Loading product details..." className="py-20" />
             </Layout>
         );
     }
@@ -147,6 +145,7 @@ export default function ProductDetailPage() {
             image: productImages[0],
             category: product.category,
             size: selectedSet,
+            weight: product.weight ?? product.sustainabilityMetrics?.paraliUsed,
             sustainabilityMetrics: product.sustainabilityMetrics
         }, quantity);
 

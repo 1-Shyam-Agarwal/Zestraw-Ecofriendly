@@ -33,7 +33,7 @@ const App = () => {
       <AuthProvider>
         <TooltipProvider>
           <CartProvider>
-            <Sonner position="top-right" closeButton richColors />
+            <Sonner position="bottom-right" closeButton richColors />
             <BrowserRouter>
               <ScrollToTop />
               <Chatbot />
