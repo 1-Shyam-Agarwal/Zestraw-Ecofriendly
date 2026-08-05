@@ -162,6 +162,38 @@
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "logIn": "Se connecter"
   },
+  "shop": {
+    "title": "Notre catalogue responsable",
+    "productType": "Type de produit",
+    "priceRange": "Fourchette de prix",
+    "compostablePromise": "Promesse compostable",
+    "compostableDesc": "Chaque article de notre boutique est garanti 100% biodégradable et sans produits chimiques.",
+    "filters": "Filtres",
+    "filterDesc": "Filtrez les produits par type et par prix.",
+    "sortBy": "Trier par :",
+    "sortLowHigh": "Prix : croissant",
+    "sortHighLow": "Prix : décroissant",
+    "clear": "Effacer",
+    "showResults": "Afficher {{value}} résultats",
+    "loadingProducts": "Chargement des produits...",
+    "noMatches": "Aucune correspondance écologique trouvée",
+    "noMatchesDesc": "Nous n'avons trouvé aucun produit correspondant à vos filtres actuels. Essayez d'ajuster la fourchette de prix ou la catégorie.",
+    "clearAll": "Effacer tous les filtres",
+    "impactTracker": "SUIVI D'IMPACT",
+    "impactTitle": "Que chaque repas compte",
+    "impactDesc": "Passer du plastique à Zestraw permet d'économiser en moyenne 1,2 kg de CO2 par événement. Suivez votre impact cumulé dans votre tableau de bord après chaque achat.",
+    "impactCta": "Voir nos indicateurs d'impact",
+    "kgsUpcycled": "KG DE PAILLE DE RIZ RECYCLÉE",
+    "types": {
+      "All": "Tous",
+      "Plates": "Assiettes",
+      "Bowls": "Bols",
+      "Section Plates": "Assiettes à compartiments",
+      "Cups": "Gobelets",
+      "Cutlery": "Couverts",
+      "ComboPack": "Pack combo"
+    }
+  },
   "marketplace": {
     "verified": "Vérifié",
     "moq": "Commande minimale",

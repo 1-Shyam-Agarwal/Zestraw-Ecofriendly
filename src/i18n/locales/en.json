@@ -162,6 +162,38 @@
     "alreadyHaveAccount": "Already have an account?",
     "logIn": "Log in"
   },
+  "shop": {
+    "title": "Our Conscious Catalog",
+    "productType": "Product Type",
+    "priceRange": "Price Range",
+    "compostablePromise": "Compostable Promise",
+    "compostableDesc": "Every item in our shop is guaranteed 100% biodegradable and chemical-free.",
+    "filters": "Filters",
+    "filterDesc": "Narrow products by type and price.",
+    "sortBy": "Sort by:",
+    "sortLowHigh": "Price: Low to High",
+    "sortHighLow": "Price: High to Low",
+    "clear": "Clear",
+    "showResults": "Show {{value}} results",
+    "loadingProducts": "Loading products...",
+    "noMatches": "No eco-friendly matches found",
+    "noMatchesDesc": "We couldn't find products matching your current filters. Try adjusting the price range or category.",
+    "clearAll": "Clear all filters",
+    "impactTracker": "IMPACT TRACKER",
+    "impactTitle": "Making Every Meal Count",
+    "impactDesc": "Switching from plastic to Zestraw saves an average of 1.2kg of CO2 per event. Track your cumulative impact in your dashboard after every purchase.",
+    "impactCta": "See Our Impact Metrics",
+    "kgsUpcycled": "KGS OF RICE STRAW UPCYCLED",
+    "types": {
+      "All": "All",
+      "Plates": "Plates",
+      "Bowls": "Bowls",
+      "Section Plates": "Section Plates",
+      "Cups": "Cups",
+      "Cutlery": "Cutlery",
+      "ComboPack": "Combo Pack"
+    }
+  },
   "marketplace": {
     "verified": "Verified",
     "moq": "MOQ",

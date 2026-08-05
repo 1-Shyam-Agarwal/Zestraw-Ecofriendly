@@ -162,6 +162,38 @@
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "logIn": "Inicia sesión"
   },
+  "shop": {
+    "title": "Nuestro catálogo consciente",
+    "productType": "Tipo de producto",
+    "priceRange": "Rango de precios",
+    "compostablePromise": "Promesa compostable",
+    "compostableDesc": "Cada artículo de nuestra tienda tiene garantía de ser 100% biodegradable y libre de químicos.",
+    "filters": "Filtros",
+    "filterDesc": "Filtra los productos por tipo y precio.",
+    "sortBy": "Ordenar por:",
+    "sortLowHigh": "Precio: Menor a mayor",
+    "sortHighLow": "Precio: Mayor a menor",
+    "clear": "Limpiar",
+    "showResults": "Mostrar {{value}} resultados",
+    "loadingProducts": "Cargando productos...",
+    "noMatches": "No se encontraron coincidencias ecológicas",
+    "noMatchesDesc": "No encontramos productos que coincidan con tus filtros actuales. Prueba a ajustar el rango de precios o la categoría.",
+    "clearAll": "Limpiar todos los filtros",
+    "impactTracker": "SEGUIMIENTO DE IMPACTO",
+    "impactTitle": "Que cada comida cuente",
+    "impactDesc": "Cambiar del plástico a Zestraw ahorra un promedio de 1,2 kg de CO2 por evento. Sigue tu impacto acumulado en tu panel después de cada compra.",
+    "impactCta": "Ver nuestras métricas de impacto",
+    "kgsUpcycled": "KG DE PAJA DE ARROZ RECICLADA",
+    "types": {
+      "All": "Todos",
+      "Plates": "Platos",
+      "Bowls": "Cuencos",
+      "Section Plates": "Platos con secciones",
+      "Cups": "Vasos",
+      "Cutlery": "Cubiertos",
+      "ComboPack": "Paquete combo"
+    }
+  },
   "marketplace": {
     "verified": "Verificado",
     "moq": "Pedido mínimo",
