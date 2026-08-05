@@ -13,8 +13,10 @@ import { getProductDetails, getAllProducts } from "@/services/operations/product
 import { useAuth } from "@/context/AuthContext";
 import { getDeliveryDate } from "@/lib/utils";
 import { PageLoader } from "@/components/PageLoader";
+import { useTranslation } from "react-i18next";
 
 export default function ProductDetailPage() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const { user, token } = useAuth();
     const [product, setProduct] = useState<Product | null>(null);
@@ -111,7 +113,7 @@ export default function ProductDetailPage() {
     if (loading) {
         return (
             <Layout>
-                <PageLoader message="Loading product details..." className="py-20" />
+                <PageLoader message={t("productDetails.loading")} className="py-20" />
             </Layout>
         );
     }
@@ -120,15 +122,15 @@ export default function ProductDetailPage() {
         return (
             <Layout>
                 <div className="container mx-auto px-4 py-20 text-center">
-                    <h1 className="text-2xl font-lora font-bold mb-4">Product Not Found</h1>
-                    <Link to="/shop" className="text-primary hover:underline">Return to Conscious Shop</Link>
+                    <h1 className="text-2xl font-lora font-bold mb-4">{t("productDetails.notFound")}</h1>
+                    <Link to="/shop" className="text-primary hover:underline">{t("productDetails.returnShop")}</Link>
                 </div>
             </Layout>
         );
     }
 
     // Map database fields
-    const productName = product.productName || product.name || "Unnamed Product";
+    const productName = product.productName || product.name || t("product.unnamed");
     const productImages = product.images || (product.image ? [product.image] : ["no-photo.jpg"]);
 
     // Get current price based on selected set
@@ -149,8 +151,8 @@ export default function ProductDetailPage() {
             sustainabilityMetrics: product.sustainabilityMetrics
         }, quantity);
 
-        toast.success("Added to Cart", {
-            description: `${quantity}x ${productName} (Pack of ${selectedSet}) added to your basket.`
+        toast.success(t("productDetails.addedTitle"), {
+            description: t("productDetails.addedDesc", { qty: quantity, name: productName, set: selectedSet })
         });
     };
 
@@ -199,7 +201,7 @@ export default function ProductDetailPage() {
                                 ₹{currentPrice.toFixed(2)}
                             </p>
                             {product.sizesAvailable && product.sizesAvailable.length > 1 && (
-                                <span className="text-[10px] bg-orange-100 text-orange-700 px-2 py-1 rounded-full font-bold uppercase tracking-widest ml-2">Best Selection</span>
+                                <span className="text-[10px] bg-orange-100 text-orange-700 px-2 py-1 rounded-full font-bold uppercase tracking-widest ml-2">{t("productDetails.bestSelection")}</span>
                             )}
                         </div>
 
@@ -208,7 +210,7 @@ export default function ProductDetailPage() {
                         </p> */}
 
                         <div className="flex flex-col gap-4 my-8">
-                            <p className="text-sm font-bold uppercase tracking-widest text-neutral-900">Select Set Size</p>
+                            <p className="text-sm font-bold uppercase tracking-widest text-neutral-900">{t("productDetails.selectSetSize")}</p>
                             <div className="flex flex-wrap gap-2">
                                 {product.sizesAvailable ? (
                                     product.sizesAvailable.map((item, index) => (
@@ -217,17 +219,17 @@ export default function ProductDetailPage() {
                                             onClick={() => setSelectedSet(String(item.size))}
                                             className={`border py-3 px-6 transition-all font-medium rounded-lg ${String(item.size) === selectedSet ? 'border-orange-500 bg-white text-orange-600 shadow-sm' : 'border-border bg-neutral-50 text-neutral-600 hover:bg-neutral-100'}`}
                                         >
-                                            PACK OF {item.size}
+                                            {t("product.packOf", { size: item.size })}
                                         </button>
                                     ))
                                 ) : (
-                                    <button className="border border-orange-500 py-3 px-6 rounded-lg bg-white text-orange-600 font-medium">Standard Pack</button>
+                                    <button className="border border-orange-500 py-3 px-6 rounded-lg bg-white text-orange-600 font-medium">{t("productDetails.standardPack")}</button>
                                 )}
                             </div>
                         </div>
 
                         <div className="flex items-center gap-4 my-8">
-                            <p className="text-sm font-bold uppercase tracking-widest text-neutral-900">Quantity:</p>
+                            <p className="text-sm font-bold uppercase tracking-widest text-neutral-900">{t("productDetails.quantity")}</p>
                             <div className="flex items-center border border-neutral-300 rounded overflow-hidden bg-neutral-50">
                                 <button
                                     onClick={() => setQuantity(prev => prev > 1 ? prev - 1 : 1)}
@@ -245,15 +247,15 @@ export default function ProductDetailPage() {
                             onClick={handleAddToCartAction}
                             className="w-full sm:w-auto bg-primary rounded-[5px] text-white px-12 py-4 text-sm font-bold tracking-widest uppercase hover:scale-105 transition-all active:scale-95 shadow-md"
                         >
-                            ADD TO CART
+                            {t("product.addToCart")}
                         </button>
 
 
                         <div className="grid grid-cols-2 gap-3 my-6">
                             {[
-                                { icon: <CheckCircle size={14} className="text-eco-green" />, text: "Free Delivery", sub: "Orders over ₹1000" },
-                                { icon: <Leaf size={14} className="text-eco-green" />, text: "100% Organic", sub: "No toxic chemicals" },
-                                { icon: <Truck size={14} className="text-primary" />, text: `Delivery by ${getDeliveryDate(2)}`, sub: "Estimated Date" },
+                                { icon: <CheckCircle size={14} className="text-eco-green" />, text: t("productDetails.badgeFreeDelivery"), sub: t("productDetails.badgeFreeDeliverySub") },
+                                { icon: <Leaf size={14} className="text-eco-green" />, text: t("productDetails.badgeOrganic"), sub: t("productDetails.badgeOrganicSub") },
+                                { icon: <Truck size={14} className="text-primary" />, text: t("productDetails.badgeDelivery", { date: getDeliveryDate(2) }), sub: t("productDetails.badgeDeliverySub") },
                             ].map((badge, i) => (
                                 <div key={i} className="flex items-center gap-2 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 rounded-xl p-3 transition-colors">
                                     {badge.icon}
@@ -275,18 +277,18 @@ export default function ProductDetailPage() {
                                 onClick={() => setActiveTab(tab)}
                                 className={`px-4 sm:px-8 py-4 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] transition-all relative ${activeTab === tab ? 'text-black border-b-2 border-black' : 'text-neutral-400 hover:text-black'}`}
                             >
-                                {tab === 'technical' ? 'Technical Specs' : 'Description'}
+                                {tab === 'technical' ? t("productDetails.tabTechnical") : t("productDetails.tabDescription")}
                             </button>
                         ))}
                     </div>
                     <div className="flex flex-col gap-6 px-4 sm:px-10 py-12 text-sm text-neutral-600 leading-relaxed bg-[#fdfaf5] rounded-b-xl border-x border-b border-neutral-100 min-h-[200px] font-lora">
                         {activeTab === 'description' && (
                             <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-4">
-                                <p className="text-lg font-lora text-neutral-800 font-bold">{product.details?.description?.heading || "Sustainable Dining Redefined"}</p>
+                                <p className="text-lg font-lora text-neutral-800 font-bold">{product.details?.description?.heading || t("productDetails.descHeading")}</p>
                                 <p>{product.details?.description?.primaryContent}</p>
                                 <p>{product.details?.description?.secondaryContent}</p>
                                 <ul className="list-disc pl-5 mt-4 space-y-2">
-                                    {(product.details?.keyFeatures || ["100% Biodegradable", "Microwave & Freezer Safe", "Chemical Free Heat-Press"]).map((item, index) => (
+                                    {(product.details?.keyFeatures || [t("productDetails.feat1"), t("productDetails.feat2"), t("productDetails.feat3")]).map((item, index) => (
                                         <li key={index}>{item}</li>
                                     ))}
                                 </ul>
@@ -300,7 +302,7 @@ export default function ProductDetailPage() {
                                     </div>
                                 ) : (
                                     <p className="mt-4 font-bold text-neutral-900 border-l-4 border-orange-500 pl-4 italic">
-                                        Made with pride from transformed farm residue.
+                                        {t("productDetails.lastLineFallback")}
                                     </p>
                                 )}
 
@@ -308,11 +310,11 @@ export default function ProductDetailPage() {
                         )}
                         {activeTab === 'technical' && (
                             <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-4">
-                                <h4 className="font-bold text-lg font-lora text-neutral-900 mb-4">Product Specifications</h4>
+                                <h4 className="font-bold text-lg font-lora text-neutral-900 mb-4">{t("productDetails.specsTitle")}</h4>
                                 <ul className="list-disc pl-5 space-y-2">
                                     {product.details?.technicalSpecifications?.map((spec, i) => (
                                         <li key={i} className="text-neutral-700">{spec}</li>
-                                    )) || <p>Technical specifications coming soon for this product.</p>}
+                                    )) || <p>{t("productDetails.specsComingSoon")}</p>}
                                 </ul>
                             </div>
                         )}
@@ -324,8 +326,8 @@ export default function ProductDetailPage() {
                 <div className="mt-20 bg-white rounded-3xl border border-neutral-100 shadow-sm p-8 sm:p-12">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
                         <div>
-                            <h3 className="text-2xl font-bold font-lora text-foreground">Community Reviews</h3>
-                            <p className="text-sm text-muted-foreground mt-1 font-lora">Honest feedback from our conscious family</p>
+                            <h3 className="text-2xl font-bold font-lora text-foreground">{t("productDetails.communityReviews")}</h3>
+                            <p className="text-sm text-muted-foreground mt-1 font-lora">{t("productDetails.reviewsSubtitle")}</p>
                         </div>
                         <div className="flex items-center gap-3 bg-neutral-50 px-4 py-2 rounded-full border border-neutral-100">
                             <span className="text-lg font-black text-orange-600 font-lora">{avgRating.toFixed(1)}</span>
@@ -335,7 +337,7 @@ export default function ProductDetailPage() {
                                 ))}
                             </div>
                             <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest ml-1 border-l border-neutral-200 pl-3">
-                                {currentReviews.length} Reviews
+                                {t("productDetails.reviewsCount", { value: currentReviews.length })}
                             </span>
                         </div>
                     </div>
@@ -344,7 +346,7 @@ export default function ProductDetailPage() {
                         {/* Summary / Stats Bar */}
                         <div className="space-y-6">
                             <div className="bg-[#fef9f3] p-6 rounded-2xl border border-orange-100/50">
-                                <h4 className="text-sm font-bold uppercase tracking-widest mb-4">Rating Breakdown</h4>
+                                <h4 className="text-sm font-bold uppercase tracking-widest mb-4">{t("productDetails.ratingBreakdown")}</h4>
                                 <div className="space-y-3">
                                     {[5, 4, 3, 2, 1].map((rating) => {
                                         const count = currentReviews.filter(r => r.rating === rating).length;
@@ -368,7 +370,7 @@ export default function ProductDetailPage() {
                                 </div>
                                 <div className="mt-8 pt-6 border-t border-orange-100/50">
                                     <p className="text-xs text-neutral-500 leading-relaxed italic">
-                                        Each review contributes to our understanding of how Zestraw impacts your daily life and our shared environment.
+                                        {t("productDetails.reviewNote")}
                                     </p>
                                 </div>
                             </div>
@@ -389,7 +391,7 @@ export default function ProductDetailPage() {
                                         <div>
                                             <div className="flex items-center gap-2 mb-1">
                                                 <p className="font-bold text-sm text-neutral-900">{review.userName}</p>
-                                                <span className="px-1.5 py-0.5 bg-eco-green-light text-eco-green text-[8px] font-bold rounded uppercase tracking-tighter">Verified Buyer</span>
+                                                <span className="px-1.5 py-0.5 bg-eco-green-light text-eco-green text-[8px] font-bold rounded uppercase tracking-tighter">{t("productDetails.verifiedBuyer")}</span>
                                             </div>
                                             <div className="flex text-orange-400 gap-0.5">
                                                 {[1, 2, 3, 4, 5].map((s) => (
@@ -411,7 +413,7 @@ export default function ProductDetailPage() {
                 {/* ---------Display Related Products ------------- */}
                 <div className="mt-12">
                     <div className="text-center mb-12">
-                        <h2 className="text-2xl lg:text-3xl font-lora font-normal mb-2 md:mb-4">Complete the Eco-Experience</h2>
+                        <h2 className="text-2xl lg:text-3xl font-lora font-normal mb-2 md:mb-4">{t("productDetails.relatedTitle")}</h2>
                         <div className="w-20 h-1 bg-orange-500 mx-auto rounded-full" />
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-8">
