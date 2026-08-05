@@ -7,24 +7,16 @@ import storyHero from "@/assets/parali.webp";
 import paraliImage from "@/assets/parali-crisis.jpg";
 import heroTableware from "@/assets/hero-tableware.jpg";
 import bgImage from "@/assets/bg.webp";
+import { useTranslation } from "react-i18next";
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
 const stagger = { visible: { transition: { staggerChildren: 0.15 } } };
 
-const faqs = [
-  { q: "Is there any chemical binder used in ZESTRAW?", a: "ZeStraw does not use synthetic or toxic chemical binders. Made using natural rice straw fibers and food-grade ingredients." },
-  { q: "Are the products leak-proof?", a: "Yes. ZeStraw tableware is designed to handle oily, dry, and  wet foods without becoming soggy during normal use." },
-];
-
-const processSteps = [
-  { icon: "🌾", step: "STEP 01", title: "Collection", desc: "We source raw rice straw directly from farmers, preventing burning." },
-  { icon: "⚙️", step: "STEP 02", title: "Processing", desc: "Straw is cleaned, crushed using mechanical energy." },
-  { icon: "📊", step: "STEP 03", title: "Molding", desc: "High-pressure thermo-molding creates durable, water-resistant products." },
-  { icon: "✓", step: "STEP 04", title: "Quality Control", desc: "Each piece is sterilized and checked for structural integrity." },
-  { icon: "🌱", step: "STEP 05", title: "Composting", desc: "After use, it returns to the earth as nutrient-rich compost in 90 days." },
-];
+const faqs = [0, 1];
+const processSteps = ["🌾", "⚙️", "📊", "✓", "🌱"];
 
 export default function OurStoryPage() {
+  const { t } = useTranslation();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
@@ -58,9 +50,9 @@ export default function OurStoryPage() {
                 variants={fadeUp}
                 className="text-5xl md:text-7xl font-extrabold font-lora leading-tight tracking-tight"
               >
-                From Smog To{" "}
+                {t("story.heroTitlePrefix")}{" "}
                 <span className="text-primary italic mt-3 block">
-                  Sustainability.
+                  {t("story.heroTitleHighlight")}
                 </span>
               </motion.h1>
 
@@ -68,19 +60,18 @@ export default function OurStoryPage() {
                 variants={fadeUp}
                 className="mt-6 text-lg md:text-xl text-gray-200 leading-relaxed"
               >
-                Transforming agricultural waste into eco-friendly solutions that
-                reduce pollution and build a cleaner tomorrow.
+                {t("story.heroSubtitle")}
               </motion.p>
 
               <motion.div variants={fadeUp} className="mt-8">
                 <Link
                   to="/impact"
-                  className="inline-flex items-center gap-2 px-8 py-3 rounded-full 
-            bg-primary text-primary-foreground font-semibold 
-            shadow-lg hover:scale-105 hover:shadow-xl 
+                  className="inline-flex items-center gap-2 px-8 py-3 rounded-full
+            bg-primary text-primary-foreground font-semibold
+            shadow-lg hover:scale-105 hover:shadow-xl
             transition-all duration-300"
                 >
-                  Our Mission →
+                  {t("story.ourMission")} →
                 </Link>
               </motion.div>
             </motion.div>
@@ -94,13 +85,13 @@ export default function OurStoryPage() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="text-xs font-semibold text-primary uppercase tracking-wider">The Problem</span>
-              <h2 className="text-3xl font-bold mt-2 mb-4">The 'Parali' Crisis</h2>
+              <span className="text-xs font-semibold text-primary uppercase tracking-wider">{t("story.problemLabel")}</span>
+              <h2 className="text-3xl font-bold mt-2 mb-4">{t("story.crisisTitle")}</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Every year, millions of tonnes of rice straw are burnt in the fields, choking India's air with toxic gases and particulate matter. In fact, parali (rice straw) burning contributes to a staggering 40% of Delhi's air pollution during peak seasons! This air pollution is CHOKING INDIA, costing the country a whopping 9% of its GDP every year. And if that's not enough, India's plastic waste problem is just as alarming – we're talking 9.3 MILLION TONNES annually!
+                {t("story.crisisText")}
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                We believe there is a better way to treat the earth than this.
+                {t("story.crisisText2")}
               </p>
             </div>
             <div>
@@ -116,12 +107,11 @@ export default function OurStoryPage() {
 
           {/* Heading */}
           <h2 className="text-4xl md:text-5xl font-serif font-normal mb-4">
-            The ZESTRAW Innovation Loop
+            {t("story.innovationTitle")}
           </h2>
 
           <p className="text-gray-600 mb-16 max-w-2xl mx-auto">
-            How we transform agricultural residue into premium, food-safe tableware
-            without a single chemical additive.
+            {t("story.innovationSubtitle")}
           </p>
 
           {/* Desktop Layout */}
@@ -129,7 +119,7 @@ export default function OurStoryPage() {
 
             {processSteps.map((step, index) => (
               <div
-                key={step.title}
+                key={index}
                 className="flex flex-col items-center text-center max-w-[180px] relative"
               >
 
@@ -141,12 +131,12 @@ export default function OurStoryPage() {
 
                 {/* Title */}
                 <h3 className="font-semibold text-base mb-2">
-                  {step.title}
+                  {t(`story.step${index + 1}Title`)}
                 </h3>
 
                 {/* Description */}
                 <p className="text-sm text-gray-500 leading-relaxed">
-                  {step.desc}
+                  {t(`story.step${index + 1}Desc`)}
                 </p>
 
                 {/* Arrow */}
@@ -165,7 +155,7 @@ export default function OurStoryPage() {
           <div className="md:hidden grid grid-cols-1 gap-10">
             {processSteps.map((step, index) => (
               <div
-                key={step.title}
+                key={index}
                 className="flex flex-col items-center text-center"
               >
 
@@ -174,15 +164,15 @@ export default function OurStoryPage() {
                 </div>
 
                 <span className="text-xs tracking-widest text-gray-500 font-semibold mb-1">
-                  STEP {String(index + 1).padStart(2, "0")}
+                  {t("story.stepLabel")} {String(index + 1).padStart(2, "0")}
                 </span>
 
                 <h3 className="font-semibold text-base mb-2">
-                  {step.title}
+                  {t(`story.step${index + 1}Title`)}
                 </h3>
 
                 <p className="text-sm text-gray-500">
-                  {step.desc}
+                  {t(`story.step${index + 1}Desc`)}
                 </p>
 
               </div>
@@ -198,13 +188,13 @@ export default function OurStoryPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <img src={heroTableware} alt="ZESTRAW products" className="rounded-2xl w-full object-cover" />
             <div>
-              <span className="text-xs font-semibold text-primary uppercase tracking-wider">The Solution</span>
-              <h2 className="text-3xl font-bold mt-2 mb-4">At Zestraw,</h2>
+              <span className="text-xs font-semibold text-primary uppercase tracking-wider">{t("story.solutionLabel")}</span>
+              <h2 className="text-3xl font-bold mt-2 mb-4">{t("story.solutionTitle")}</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We're on a mission to shake up the world with our eco-friendly disposable tableware -  to make sustainability deliciously simple. And we're doing it with a bang! By turning India's abundant rice straw and husk into awesome, eco-friendly products, we're reducing waste, promoting sustainability, and making eco-friendly choices accessible to all.
+                {t("story.solutionText")}
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Unlike paper, we don't cut trees. Unlike plastic, we don't last forever. Our products are designed for the circular economy—born from the soil, returning to the soil.
+                {t("story.solutionText2")}
               </p>
             </div>
           </div>
@@ -219,18 +209,18 @@ export default function OurStoryPage() {
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <Target className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Our Mission</h3>
+              <h3 className="text-xl font-bold mb-3">{t("story.missionTitle")}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                To make sustainability the easiest choice at every table. By transforming agri-waste into everyday tableware, we're fighting plastic pollution and parali burning — without a compromise.
+                {t("story.missionText")}
               </p>
             </div>
             <div className="bg-secondary rounded-2xl p-8 relative overflow-hidden">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <Eye className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Our Vision</h3>
+              <h3 className="text-xl font-bold mb-3">{t("story.visionTitle")}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                A world where disposable doesn't mean damaging. Where every plate, every bowl, every meal is a quiet step toward a cleaner, greener planet.
+                {t("story.visionText")}
               </p>
             </div>
           </div>
@@ -240,8 +230,8 @@ export default function OurStoryPage() {
       {/* FAQs */}
       <section className="py-20 bg-card">
         <div className="container mx-auto px-6 max-w-2xl">
-          <h2 className="text-3xl font-bold text-center mb-3">Frequently Asked Questions</h2>
-          <p className="text-muted-foreground text-center mb-10">Everything you need to know about our material and ethics.</p>
+          <h2 className="text-3xl font-bold text-center mb-3">{t("story.faqTitle")}</h2>
+          <p className="text-muted-foreground text-center mb-10">{t("story.faqSubtitle")}</p>
           <div className="space-y-3">
             {faqs.map((faq, i) => (
               <div key={i} className="border border-border rounded-xl overflow-hidden">
@@ -249,12 +239,12 @@ export default function OurStoryPage() {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between p-5 text-left hover:bg-accent/50 transition-colors"
                 >
-                  <span className="text-sm font-medium">{faq.q}</span>
+                  <span className="text-sm font-medium">{t(`story.faq${i + 1}Q`)}</span>
                   <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
                 </button>
                 {openFaq === i && (
                   <div className="px-5 pb-5">
-                    <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{t(`story.faq${i + 1}A`)}</p>
                   </div>
                 )}
               </div>
@@ -272,7 +262,7 @@ export default function OurStoryPage() {
 
         <div className="relative container mx-auto px-6 text-center text-white">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Ready to join the movement?
+            {t("story.ctaTitle")}
           </h2>
 
 
@@ -280,13 +270,13 @@ export default function OurStoryPage() {
           <div className="flex justify-center gap-4 mt-12">
             <Link to="/shop">
               <button className="bg-white text-black px-6 py-3 rounded-full font-semibold hover:scale-105 transition">
-                Shop Now
+                {t("home.shopNow")}
               </button>
             </Link>
 
             <Link to="/bulk-orders">
               <button className="border border-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-black transition">
-                Bulk Orders
+                {t("nav.bulkOrders")}
               </button>
             </Link>
           </div>
