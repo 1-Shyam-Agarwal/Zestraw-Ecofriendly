@@ -8,8 +8,10 @@ import { motion } from "framer-motion";
 import { updateProfile, changePassword } from "@/services/operations/authAPI";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+    const { t } = useTranslation();
     const { user, token, setAuth } = useAuth();
     const location = useLocation();
     const [loading, setLoading] = useState(false);
@@ -35,9 +37,9 @@ const Profile = () => {
     });
 
     const sidebarLinks = [
-        { icon: <Leaf size={14} />, label: "Impact Tracker", href: "/dashboard" },
-        { icon: <Truck size={14} />, label: "Track Orders", href: "/orders" },
-        { icon: <Shield size={14} />, label: "Profile Settings", href: "/profile" },
+        { icon: <Leaf size={14} />, label: t("profile.impactTracker"), href: "/dashboard" },
+        { icon: <Truck size={14} />, label: t("profile.trackOrders"), href: "/orders" },
+        { icon: <Shield size={14} />, label: t("profile.profileSettings"), href: "/profile" },
     ];
 
     const handleProfileUpdate = async (e: React.FormEvent) => {
@@ -75,7 +77,7 @@ const Profile = () => {
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="text-sm font-bold truncate max-w-[150px]">{user?.fullName || 'User'}</span>
-                                    <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Verified Account</span>
+                                    <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{t("profile.verifiedAccount")}</span>
                                 </div>
                             </div>
                             <nav className="space-y-1">
@@ -95,8 +97,8 @@ const Profile = () => {
                     {/* Main Content */}
                     <div className="max-w-3xl mx-auto w-full space-y-4">
                         <div className="flex items-baseline justify-between mb-2">
-                            <h1 className="font-lora text-2xl font-bold text-foreground">Account Settings</h1>
-                            <p className="text-[10px] text-muted-foreground font-medium italic">Manage your profile & security</p>
+                            <h1 className="font-lora text-2xl font-bold text-foreground">{t("profile.accountSettings")}</h1>
+                            <p className="text-[10px] text-muted-foreground font-medium italic">{t("profile.manageProfile")}</p>
                         </div>
 
                         <div className="space-y-4">
@@ -106,12 +108,12 @@ const Profile = () => {
                                     <div className="w-8 h-8 bg-primary/5 rounded-lg flex items-center justify-center">
                                         <User className="text-primary" size={16} />
                                     </div>
-                                    <h2 className="font-lora text-lg font-bold leading-tight">Personal Details</h2>
+                                    <h2 className="font-lora text-lg font-bold leading-tight">{t("profile.personalDetails")}</h2>
                                 </div>
 
                                 <form onSubmit={handleProfileUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Full Name</label>
+                                        <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.fullName")}</label>
                                         <Input
                                             value={profileData.fullName}
                                             onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })}
@@ -119,9 +121,9 @@ const Profile = () => {
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Email Address</label>
+                                        <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.emailAddress")}</label>
                                         <div className="relative">
-                                            <Input disabled value={profileData.email || "Not Provided"} className="bg-neutral-50 border-neutral-200/60 rounded-xl h-10 cursor-not-allowed opacity-70 font-medium text-sm" />
+                                            <Input disabled value={profileData.email || t("profile.notProvided")} className="bg-neutral-50 border-neutral-200/60 rounded-xl h-10 cursor-not-allowed opacity-70 font-medium text-sm" />
                                             {profileData.email && (
                                                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
                                                     <CheckCircle2 size={12} className="text-primary/40" />
@@ -130,7 +132,7 @@ const Profile = () => {
                                         </div>
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Phone Number</label>
+                                        <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.phoneNumber")}</label>
                                         <div className="relative">
                                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-bold opacity-50">+91</span>
                                             <Input
@@ -145,7 +147,7 @@ const Profile = () => {
                                     </div>
                                     <div className="md:col-span-2 pt-1">
                                         <Button type="submit" disabled={loading} className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-primary/5">
-                                            {loading ? "Saving..." : "Save Personal Info"}
+                                            {loading ? t("profile.saving") : t("profile.savePersonalInfo")}
                                         </Button>
                                     </div>
                                 </form>
@@ -157,13 +159,13 @@ const Profile = () => {
                                     <div className="w-8 h-8 bg-primary/5 rounded-lg flex items-center justify-center">
                                         <MapPin className="text-primary" size={16} />
                                     </div>
-                                    <h3 className="font-lora text-lg font-bold">Shipping Address</h3>
+                                    <h3 className="font-lora text-lg font-bold">{t("profile.shippingAddress")}</h3>
                                 </div>
 
                                 <form onSubmit={handleProfileUpdate} className="space-y-4">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                                         <div className="md:col-span-2 space-y-1">
-                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Street Address</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.streetAddress")}</label>
                                             <Input
                                                 value={profileData.shippingAddress.address}
                                                 onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, address: e.target.value } })}
@@ -171,7 +173,7 @@ const Profile = () => {
                                             />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">City</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.city")}</label>
                                             <Input
                                                 value={profileData.shippingAddress.city}
                                                 onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, city: e.target.value } })}
@@ -180,7 +182,7 @@ const Profile = () => {
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-1">
-                                                <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">State</label>
+                                                <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.state")}</label>
                                                 <Input
                                                     value={profileData.shippingAddress.state}
                                                     onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, state: e.target.value } })}
@@ -188,7 +190,7 @@ const Profile = () => {
                                                 />
                                             </div>
                                             <div className="space-y-1">
-                                                <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Zip Code</label>
+                                                <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.zipCode")}</label>
                                                 <Input
                                                     value={profileData.shippingAddress.zip}
                                                     onChange={(e) => setProfileData({ ...profileData, shippingAddress: { ...profileData.shippingAddress, zip: e.target.value } })}
@@ -198,7 +200,7 @@ const Profile = () => {
                                         </div>
                                     </div>
                                     <Button type="submit" disabled={loading} className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-primary/5">
-                                        {loading ? "Updating..." : "Update Shipping Address"}
+                                        {loading ? t("profile.updating") : t("profile.updateShipping")}
                                     </Button>
                                 </form>
                             </section>
@@ -209,13 +211,13 @@ const Profile = () => {
                                     <div className="w-8 h-8 bg-primary/5 rounded-xl flex items-center justify-center">
                                         <Key className="text-primary" size={16} />
                                     </div>
-                                    <h2 className="font-lora text-lg font-bold leading-tight">Security</h2>
+                                    <h2 className="font-lora text-lg font-bold leading-tight">{t("profile.security")}</h2>
                                 </div>
 
                                 <form onSubmit={handlePasswordUpdate} className="space-y-4">
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Current Password</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.currentPassword")}</label>
                                             <Input
                                                 type="password"
                                                 value={passwords.currentPassword}
@@ -224,7 +226,7 @@ const Profile = () => {
                                             />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">New Password</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.newPassword")}</label>
                                             <Input
                                                 type="password"
                                                 value={passwords.newPassword}
@@ -233,7 +235,7 @@ const Profile = () => {
                                             />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">Confirm New</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/80 px-1">{t("profile.confirmNew")}</label>
                                             <Input
                                                 type="password"
                                                 value={passwords.confirmPassword}
@@ -243,7 +245,7 @@ const Profile = () => {
                                         </div>
                                     </div>
                                     <Button type="submit" disabled={loading} variant="outline" className="w-full h-10 rounded-xl text-[10px] font-bold uppercase tracking-widest border-primary/20 text-primary hover:bg-primary/5 transition-all">
-                                        {loading ? "Processing..." : "Update Password"}
+                                        {loading ? t("profile.processing") : t("profile.updatePassword")}
                                     </Button>
                                 </form>
                             </section>
