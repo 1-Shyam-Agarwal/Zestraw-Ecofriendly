@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, User as UserIcon } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/AuthContext";
 import { login } from "@/services/operations/authAPI";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,6 +11,7 @@ import { validateEmail } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -21,15 +23,15 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      toast.error("Required Fields", {
-        description: "Please enter both email and password to log in.",
+      toast.error(t("login.requiredTitle"), {
+        description: t("login.requiredDesc"),
       });
       return;
     }
 
     if (!validateEmail(email) && !/^[0-9]{10}$/.test(email)) {
-      toast.error("Invalid Input", {
-        description: "Please enter a valid email address or 10-digit phone number.",
+      toast.error(t("login.invalidTitle"), {
+        description: t("login.invalidDesc"),
       });
       return;
     }
@@ -48,7 +50,7 @@ export default function LoginPage() {
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
         <Link to="/" className="text-sm text-muted-foreground mb-6 hover:text-foreground flex items-center gap-1 self-start md:self-center">
-          ← Back to home
+          ← {t("common.backToHome")}
         </Link>
 
         <motion.h1
@@ -56,10 +58,10 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-3xl font-bold mb-2 font-lora"
         >
-          Welcome Back
+          {t("login.welcomeBack")}
         </motion.h1>
         <p className="text-muted-foreground text-sm mb-8 text-center">
-          Enter your credentials to access your sustainable tableware dashboard.
+          {t("login.subtitle")}
         </p>
 
         {/* Login Card */}
@@ -72,7 +74,7 @@ export default function LoginPage() {
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 block">
-                EMAIL OR PHONE NUMBER <span className="text-destructive">*</span>
+                {t("login.emailOrPhone")} <span className="text-destructive">*</span>
               </label>
               <div className="relative">
                 <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -80,7 +82,7 @@ export default function LoginPage() {
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email or 10-digit Mobile"
+                  placeholder={t("login.emailOrPhonePlaceholder")}
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
@@ -88,8 +90,8 @@ export default function LoginPage() {
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">PASSWORD <span className="text-destructive">*</span></label>
-                <Link to="/forgot-password" className="text-xs font-semibold text-primary hover:underline">Forgot password?</Link>
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("login.password")} <span className="text-destructive">*</span></label>
+                <Link to="/forgot-password" className="text-xs font-semibold text-primary hover:underline">{t("login.forgotPassword")}</Link>
               </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -113,7 +115,7 @@ export default function LoginPage() {
                 onCheckedChange={(checked) => setRemember(checked === true)}
               />
               <label htmlFor="remember" className="text-sm text-muted-foreground cursor-pointer select-none">
-                Remember this device
+                {t("login.rememberDevice")}
               </label>
             </div>
 
@@ -125,7 +127,7 @@ export default function LoginPage() {
               {loading ? (
                 <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
               ) : (
-                <>Login to Account <ArrowRight className="w-4 h-4" /></>
+                <>{t("login.loginButton")} <ArrowRight className="w-4 h-4" /></>
               )}
             </button>
 
@@ -149,16 +151,16 @@ export default function LoginPage() {
           </form>
 
           <p className="text-sm text-center text-muted-foreground mt-6">
-            New to the movement?{" "}
-            <Link to="/signup" className="text-primary font-semibold hover:underline">Create an account</Link>
+            {t("login.newToMovement")}{" "}
+            <Link to="/signup" className="text-primary font-semibold hover:underline">{t("login.createAccount")}</Link>
           </p>
         </motion.div>
 
         {/* Bottom links */}
         <div className="flex items-center gap-6 mt-8 text-xs text-muted-foreground uppercase tracking-wider">
-          <Link to="/legal" className="hover:text-foreground transition-colors">Privacy</Link>
-          <Link to="/legal" className="hover:text-foreground transition-colors">Terms</Link>
-          <Link to="/legal" className="hover:text-foreground transition-colors">Help</Link>
+          <Link to="/legal" className="hover:text-foreground transition-colors">{t("common.privacy")}</Link>
+          <Link to="/legal" className="hover:text-foreground transition-colors">{t("common.terms")}</Link>
+          <Link to="/legal" className="hover:text-foreground transition-colors">{t("common.help")}</Link>
         </div>
       </div>
     </div>
