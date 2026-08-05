@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "shop": "Shop",
+    "ourStory": "Our Story",
+    "impact": "Impact",
+    "bulkOrders": "Bulk Orders",
+    "marketplace": "Marketplace",
+    "tracker": "Tracker",
+    "ordersShort": "Orders",
+    "contactUs": "Contact Us",
+    "dashboard": "Dashboard",
+    "myOrders": "My Orders",
+    "settings": "Settings",
+    "logout": "Log out",
+    "signIn": "Sign in",
+    "discover": "Discover",
+    "memberArea": "Member Area",
+    "signInToAccount": "Sign in to Account",
+    "logoutTitle": "Leaving already?",
+    "logoutMessage": "We'll be here whenever you're ready to continue your sustainable journey. See you soon!",
+    "signOut": "Sign out",
+    "staySignedIn": "Stay signed in",
+    "language": "Language"
+  },
+  "footer": {
+    "subscribeHeading": "Subscribe to our emails",
+    "emailPlaceholder": "Email",
+    "invalidEmail": "Please enter a valid email address",
+    "subscribed": "Subscribed!",
+    "subscribedDesc": "Welcome to the ZESTRAW community.",
+    "brandDesc": "The OG Choice for Non-Toxic Kitchen Essentials. Crafted sustainably for a cleaner kitchen and a greener planet.",
+    "address": "BPTP Discovery Park, Faridabad, Haryana, India",
+    "shop": "Shop",
+    "company": "Company",
+    "helpInfo": "Help & Info",
+    "copyright": "© 2024 ZESTRAW. All rights reserved.",
+    "shippingReturns": "Shipping & Returns",
+    "links": {
+      "disposablePlates": "Disposable Plates",
+      "disposableBowls": "Disposable Bowls",
+      "disposableCups": "Disposable Cups",
+      "disposableCutlery": "Disposable Cutlery",
+      "shopAll": "Shop All",
+      "ourMission": "Our Mission",
+      "impact": "Impact",
+      "sustainabilityBlog": "Sustainability Blog",
+      "careers": "Careers",
+      "faqs": "FAQs",
+      "shippingPolicy": "Shipping Policy",
+      "returnsRefund": "Returns & Refund",
+      "contactUs": "Contact Us",
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "Privacy Policy"
+    }
+  },
+  "product": {
+    "unnamed": "Unnamed Product",
+    "addedToCart": "Added to cart!",
+    "packOf": "PACK OF {{size}}",
+    "multipleSizes": "Multiple Set Sizes",
+    "addToCart": "Add to Cart"
+  },
+  "chatbot": {
+    "title": "Zestie Assistant",
+    "activeNow": "Active Now",
+    "placeholder": "Type your green query...",
+    "support": "Sustainable Support",
+    "compostGuide": "90-day compost guide"
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "marketplace": {
+    "verified": "Verified",
+    "moq": "MOQ",
+    "priceRange": "Price Range",
+    "sustainabilityScore": "Sustainability Score",
+    "viewDetails": "View Details",
+    "filters": "Filters",
+    "sourcingStates": "Sourcing States",
+    "minMoqCapacity": "Min. MOQ Capacity",
+    "tons": "{{value}} Tons",
+    "verifiedOnly": "Verified Only",
+    "zestrawInspected": "Zestraw Inspected",
+    "sustainableNote": "Sustainable Note",
+    "sustainableNoteText": "\"Verified suppliers have undergone a 14-point sustainability audit on parali collection and emission controls.\""
+  }
+}

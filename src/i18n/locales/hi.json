@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "shop": "शॉप",
+    "ourStory": "हमारी कहानी",
+    "impact": "प्रभाव",
+    "bulkOrders": "बल्क ऑर्डर",
+    "marketplace": "मार्केटप्लेस",
+    "tracker": "ट्रैकर",
+    "ordersShort": "ऑर्डर",
+    "contactUs": "संपर्क करें",
+    "dashboard": "डैशबोर्ड",
+    "myOrders": "मेरे ऑर्डर",
+    "settings": "सेटिंग्स",
+    "logout": "लॉग आउट",
+    "signIn": "साइन इन",
+    "discover": "खोजें",
+    "memberArea": "सदस्य क्षेत्र",
+    "signInToAccount": "खाते में साइन इन करें",
+    "logoutTitle": "अभी जा रहे हैं?",
+    "logoutMessage": "जब भी आप अपनी टिकाऊ यात्रा जारी रखने के लिए तैयार हों, हम यहाँ रहेंगे। जल्द मिलते हैं!",
+    "signOut": "साइन आउट",
+    "staySignedIn": "साइन इन रहें",
+    "language": "भाषा"
+  },
+  "footer": {
+    "subscribeHeading": "हमारे ईमेल सब्सक्राइब करें",
+    "emailPlaceholder": "ईमेल",
+    "invalidEmail": "कृपया एक मान्य ईमेल पता दर्ज करें",
+    "subscribed": "सब्सक्राइब हो गया!",
+    "subscribedDesc": "ZESTRAW समुदाय में आपका स्वागत है।",
+    "brandDesc": "गैर-विषैले किचन एसेंशियल्स के लिए मूल पसंद। एक स्वच्छ किचन और हरित ग्रह के लिए टिकाऊ तरीके से बनाया गया।",
+    "address": "BPTP डिस्कवरी पार्क, फरीदाबाद, हरियाणा, भारत",
+    "shop": "शॉप",
+    "company": "कंपनी",
+    "helpInfo": "सहायता और जानकारी",
+    "copyright": "© 2024 ZESTRAW. सर्वाधिकार सुरक्षित।",
+    "shippingReturns": "शिपिंग और रिटर्न",
+    "links": {
+      "disposablePlates": "डिस्पोजेबल प्लेटें",
+      "disposableBowls": "डिस्पोजेबल कटोरे",
+      "disposableCups": "डिस्पोजेबल कप",
+      "disposableCutlery": "डिस्पोजेबल कटलरी",
+      "shopAll": "सभी देखें",
+      "ourMission": "हमारा मिशन",
+      "impact": "प्रभाव",
+      "sustainabilityBlog": "टिकाऊपन ब्लॉग",
+      "careers": "करियर",
+      "faqs": "अक्सर पूछे जाने वाले प्रश्न",
+      "shippingPolicy": "शिपिंग नीति",
+      "returnsRefund": "रिटर्न और रिफंड",
+      "contactUs": "संपर्क करें",
+      "termsOfService": "सेवा की शर्तें",
+      "privacyPolicy": "गोपनीयता नीति"
+    }
+  },
+  "product": {
+    "unnamed": "अनाम उत्पाद",
+    "addedToCart": "कार्ट में जोड़ा गया!",
+    "packOf": "{{size}} का पैक",
+    "multipleSizes": "कई सेट साइज़",
+    "addToCart": "कार्ट में जोड़ें"
+  },
+  "chatbot": {
+    "title": "Zestie सहायक",
+    "activeNow": "अभी सक्रिय",
+    "placeholder": "अपना हरित सवाल लिखें...",
+    "support": "टिकाऊ सहायता",
+    "compostGuide": "90 दिन कम्पोस्ट गाइड"
+  },
+  "common": {
+    "loading": "लोड हो रहा है..."
+  },
+  "marketplace": {
+    "verified": "सत्यापित",
+    "moq": "न्यूनतम ऑर्डर मात्रा",
+    "priceRange": "मूल्य सीमा",
+    "sustainabilityScore": "टिकाऊपन स्कोर",
+    "viewDetails": "विवरण देखें",
+    "filters": "फ़िल्टर",
+    "sourcingStates": "सोर्सिंग राज्य",
+    "minMoqCapacity": "न्यूनतम MOQ क्षमता",
+    "tons": "{{value}} टन",
+    "verifiedOnly": "केवल सत्यापित",
+    "zestrawInspected": "Zestraw निरीक्षित",
+    "sustainableNote": "टिकाऊ नोट",
+    "sustainableNoteText": "\"सत्यापित आपूर्तिकर्ताओं ने पराली संग्रह और उत्सर्जन नियंत्रण पर 14-बिंदु टिकाऊपन ऑडिट पास किया है।\""
+  }
+}

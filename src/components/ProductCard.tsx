@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ShoppingCart, Leaf } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { Product } from "@/data/products";
 import { getProductImageSrc } from "@/lib/images";
 import { useCart } from "@/context/CartContext";
@@ -11,9 +12,10 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+    const { t } = useTranslation();
     const { addToCart } = useCart();
 
-    const productName = product.productName || product.name || "Unnamed Product";
+    const productName = product.productName || product.name || t("product.unnamed");
     const defaultSize = product.sizesAvailable?.[0];
     // Match ProductDetails: show price for the default pack size, not base productPrice
     const productPrice = product.productPrice || defaultSize?.price
@@ -41,7 +43,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     plasticAvoided: product.sustainabilityMetrics?.plasticAvoided ?? 150
                 }
             }, 1);
-            toast.success("Added to cart!");
+            toast.success(t("product.addedToCart"));
         }
     };
 
@@ -56,7 +58,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     <div className="relative aspect-square overflow-hidden">
                         {product?.sizesAvailable?.length >= 1 && (
                             <span className="absolute top-3 left-3 z-10 px-3 py-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full uppercase">
-                                PACK OF {product.sizesAvailable?.[0]?.size}
+                                {t("product.packOf", { size: product.sizesAvailable?.[0]?.size })}
                             </span>
                         )}
                         <img
@@ -71,14 +73,14 @@ export default function ProductCard({ product }: ProductCardProps) {
                         <div className="flex items-center justify-between mb-1">
                             <span className="text-base font-bold">₹{productPrice.toFixed(2)}</span>
                             {product?.sizesAvailable && product?.sizesAvailable?.length > 1 && (
-                                <span className="text-xs text-muted-foreground">Multiple Set Sizes</span>
+                                <span className="text-xs text-muted-foreground">{t("product.multipleSizes")}</span>
                             )}
                         </div>
                         <button
                             onClick={handleAddToCart}
                             className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
                         >
-                            <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
+                            <ShoppingCart className="w-3.5 h-3.5" /> {t("product.addToCart")}
                         </button>
                     </div>
                 </div>

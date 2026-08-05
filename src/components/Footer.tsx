@@ -1,20 +1,26 @@
 import { Link } from "react-router-dom";
 import { Instagram, Twitter, Facebook } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useToast } from "@/hooks/use-toast";
 import logo from "../assets/logo.png";
 
 export function Footer() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const { toast } = useToast();
+
+  const shopLinks = ["disposablePlates", "disposableBowls", "disposableCups", "disposableCutlery", "shopAll"];
+  const companyLinks = ["ourMission", "impact", "sustainabilityBlog", "careers"];
+  const helpLinks = ["faqs", "shippingPolicy", "returnsRefund", "contactUs", "termsOfService", "privacyPolicy"];
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !email.includes("@")) {
-      toast({ title: "Please enter a valid email address", variant: "destructive" });
+      toast({ title: t("footer.invalidEmail"), variant: "destructive" });
       return;
     }
-    toast({ title: "Subscribed!", description: "Welcome to the ZESTRAW community." });
+    toast({ title: t("footer.subscribed"), description: t("footer.subscribedDesc") });
     setEmail("");
   };
 
@@ -30,11 +36,11 @@ export function Footer() {
 
             {/* Subscribe */}
             <div>
-              <h4 className="font-semibold text-sm mb-3">Subscribe to our emails</h4>
+              <h4 className="font-semibold text-sm mb-3">{t("footer.subscribeHeading")}</h4>
               <form onSubmit={handleSubscribe} className="flex max-w-md">
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder={t("footer.emailPlaceholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="flex-1 px-4 py-2 rounded-l-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
@@ -52,12 +58,11 @@ export function Footer() {
             <div>
               <img src={logo} alt="logo" className="w-32 h-auto mb-4" />
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                The OG Choice for Non-Toxic Kitchen Essentials. Crafted sustainably
-                for a cleaner kitchen and a greener planet.
+                {t("footer.brandDesc")}
               </p>
 
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>BPTP Discovery Park, Faridabad, Haryana, India</p>
+                <p>{t("footer.address")}</p>
                 <p>care@zestraw.com</p>
                 <p>+91 8595643038</p>
               </div>
@@ -79,12 +84,12 @@ export function Footer() {
 
           {/* Shop */}
           <div>
-            <h4 className="font-semibold text-sm mb-4">Shop</h4>
+            <h4 className="font-semibold text-sm mb-4">{t("footer.shop")}</h4>
             <ul className="space-y-2.5">
-              {["Disposable Plates", "Disposable Bowls", "Disposable Cups", "Disposable Cutlery", "Shop All"].map((item) => (
+              {shopLinks.map((item) => (
                 <li key={item}>
                   <Link to="/shop" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {item}
+                    {t(`footer.links.${item}`)}
                   </Link>
                 </li>
               ))}
@@ -93,12 +98,12 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold text-sm mb-4">Company</h4>
+            <h4 className="font-semibold text-sm mb-4">{t("footer.company")}</h4>
             <ul className="space-y-2.5">
-              {["Our Mission", "Impact", "Sustainability Blog", "Careers"].map((item) => (
+              {companyLinks.map((item) => (
                 <li key={item}>
                   <Link to="/impact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {item}
+                    {t(`footer.links.${item}`)}
                   </Link>
                 </li>
               ))}
@@ -107,19 +112,12 @@ export function Footer() {
 
           {/* Help & Account */}
           <div>
-            <h4 className="font-semibold text-sm mb-4">Help & Info</h4>
+            <h4 className="font-semibold text-sm mb-4">{t("footer.helpInfo")}</h4>
             <ul className="space-y-2.5">
-              {[
-                "FAQs",
-                "Shipping Policy",
-                "Returns & Refund",
-                "Contact Us",
-                "Terms of Service",
-                "Privacy Policy"
-              ].map((item) => (
+              {helpLinks.map((item) => (
                 <li key={item}>
                   <Link to="/legal" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {item}
+                    {t(`footer.links.${item}`)}
                   </Link>
                 </li>
               ))}
@@ -130,17 +128,17 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-16 pt-6 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © 2024 ZESTRAW. All rights reserved.
+            {t("footer.copyright")}
           </p>
           <div className="flex items-center gap-6">
             <Link to="/legal" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-              Privacy Policy
+              {t("footer.links.privacyPolicy")}
             </Link>
             <Link to="/legal" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-              Terms of Service
+              {t("footer.links.termsOfService")}
             </Link>
             <Link to="/legal" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-              Shipping & Returns
+              {t("footer.shippingReturns")}
             </Link>
           </div>
         </div>

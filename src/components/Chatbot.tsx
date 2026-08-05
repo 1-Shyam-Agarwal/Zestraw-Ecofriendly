@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Leaf, Sparkles, User, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const Chatbot = () => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
         { id: 1, text: "Hello! I'm Zestie, your eco-assistant. How can I help you on your sustainability journey today?", sender: 'bot', time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
@@ -113,10 +115,10 @@ const Chatbot = () => {
                                     <Leaf size={20} className="text-white animate-bounce-slow" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-sm tracking-tight">Zestie Assistant</h3>
+                                    <h3 className="font-bold text-sm tracking-tight">{t("chatbot.title")}</h3>
                                     <div className="flex items-center gap-1.5">
                                         <div className="w-1.5 h-1.5 bg-teal-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(45,212,191,0.8)]" />
-                                        <p className="text-[9px] text-white/90 uppercase tracking-widest font-black">Active Now</p>
+                                        <p className="text-[9px] text-white/90 uppercase tracking-widest font-black">{t("chatbot.activeNow")}</p>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +179,7 @@ const Chatbot = () => {
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                                    placeholder="Type your green query..."
+                                    placeholder={t("chatbot.placeholder")}
                                     className="flex-1 bg-transparent border-none outline-none text-sm px-2 py-1"
                                 />
                                 <button
@@ -189,10 +191,10 @@ const Chatbot = () => {
                             </div>
                             <div className="flex justify-center gap-4 mt-2">
                                 <div className="text-[9px] text-muted-foreground flex items-center gap-1 uppercase font-black tracking-tighter">
-                                    <Leaf size={10} className="text-teal-500" /> Sustainable Support
+                                    <Leaf size={10} className="text-teal-500" /> {t("chatbot.support")}
                                 </div>
                                 <div className="text-[9px] text-muted-foreground flex items-center gap-1 uppercase font-bold tracking-tighter">
-                                    <Info size={10} className="text-teal-500" /> 90-day compost guide
+                                    <Info size={10} className="text-teal-500" /> {t("chatbot.compostGuide")}
                                 </div>
                             </div>
                         </div>

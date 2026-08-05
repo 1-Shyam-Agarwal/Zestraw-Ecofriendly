@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "shop": "শপ",
+    "ourStory": "আমাদের গল্প",
+    "impact": "প্রভাব",
+    "bulkOrders": "বাল্ক অর্ডার",
+    "marketplace": "মার্কেটপ্লেস",
+    "tracker": "ট্র্যাকার",
+    "ordersShort": "অর্ডার",
+    "contactUs": "যোগাযোগ করুন",
+    "dashboard": "ড্যাশবোর্ড",
+    "myOrders": "আমার অর্ডার",
+    "settings": "সেটিংস",
+    "logout": "লগ আউট",
+    "signIn": "সাইন ইন",
+    "discover": "আবিষ্কার করুন",
+    "memberArea": "সদস্য এলাকা",
+    "signInToAccount": "অ্যাকাউন্টে সাইন ইন করুন",
+    "logoutTitle": "এখনই চলে যাচ্ছেন?",
+    "logoutMessage": "আপনি যখনই আপনার টেকসই যাত্রা চালিয়ে যেতে প্রস্তুত হবেন, আমরা এখানে থাকব। শীঘ্রই দেখা হবে!",
+    "signOut": "সাইন আউট",
+    "staySignedIn": "সাইন ইন থাকুন",
+    "language": "ভাষা"
+  },
+  "footer": {
+    "subscribeHeading": "আমাদের ইমেল সাবস্ক্রাইব করুন",
+    "emailPlaceholder": "ইমেল",
+    "invalidEmail": "অনুগ্রহ করে একটি বৈধ ইমেল ঠিকানা লিখুন",
+    "subscribed": "সাবস্ক্রাইব হয়েছে!",
+    "subscribedDesc": "ZESTRAW সম্প্রদায়ে আপনাকে স্বাগতম।",
+    "brandDesc": "নন-টক্সিক রান্নাঘরের প্রয়োজনীয় জিনিসের জন্য আসল পছন্দ। পরিচ্ছন্ন রান্নাঘর ও সবুজ গ্রহের জন্য টেকসইভাবে তৈরি।",
+    "address": "BPTP ডিসকভারি পার্ক, ফরিদাবাদ, হরিয়ানা, ভারত",
+    "shop": "শপ",
+    "company": "কোম্পানি",
+    "helpInfo": "সহায়তা ও তথ্য",
+    "copyright": "© 2024 ZESTRAW. সর্বস্বত্ব সংরক্ষিত।",
+    "shippingReturns": "শিপিং ও রিটার্ন",
+    "links": {
+      "disposablePlates": "ডিসপোজেবল প্লেট",
+      "disposableBowls": "ডিসপোজেবল বাটি",
+      "disposableCups": "ডিসপোজেবল কাপ",
+      "disposableCutlery": "ডিসপোজেবল কাটলারি",
+      "shopAll": "সব দেখুন",
+      "ourMission": "আমাদের লক্ষ্য",
+      "impact": "প্রভাব",
+      "sustainabilityBlog": "টেকসই ব্লগ",
+      "careers": "ক্যারিয়ার",
+      "faqs": "সাধারণ প্রশ্ন",
+      "shippingPolicy": "শিপিং নীতি",
+      "returnsRefund": "রিটার্ন ও রিফান্ড",
+      "contactUs": "যোগাযোগ করুন",
+      "termsOfService": "সেবার শর্তাবলী",
+      "privacyPolicy": "গোপনীয়তা নীতি"
+    }
+  },
+  "product": {
+    "unnamed": "নামহীন পণ্য",
+    "addedToCart": "কার্টে যোগ করা হয়েছে!",
+    "packOf": "{{size}} এর প্যাক",
+    "multipleSizes": "একাধিক সেট সাইজ",
+    "addToCart": "কার্টে যোগ করুন"
+  },
+  "chatbot": {
+    "title": "Zestie সহকারী",
+    "activeNow": "এখন সক্রিয়",
+    "placeholder": "আপনার সবুজ প্রশ্ন লিখুন...",
+    "support": "টেকসই সহায়তা",
+    "compostGuide": "৯০ দিনের কম্পোস্ট গাইড"
+  },
+  "common": {
+    "loading": "লোড হচ্ছে..."
+  },
+  "marketplace": {
+    "verified": "যাচাইকৃত",
+    "moq": "সর্বনিম্ন অর্ডার পরিমাণ",
+    "priceRange": "মূল্যের পরিসর",
+    "sustainabilityScore": "টেকসই স্কোর",
+    "viewDetails": "বিস্তারিত দেখুন",
+    "filters": "ফিল্টার",
+    "sourcingStates": "সোর্সিং রাজ্য",
+    "minMoqCapacity": "সর্বনিম্ন MOQ ক্ষমতা",
+    "tons": "{{value}} টন",
+    "verifiedOnly": "শুধু যাচাইকৃত",
+    "zestrawInspected": "Zestraw পরিদর্শিত",
+    "sustainableNote": "টেকসই নোট",
+    "sustainableNoteText": "\"যাচাইকৃত সরবরাহকারীরা পরালি সংগ্রহ ও নির্গমন নিয়ন্ত্রণে ১৪-পয়েন্ট টেকসই অডিট সম্পন্ন করেছেন।\""
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "shop": "Tienda",
+    "ourStory": "Nuestra historia",
+    "impact": "Impacto",
+    "bulkOrders": "Pedidos al por mayor",
+    "marketplace": "Mercado",
+    "tracker": "Seguimiento",
+    "ordersShort": "Pedidos",
+    "contactUs": "Contáctanos",
+    "dashboard": "Panel",
+    "myOrders": "Mis pedidos",
+    "settings": "Ajustes",
+    "logout": "Cerrar sesión",
+    "signIn": "Iniciar sesión",
+    "discover": "Descubrir",
+    "memberArea": "Área de miembros",
+    "signInToAccount": "Inicia sesión en tu cuenta",
+    "logoutTitle": "¿Ya te vas?",
+    "logoutMessage": "Estaremos aquí cuando quieras continuar tu viaje sostenible. ¡Hasta pronto!",
+    "signOut": "Salir",
+    "staySignedIn": "Seguir conectado",
+    "language": "Idioma"
+  },
+  "footer": {
+    "subscribeHeading": "Suscríbete a nuestros correos",
+    "emailPlaceholder": "Correo",
+    "invalidEmail": "Introduce una dirección de correo válida",
+    "subscribed": "¡Suscrito!",
+    "subscribedDesc": "Bienvenido a la comunidad ZESTRAW.",
+    "brandDesc": "La opción original para artículos de cocina no tóxicos. Elaborado de forma sostenible para una cocina más limpia y un planeta más verde.",
+    "address": "BPTP Discovery Park, Faridabad, Haryana, India",
+    "shop": "Tienda",
+    "company": "Empresa",
+    "helpInfo": "Ayuda e información",
+    "copyright": "© 2024 ZESTRAW. Todos los derechos reservados.",
+    "shippingReturns": "Envíos y devoluciones",
+    "links": {
+      "disposablePlates": "Platos desechables",
+      "disposableBowls": "Cuencos desechables",
+      "disposableCups": "Vasos desechables",
+      "disposableCutlery": "Cubiertos desechables",
+      "shopAll": "Ver todo",
+      "ourMission": "Nuestra misión",
+      "impact": "Impacto",
+      "sustainabilityBlog": "Blog de sostenibilidad",
+      "careers": "Empleo",
+      "faqs": "Preguntas frecuentes",
+      "shippingPolicy": "Política de envío",
+      "returnsRefund": "Devoluciones y reembolsos",
+      "contactUs": "Contáctanos",
+      "termsOfService": "Términos del servicio",
+      "privacyPolicy": "Política de privacidad"
+    }
+  },
+  "product": {
+    "unnamed": "Producto sin nombre",
+    "addedToCart": "¡Añadido al carrito!",
+    "packOf": "PACK DE {{size}}",
+    "multipleSizes": "Varios tamaños de juego",
+    "addToCart": "Añadir al carrito"
+  },
+  "chatbot": {
+    "title": "Asistente Zestie",
+    "activeNow": "Activo ahora",
+    "placeholder": "Escribe tu consulta ecológica...",
+    "support": "Soporte sostenible",
+    "compostGuide": "Guía de compostaje de 90 días"
+  },
+  "common": {
+    "loading": "Cargando..."
+  },
+  "marketplace": {
+    "verified": "Verificado",
+    "moq": "Pedido mínimo",
+    "priceRange": "Rango de precios",
+    "sustainabilityScore": "Puntuación de sostenibilidad",
+    "viewDetails": "Ver detalles",
+    "filters": "Filtros",
+    "sourcingStates": "Estados de origen",
+    "minMoqCapacity": "Capacidad mínima de pedido",
+    "tons": "{{value}} toneladas",
+    "verifiedOnly": "Solo verificados",
+    "zestrawInspected": "Inspeccionado por Zestraw",
+    "sustainableNote": "Nota sostenible",
+    "sustainableNoteText": "\"Los proveedores verificados han superado una auditoría de sostenibilidad de 14 puntos sobre recolección de parali y control de emisiones.\""
+  }
+}
