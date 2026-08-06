@@ -12,8 +12,10 @@ import { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { formatPackLabel, getDeliveryDate } from "@/lib/utils";
 import { calculateImpactFromItems, formatKg } from "@/lib/impactStats";
+import { useTranslation } from "react-i18next";
 
 export default function CartPage() {
+  const { t } = useTranslation();
   const { items, updateQuantity, removeItem, subtotal, totalItems, clearCart } = useCart();
   const { token, user, setAuth } = useAuth();
   const [step, setStep] = useState<"cart" | "checkout">("cart");
@@ -68,7 +70,7 @@ export default function CartPage() {
       return;
     }
     if (!address.address || !address.city || !address.state || !address.zip) {
-      toast.error("Missing Address Info", { description: "Please provide a complete shipping address." });
+      toast.error(t("cart.missingAddressTitle"), { description: t("cart.missingAddressDesc") });
       return;
     }
 
@@ -91,10 +93,10 @@ export default function CartPage() {
 
   const handleApplyPromo = () => {
     if (!promoCode.trim()) {
-      setPromoError("Please enter a promo code");
+      setPromoError(t("cart.promoEnter"));
       return;
     }
-    setPromoError("Invalid promo code");
+    setPromoError(t("cart.promoInvalid"));
   };
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
@@ -104,8 +106,8 @@ export default function CartPage() {
       return;
     }
     if (!address.firstName || !address.email || !address.address || !address.city || !address.state || !address.zip) {
-      toast.error("Information Incomplete", {
-        description: "Please fill in all shipping details to proceed with your eco-friendly order.",
+      toast.error(t("cart.infoIncompleteTitle"), {
+        description: t("cart.infoIncompleteDesc"),
         duration: 4000
       });
       return;
@@ -151,7 +153,7 @@ export default function CartPage() {
               className={`flex items-center gap-2 font-semibold whitespace-nowrap transition-colors ${step === "cart" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}
             >
               <span className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs transition-colors ${step === "cart" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>1</span>
-              Shopping Cart
+              {t("cart.stepCart")}
             </button>
             <div className="w-8 sm:w-16 h-px bg-border" />
             <button
@@ -160,12 +162,12 @@ export default function CartPage() {
               className={`flex items-center gap-2 font-semibold whitespace-nowrap transition-colors ${step === "checkout" ? "text-primary" : "text-muted-foreground hover:text-primary"} ${items.length === 0 ? "opacity-30 cursor-not-allowed" : ""}`}
             >
               <span className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs transition-colors ${step === "checkout" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>2</span>
-              Secure Checkout
+              {t("cart.stepCheckout")}
             </button>
             <div className="w-8 sm:w-16 h-px bg-border" />
             <span className="flex items-center gap-2 text-muted-foreground whitespace-nowrap opacity-50 cursor-not-allowed">
               <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-muted text-muted-foreground text-[10px] sm:text-xs flex items-center justify-center">3</span>
-              Success
+              {t("cart.stepSuccess")}
             </span>
           </div>
         </div>
@@ -176,12 +178,12 @@ export default function CartPage() {
           {items.length > 0 ? (
             <>
               <h1 className="text-3xl font-bold mb-1 font-lora">
-                {step === "cart" ? "My Shopping Cart" : "Secure Checkout"}
+                {step === "cart" ? t("cart.titleCart") : t("cart.titleCheckout")}
               </h1>
               <p className="text-muted-foreground mb-8 text-sm">
                 {step === "cart"
-                  ? `You have ${totalItems} eco-friendly items in your cart.`
-                  : "Complete your order with eco-safe shipping and secure payment."}
+                  ? t("cart.subtitleCart", { value: totalItems })
+                  : t("cart.subtitleCheckout")}
               </p>
 
               <div className="grid lg:grid-cols-3 gap-8">
@@ -213,7 +215,7 @@ export default function CartPage() {
                                   </div>
                                 </div>
                                 {/* Mobile Trash */}
-                                <button onClick={() => removeItem(item.id, item.size)} className="sm:hidden p-2 text-muted-foreground hover:text-destructive" title="Remove Item">
+                                <button onClick={() => removeItem(item.id, item.size)} className="sm:hidden p-2 text-muted-foreground hover:text-destructive" title={t("cart.removeItem")}>
                                   <Trash2 className="w-4 h-4" />
                                 </button>
                               </div>
@@ -231,7 +233,7 @@ export default function CartPage() {
                                 <div className="flex items-center gap-4">
                                   <span className="text-sm font-bold sm:w-20 text-right font-lora">₹{(item.price * item.quantity).toFixed(2)}</span>
                                   {/* Desktop Trash */}
-                                  <button onClick={() => removeItem(item.id, item.size)} className="hidden sm:block p-2 text-muted-foreground hover:text-destructive transition-colors" title="Remove Item">
+                                  <button onClick={() => removeItem(item.id, item.size)} className="hidden sm:block p-2 text-muted-foreground hover:text-destructive transition-colors" title={t("cart.removeItem")}>
                                     <Trash2 className="w-4 h-4" />
                                   </button>
                                 </div>
@@ -252,10 +254,10 @@ export default function CartPage() {
                                 setPromoCode(e.target.value);
                                 setPromoError("");
                               }}
-                              placeholder="Promo code"
+                              placeholder={t("cart.promoPlaceholder")}
                               className={`px-4 py-2.5 rounded-lg border bg-background text-sm flex-1 sm:w-48 focus:outline-none focus:ring-1 ${promoError ? 'border-destructive focus:ring-destructive' : 'border-border focus:ring-primary'}`}
                             />
-                            <button onClick={handleApplyPromo} className="px-6 py-2.5 text-sm font-bold text-primary hover:text-primary/80 transition-colors bg-primary/5 rounded-lg border border-primary/10">Apply</button>
+                            <button onClick={handleApplyPromo} className="px-6 py-2.5 text-sm font-bold text-primary hover:text-primary/80 transition-colors bg-primary/5 rounded-lg border border-primary/10">{t("cart.apply")}</button>
                           </div>
                           {promoError && (
                             <p className="text-[10px] text-destructive font-medium ml-1 animate-in fade-in slide-in-from-top-1">
@@ -264,7 +266,7 @@ export default function CartPage() {
                           )}
                         </div>
                         <Link to="/shop" className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
-                          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Continue Shopping
+                          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {t("cart.continueShopping")}
                         </Link>
                       </div>
                     </>
@@ -274,12 +276,12 @@ export default function CartPage() {
                       <section>
                         <h2 className="flex items-center gap-2 text-lg font-bold mb-4 font-lora">
                           <span className="w-7 h-7 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                          Shipping Details
+                          {t("cart.shippingDetails")}
                         </h2>
                         <div className="bg-card border border-border rounded-xl p-5 sm:p-6 space-y-4">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">Full Name</label>
+                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">{t("cart.fullName")}</label>
                               <div className="relative group">
                                 <input
                                   value={address.firstName}
@@ -291,7 +293,7 @@ export default function CartPage() {
                             </div>
                             <div>
                               <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">
-                                {address.email ? "Email Address" : "Phone Number"}
+                                {address.email ? t("cart.emailAddress") : t("cart.phoneNumber")}
                               </label>
                               <div className="relative group">
                                 <input
@@ -305,20 +307,20 @@ export default function CartPage() {
                             </div>
                           </div>
                           <div>
-                            <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">Street Address</label>
-                            <input value={address.address} onChange={e => setAddress({ ...address, address: e.target.value })} placeholder="House no, Street name" className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" required />
+                            <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">{t("cart.streetAddress")}</label>
+                            <input value={address.address} onChange={e => setAddress({ ...address, address: e.target.value })} placeholder={t("cart.streetPlaceholder")} className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" required />
                           </div>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                             <div className="col-span-2 sm:col-span-1">
-                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">City</label>
-                              <input value={address.city} onChange={e => setAddress({ ...address, city: e.target.value })} placeholder="City" className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">{t("cart.city")}</label>
+                              <input value={address.city} onChange={e => setAddress({ ...address, city: e.target.value })} placeholder={t("cart.city")} className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
                             </div>
                             <div>
-                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">State</label>
-                              <input value={address.state} onChange={e => setAddress({ ...address, state: e.target.value })} placeholder="State" className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">{t("cart.state")}</label>
+                              <input value={address.state} onChange={e => setAddress({ ...address, state: e.target.value })} placeholder={t("cart.state")} className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
                             </div>
                             <div>
-                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">ZIP Code</label>
+                              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-1.5 block">{t("cart.zipCode")}</label>
                               <input value={address.zip} onChange={e => setAddress({ ...address, zip: e.target.value })} placeholder="110001" className="w-full px-4 py-2.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
                             </div>
                           </div>
@@ -329,9 +331,9 @@ export default function CartPage() {
                               className="group flex items-center gap-2 px-6 py-2.5 bg-primary/5 text-primary border border-primary/10 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95 shadow-sm"
                             >
                               {user?.shippingAddress ? (
-                                <><Edit3 className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" /> Update Saved Address</>
+                                <><Edit3 className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" /> {t("cart.updateSavedAddress")}</>
                               ) : (
-                                <><Save className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" /> Save to Profile</>
+                                <><Save className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" /> {t("cart.saveToProfile")}</>
                               )}
                             </button>
                           </div>
@@ -342,7 +344,7 @@ export default function CartPage() {
                       <section>
                         <h2 className="flex items-center gap-2 text-lg font-bold mb-4 font-lora">
                           <span className="w-7 h-7 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold">2</span>
-                          Shipping Method
+                          {t("cart.shippingMethod")}
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <button
@@ -352,10 +354,10 @@ export default function CartPage() {
                           >
                             <div className="flex items-center gap-2 mb-2">
                               <Leaf className="w-5 h-5 text-eco-green" />
-                              <span className="px-2 py-0.5 bg-primary text-white text-[9px] font-bold rounded">ECO-SAFE</span>
+                              <span className="px-2 py-0.5 bg-primary text-white text-[9px] font-bold rounded">{t("cart.ecoSafe")}</span>
                             </div>
-                            <p className="font-bold text-sm">Carbon-Neutral</p>
-                            <p className="text-xs text-muted-foreground mt-1">100% Offset transportation. Arrival by {getDeliveryDate(4)}.</p>
+                            <p className="font-bold text-sm">{t("cart.carbonNeutral")}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{t("cart.carbonNeutralDesc", { date: getDeliveryDate(4) })}</p>
                             <p className="text-sm font-bold mt-2">₹40.00</p>
                           </button>
                           <button
@@ -364,8 +366,8 @@ export default function CartPage() {
                             className={`p-4 border-2 rounded-xl text-left transition-all ${shippingMethod === "standard" ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border hover:border-primary/50"}`}
                           >
                             <Truck className="w-5 h-5 text-muted-foreground mb-2" />
-                            <p className="font-bold text-sm">Standard Delivery</p>
-                            <p className="text-xs text-muted-foreground mt-1">Ground shipping. Arrival in 2-4 business days.</p>
+                            <p className="font-bold text-sm">{t("cart.standardDelivery")}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{t("cart.standardDeliveryDesc")}</p>
                             <p className="text-sm font-bold mt-2">₹120.00</p>
                           </button>
                         </div>
@@ -375,7 +377,7 @@ export default function CartPage() {
                       <section>
                         <h2 className="flex items-center gap-2 text-lg font-bold mb-4 font-lora">
                           <span className="w-7 h-7 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold">3</span>
-                          Payment Method
+                          {t("cart.paymentMethod")}
                         </h2>
                         <div className="bg-card border border-border rounded-xl p-6 space-y-4">
                           <div className="flex items-center gap-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
@@ -383,21 +385,21 @@ export default function CartPage() {
                               <Truck className="w-6 h-6 text-primary" />
                             </div>
                             <div>
-                              <p className="font-bold text-sm">Cash on Delivery (COD)</p>
-                              <p className="text-xs text-muted-foreground">Currently, we only support COD. Pay at your doorstep.</p>
+                              <p className="font-bold text-sm">{t("cart.codFull")}</p>
+                              <p className="text-xs text-muted-foreground">{t("cart.codDesc")}</p>
                             </div>
                           </div>
                           <div className="p-4 rounded-xl bg-orange-50 border border-orange-100 flex gap-3">
                             <Lock className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
                             <p className="text-[11px] text-orange-700 leading-relaxed font-medium">
-                              Secure transaction guaranteed. Online payment methods will be integrated soon. Thank you for your patience!
+                              {t("cart.secureNote")}
                             </p>
                           </div>
                         </div>
                       </section>
 
                       <button onClick={() => setStep("cart")} className="flex items-center gap-2 text-sm text-primary font-bold hover:underline transition-all active:scale-95">
-                        <ArrowLeft className="w-4 h-4" /> Go back to cart
+                        <ArrowLeft className="w-4 h-4" /> {t("cart.goBackToCart")}
                       </button>
                     </div>
                   )}
@@ -407,20 +409,20 @@ export default function CartPage() {
                     <div className="bg-card rounded-xl border border-border p-5">
                       <div className="flex items-center gap-2 mb-3">
                         <Truck className="w-5 h-5 text-primary" />
-                        <h3 className="text-sm font-semibold font-lora">Delivery Options</h3>
+                        <h3 className="text-sm font-semibold font-lora">{t("cart.deliveryOptions")}</h3>
                       </div>
                       <div className="p-3 rounded-lg bg-[#fdfaf5] border border-[#f5eadc]">
-                        <span className="text-sm font-medium font-lora">Standard Eco-Delivery</span>
+                        <span className="text-sm font-medium font-lora">{t("cart.standardEcoDelivery")}</span>
                         <span className="ml-2 px-2 py-0.5 bg-orange-100 text-orange-700 text-[10px] rounded-full font-bold">₹40.00</span>
-                        <p className="text-xs text-muted-foreground mt-1 font-lora">Expected: {getDeliveryDate(2)} - {getDeliveryDate(4)}</p>
+                        <p className="text-xs text-muted-foreground mt-1 font-lora">{t("cart.expected")}: {getDeliveryDate(2)} - {getDeliveryDate(4)}</p>
                       </div>
                     </div>
                     <div className="bg-card rounded-xl border border-border p-5">
                       <div className="flex items-center gap-2 mb-3">
                         <Shield className="w-5 h-5 text-primary" />
-                        <h3 className="text-sm font-semibold font-lora">ZESTRAW Protection</h3>
+                        <h3 className="text-sm font-semibold font-lora">{t("cart.protectionTitle")}</h3>
                       </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed font-lora">Your purchase is protected. 100% biodegradable and certified plastic-free. 7-day hassle-free returns on quality issues.</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed font-lora">{t("cart.protectionText")}</p>
                     </div>
                   </div>
                 </div>
@@ -438,8 +440,8 @@ export default function CartPage() {
                             <Leaf className="w-5 h-5" />
                           </div>
                           <div>
-                            <h3 className="text-base font-bold font-lora">Your Impact</h3>
-                            <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">From this cart</p>
+                            <h3 className="text-base font-bold font-lora">{t("cart.yourImpact")}</h3>
+                            <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">{t("cart.fromThisCart")}</p>
                           </div>
                         </div>
                         <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2.5 py-1 rounded-full">
@@ -447,7 +449,7 @@ export default function CartPage() {
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
                             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
                           </span>
-                          Live
+                          {t("cart.live")}
                         </span>
                       </div>
 
@@ -459,7 +461,7 @@ export default function CartPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-baseline justify-between gap-2">
-                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">CO₂ Saved</p>
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t("cart.co2Saved")}</p>
                                 <p className="text-sm font-bold text-foreground font-lora">{formatKg(cartImpact.co2SavedKg)} <span className="text-[10px] font-semibold text-muted-foreground">kg</span></p>
                               </div>
                               <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden mt-2.5">
@@ -481,7 +483,7 @@ export default function CartPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-baseline justify-between gap-2">
-                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Parali Used</p>
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t("cart.paraliUsed")}</p>
                                 <p className="text-sm font-bold text-foreground font-lora">{formatKg(cartImpact.paraliRepurposedKg)} <span className="text-[10px] font-semibold text-muted-foreground">kg</span></p>
                               </div>
                               <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden mt-2.5">
@@ -503,8 +505,8 @@ export default function CartPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-baseline justify-between gap-2">
-                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Plastic Displaced</p>
-                                <p className="text-sm font-bold text-foreground font-lora">{cartImpact.plasticAvoided.toLocaleString()} <span className="text-[10px] font-semibold text-muted-foreground">units</span></p>
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t("cart.plasticDisplaced")}</p>
+                                <p className="text-sm font-bold text-foreground font-lora">{cartImpact.plasticAvoided.toLocaleString()} <span className="text-[10px] font-semibold text-muted-foreground">{t("cart.units")}</span></p>
                               </div>
                               <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden mt-2.5">
                                 <motion.div
@@ -520,7 +522,7 @@ export default function CartPage() {
                       </div>
 
                       <p className="relative z-10 mt-4 text-[11px] text-muted-foreground leading-relaxed">
-                        Updates as you change pack sizes or quantities — same formulas as your Impact Tracker.
+                        {t("cart.impactNote")}
                       </p>
                     </div>
 
@@ -532,9 +534,9 @@ export default function CartPage() {
                           <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
                             <ShoppingCart className="w-4 h-4 text-foreground" />
                           </div>
-                          <h3 className="text-base font-semibold font-lora">Your Selection</h3>
+                          <h3 className="text-base font-semibold font-lora">{t("cart.yourSelection")}</h3>
                         </div>
-                        <span className="text-[10px] font-bold bg-muted px-2 py-0.5 rounded-full uppercase">{totalItems} Items</span>
+                        <span className="text-[10px] font-bold bg-muted px-2 py-0.5 rounded-full uppercase">{t("cart.itemsCount", { value: totalItems })}</span>
                       </div>
                       <div className="space-y-4 max-h-[400px] overflow-y-auto no-scrollbar pr-1">
                         {items.map((item) => (
@@ -545,7 +547,7 @@ export default function CartPage() {
                             <div className="flex-1 min-w-0">
                               <p className="text-xs font-bold font-lora line-clamp-1">{item.name}</p>
                               <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
-                                <span className="text-[10px] text-muted-foreground font-medium">Qty: {item.quantity}</span>
+                                <span className="text-[10px] text-muted-foreground font-medium">{t("cart.qtyColon")} {item.quantity}</span>
                                 {formatPackLabel(item.size) && (
                                   <>
                                     <span className="text-[10px] text-muted-foreground">•</span>
@@ -566,29 +568,29 @@ export default function CartPage() {
 
                   {/* Order Summary */}
                   <div className="bg-card rounded-xl border border-border p-6 shadow-sm">
-                    <h3 className="text-base font-bold font-lora mb-6">Summary</h3>
+                    <h3 className="text-base font-bold font-lora mb-6">{t("cart.summary")}</h3>
                     <div className="space-y-3 text-sm">
-                      <div className="flex justify-between font-medium"><span className="text-muted-foreground font-lora">Subtotal</span><span className="font-lora">₹{subtotal.toFixed(2)}</span></div>
+                      <div className="flex justify-between font-medium"><span className="text-muted-foreground font-lora">{t("cart.subtotal")}</span><span className="font-lora">₹{subtotal.toFixed(2)}</span></div>
 
                       <div className="flex justify-between font-medium">
-                        <span className="text-muted-foreground font-lora">Discount</span>
+                        <span className="text-muted-foreground font-lora">{t("cart.discount")}</span>
                         <span className="text-eco-green font-bold font-lora">-₹{appliedDiscount.toFixed(2)}</span>
                       </div>
 
                       {step === "checkout" && (
                         <div className="flex justify-between font-medium">
-                          <span className="text-muted-foreground font-lora">Shipping Cost</span>
+                          <span className="text-muted-foreground font-lora">{t("cart.shippingCost")}</span>
                           <span className="font-bold text-foreground font-lora">₹{shippingCost.toFixed(2)}</span>
                         </div>
                       )}
 
                       <div className="flex justify-between font-medium">
-                        <span className="text-muted-foreground font-lora">Tax (GST)</span>
+                        <span className="text-muted-foreground font-lora">{t("cart.taxGst")}</span>
                         <span className="font-lora">₹{tax.toFixed(2)}</span>
                       </div>
 
                       <div className="border-t border-border pt-4 mt-4 flex justify-between items-end">
-                        <span className="font-bold text-neutral-600 font-lora">Total</span>
+                        <span className="font-bold text-neutral-600 font-lora">{t("cart.total")}</span>
                         <span className="text-2xl font-bold text-primary font-lora leading-none">₹{totalAmount.toFixed(2)}</span>
                       </div>
                     </div>
@@ -597,7 +599,7 @@ export default function CartPage() {
                         onClick={handleCheckout}
                         className="w-full mt-8 py-4 rounded-lg bg-primary text-white font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-md"
                       >
-                        Checkout <ArrowRight className="w-4 h-4" />
+                        {t("cart.checkout")} <ArrowRight className="w-4 h-4" />
                       </button>
                     )}
                     {step === "checkout" && (
@@ -605,12 +607,12 @@ export default function CartPage() {
                         onClick={handlePlaceOrder}
                         className="w-full mt-8 py-4 rounded-lg bg-primary text-white font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-md"
                       >
-                        <Lock className="w-4 h-4" /> Place Order
+                        <Lock className="w-4 h-4" /> {t("cart.placeOrder")}
                       </button>
                     )}
                     <div className="flex items-center justify-center gap-4 mt-6 text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
-                      <span className="flex items-center gap-1"><Shield className="w-3 h-3" /> SECURE</span>
-                      <span className="flex items-center gap-1"><Leaf className="w-3 h-3" /> ORGANIC</span>
+                      <span className="flex items-center gap-1"><Shield className="w-3 h-3" /> {t("cart.secure")}</span>
+                      <span className="flex items-center gap-1"><Leaf className="w-3 h-3" /> {t("cart.organic")}</span>
                     </div>
                   </div>
                 </div>
@@ -625,29 +627,29 @@ export default function CartPage() {
               <div className="w-24 h-24 bg-[#fff5ed] rounded-full flex items-center justify-center mx-auto mb-8 border-2 border-dashed border-orange-200">
                 <ShoppingCart className="w-10 h-10 text-primary opacity-50" />
               </div>
-              <h2 className="text-3xl font-lora font-bold text-neutral-900 mb-4">Your cart is currently empty.</h2>
+              <h2 className="text-3xl font-lora font-bold text-neutral-900 mb-4">{t("cart.emptyTitle")}</h2>
               <p className="text-neutral-600 text-lg mb-8 leading-relaxed">
-                Show your impact by contributing to a greener planet with ZESTRAW's conscious tableware.
+                {t("cart.emptyText")}
               </p>
               <Link
                 to="/shop"
                 className="inline-flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:scale-105 transition-all shadow-lg active:scale-95"
               >
-                Explore Collection <ArrowRight className="w-5 h-5" />
+                {t("cart.exploreCollection")} <ArrowRight className="w-5 h-5" />
               </Link>
 
               <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 border-t border-neutral-100 pt-16">
                 <div className="flex flex-col items-center">
                   <Sprout className="w-6 h-6 text-green-800 mb-3" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">100% Organic</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">{t("cart.organic100")}</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <Flame className="w-6 h-6 text-orange-400 mb-3" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Zero Crop Burn</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">{t("cart.zeroCropBurn")}</span>
                 </div>
                 <div className="flex flex-col items-center col-span-2 md:col-span-1">
                   <Recycle className="w-6 h-6 text-blue-400 mb-3" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Biodegradable</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">{t("cart.biodegradable")}</span>
                 </div>
               </div>
             </motion.div>
@@ -682,11 +684,11 @@ export default function CartPage() {
               <div className="p-8 sm:p-10 text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <User className="w-5 h-5 text-primary" />
-                  <h3 className="text-lg font-bold font-lora  ">Authentication Required</h3>
+                  <h3 className="text-lg font-bold font-lora  ">{t("cart.authRequired")}</h3>
                 </div>
 
                 <p className="text-muted-foreground text-sm mb-8 leading-relaxed text-justify">
-                  To provide a secure experience and track your eco-impact, please log in before proceeding to checkout.
+                  {t("cart.authText")}
                 </p>
 
                 <div className="space-y-3">
@@ -694,10 +696,10 @@ export default function CartPage() {
                     to="/login?redirect=cart"
                     className="flex items-center justify-center w-full py-4 bg-primary text-white rounded-xl font-bold uppercase tracking-widest text-xs hover:opacity-90 transition-all shadow-lg active:scale-95"
                   >
-                    Log In Now
+                    {t("cart.logInNow")}
                   </Link>
                   <p className="text-xs text-muted-foreground pt-2">
-                    Don't have an account? <Link to="/signup?redirect=cart" className="text-primary font-bold hover:underline">Create one here</Link>
+                    {t("cart.noAccount")} <Link to="/signup?redirect=cart" className="text-primary font-bold hover:underline">{t("cart.createOneHere")}</Link>
                   </p>
                 </div>
               </div>
@@ -723,12 +725,12 @@ export default function CartPage() {
               <div className="p-8 sm:p-10 text-center flex flex-col justify-center items-center gap-2">
                 <div className="flex jtstify-center items-center gap-2">
                   <Truck className="w-6 h-6 text-primary" />
-                  <h3 className="text-xl font-lora text-foreground">Confirm Your Order</h3>
+                  <h3 className="text-xl font-lora text-foreground">{t("cart.confirmTitle")}</h3>
                 </div>
 
 
                 <p className="text-muted-foreground text-sm mb-4 mt-2 leading-relaxed">
-                  We currently only support <strong className="text-foreground">Cash on Delivery (COD)</strong> for all orders. You can pay securely when your eco-friendly items arrive at your doorstep.
+                  {t("cart.confirmTextPre")} <strong className="text-foreground">{t("cart.codFull")}</strong> {t("cart.confirmTextPost")}
                 </p>
 
                 <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 mb-4 text-left">
@@ -736,11 +738,11 @@ export default function CartPage() {
 
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="text-xs font-bold text-amber-900 uppercase tracking-wider mb-1">Total Payable</p>
+                        <p className="text-xs font-bold text-amber-900 uppercase tracking-wider mb-1">{t("cart.totalPayable")}</p>
                         <p className="text-xl font-bold text-amber-900">₹{totalAmount.toFixed(2)}</p>
                       </div>
                       <div className="text-right border-l border-amber-200 pl-4">
-                        <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-1">Estimated Arrival</p>
+                        <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-1">{t("cart.estimatedArrival")}</p>
                         <p className="text-sm font-black text-amber-900">{getDeliveryDate(2)}</p>
                       </div>
                     </div>
@@ -752,13 +754,13 @@ export default function CartPage() {
                     onClick={() => setShowOrderConfirmModal(false)}
                     className="py-3.5 px-6 rounded-md border border-border text-sm font-bold text-muted-foreground hover:bg-accent transition-all active:scale-95"
                   >
-                    Go Back
+                    {t("cart.goBack")}
                   </button>
                   <button
                     onClick={confirmPlaceOrder}
                     className="py-3.5 px-6 rounded-md bg-primary text-white text-sm font-bold uppercase tracking-widest hover:opacity-90 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2"
                   >
-                    Confirm <ArrowRight className="w-4 h-4" />
+                    {t("cart.confirm")} <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
