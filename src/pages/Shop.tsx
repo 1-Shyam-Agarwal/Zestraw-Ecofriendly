@@ -8,6 +8,7 @@ import riceField from "@/assets/rice-field.jpg";
 import ProductCard from "@/components/ProductCard";
 import { getAllProducts } from "@/services/operations/productAPI";
 import { PageLoader } from "@/components/PageLoader";
+import { useTranslation } from "react-i18next";
 import {
   Sheet,
   SheetContent,
@@ -20,6 +21,7 @@ const productTypes = ["All", "Plates", "Bowls", "Section Plates", "Cups", "Cutle
 const sortOptions = ["Price: Low to High", "Price: High to Low"];
 
 export default function ShopPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -93,9 +95,9 @@ export default function ShopPage() {
   const filterControls = (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-3 font-lora">Product Type</h3>
+        <h3 className="text-sm font-semibold mb-3 font-lora">{t("shop.productType")}</h3>
         <div className="space-y-2">
-          {productTypes.filter((t) => t !== "All").map((type) => (
+          {productTypes.filter((pt) => pt !== "All").map((type) => (
             <label key={type} className="flex items-center gap-2 text-sm cursor-pointer">
               <input
                 type="checkbox"
@@ -103,14 +105,14 @@ export default function ShopPage() {
                 onChange={() => setSelectedType(selectedType === type ? "All" : type)}
                 className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
               />
-              {type}
+              {t(`shop.types.${type}`)}
             </label>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold mb-3 font-lora">Price Range</h3>
+        <h3 className="text-sm font-semibold mb-3 font-lora">{t("shop.priceRange")}</h3>
         <input
           type="range"
           min={0}
@@ -128,10 +130,10 @@ export default function ShopPage() {
       <div className="bg-eco-light rounded-xl p-4">
         <div className="flex items-center gap-2 mb-2">
           <Leaf className="w-4 h-4 text-eco" />
-          <span className="text-sm font-semibold">Compostable Promise</span>
+          <span className="text-sm font-semibold">{t("shop.compostablePromise")}</span>
         </div>
         <p className="text-xs text-muted-foreground">
-          Every item in our shop is guaranteed 100% biodegradable and chemical-free.
+          {t("shop.compostableDesc")}
         </p>
       </div>
     </div>
@@ -141,7 +143,7 @@ export default function ShopPage() {
     <Layout>
       {/* Header */}
       <div className="container mx-auto px-6 pt-12 pb-6">
-        <h1 className="text-3xl md:text-4xl font-normal font-lora mb-2 sm:border-l-4 sm:border-orange-500 sm:pl-4">Our Conscious Catalog</h1>
+        <h1 className="text-3xl md:text-4xl font-normal font-lora mb-2 sm:border-l-4 sm:border-orange-500 sm:pl-4">{t("shop.title")}</h1>
       </div>
 
       {/* Shop Content */}
@@ -155,21 +157,21 @@ export default function ShopPage() {
               className="lg:hidden inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-card text-sm font-medium hover:bg-muted/50 transition-colors"
             >
               <SlidersHorizontal className="w-4 h-4" />
-              Filters
+              {t("shop.filters")}
               {hasActiveFilters && (
                 <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               )}
             </button>
 
             <div className="flex items-center gap-2 ml-auto">
-              <span className="text-sm text-muted-foreground">Sort by:</span>
+              <span className="text-sm text-muted-foreground">{t("shop.sortBy")}</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="text-sm border border-border rounded-lg px-3 py-1.5 bg-card focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 {sortOptions.map((opt) => (
-                  <option key={opt} value={opt}>{opt}</option>
+                  <option key={opt} value={opt}>{opt === "Price: Low to High" ? t("shop.sortLowHigh") : t("shop.sortHighLow")}</option>
                 ))}
               </select>
             </div>
@@ -185,9 +187,9 @@ export default function ShopPage() {
             <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
               <SheetContent side="left" className="w-[85%] max-w-sm overflow-y-auto">
                 <SheetHeader className="text-left mb-6">
-                  <SheetTitle className="font-lora">Filters</SheetTitle>
+                  <SheetTitle className="font-lora">{t("shop.filters")}</SheetTitle>
                   <SheetDescription>
-                    Narrow products by type and price.
+                    {t("shop.filterDesc")}
                   </SheetDescription>
                 </SheetHeader>
                 {filterControls}
@@ -199,7 +201,7 @@ export default function ShopPage() {
                       className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg border border-border text-sm font-medium hover:bg-muted/50 transition-colors"
                     >
                       <X className="w-3.5 h-3.5" />
-                      Clear
+                      {t("shop.clear")}
                     </button>
                   )}
                   <button
@@ -207,7 +209,7 @@ export default function ShopPage() {
                     onClick={() => setFiltersOpen(false)}
                     className="flex-1 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
                   >
-                    Show {filteredAndSorted.length} results
+                    {t("shop.showResults", { value: filteredAndSorted.length })}
                   </button>
                 </div>
               </SheetContent>
@@ -216,7 +218,7 @@ export default function ShopPage() {
             {/* Product Grid */}
             <div className="flex-1 p-2">
               {loading ? (
-                <PageLoader message="Loading products..." />
+                <PageLoader message={t("shop.loadingProducts")} />
               ) : filteredAndSorted.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {filteredAndSorted.map((product) => (
@@ -226,15 +228,15 @@ export default function ShopPage() {
               ) : (
                 <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-3xl border-2 border-dashed border-muted">
                   <Leaf className="w-12 h-12 text-muted-foreground mb-4 opacity-20" />
-                  <h3 className="text-xl font-normal font-lora mb-2">No eco-friendly matches found</h3>
+                  <h3 className="text-xl font-normal font-lora mb-2">{t("shop.noMatches")}</h3>
                   <p className="text-muted-foreground text-[12px] max-w-xs mx-auto">
-                    We couldn't find products matching your current filters. Try adjusting the price range or category.
+                    {t("shop.noMatchesDesc")}
                   </p>
                   <button
                     onClick={clearFilters}
                     className="mt-6 text-sm font-semibold text-primary hover:underline transition-all"
                   >
-                    Clear all filters
+                    {t("shop.clearAll")}
                   </button>
                 </div>
               )}
@@ -248,20 +250,20 @@ export default function ShopPage() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold mb-4">IMPACT TRACKER</span>
-              <h2 className="text-3xl font-bold font-lora   mb-3">Making Every Meal Count</h2>
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold mb-4">{t("shop.impactTracker")}</span>
+              <h2 className="text-3xl font-bold font-lora   mb-3">{t("shop.impactTitle")}</h2>
               <p className="text-muted-foreground mb-6">
-                Switching from plastic to Zestraw saves an average of 1.2kg of CO2 per event. Track your cumulative impact in your dashboard after every purchase.
+                {t("shop.impactDesc")}
               </p>
               <Link to="/impact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity">
-                See Our Impact Metrics <ChevronRight className="w-4 h-4" />
+                {t("shop.impactCta")} <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
             <div className="relative rounded-2xl overflow-hidden">
               <img src={riceField} alt="Rice field impact" className="w-full h-80 md:h-[450px] object-cover rounded-2xl" />
               <div className="absolute bottom-4 right-4 bg-primary text-primary-foreground px-4 py-2 rounded-xl">
                 <span className="text-lg font-bold">1.2M+</span>
-                <p className="text-[10px]">KGS OF RICE STRAW UPCYCLED</p>
+                <p className="text-[10px]">{t("shop.kgsUpcycled")}</p>
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ChevronRight, Leaf, Truck, BarChart3 } from "lucide-react";
 import wholesaleHero from "@/assets/bulkorder.webp";
+import { useTranslation } from "react-i18next";
 
 import { validateEmail } from "@/lib/utils";
 
@@ -18,6 +19,7 @@ const pricingTiers = [
 ];
 
 export default function BulkOrdersPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     businessName: "", businessType: "", fullName: "", email: "",
     volume: "", leadTime: "", products: [] as string[], customDesign: false, brandingReqs: "",
@@ -29,24 +31,24 @@ export default function BulkOrdersPage() {
 
     // Basic required field validation
     if (!formData.businessName || !formData.fullName || !formData.email || !formData.volume) {
-      toast.error("Incomplete Inquiry", {
-        description: "Please provide your business name, contact info, and expected volume."
+      toast.error(t("bulk.toastIncompleteTitle"), {
+        description: t("bulk.toastIncompleteDesc")
       });
       return;
     }
 
     // Email format validation
     if (!validateEmail(formData.email)) {
-      toast.error("Invalid Business Email", {
-        description: "Please enter a valid work email address (e.g., name@company.com).",
+      toast.error(t("bulk.toastInvalidEmailTitle"), {
+        description: t("bulk.toastInvalidEmailDesc"),
       });
       return;
     }
 
     // Product selection validation
     if (formData.products.length === 0) {
-      toast.error("Product Interest Required", {
-        description: "Please select at least one product category you are interested in."
+      toast.error(t("bulk.toastProductTitle"), {
+        description: t("bulk.toastProductDesc")
       });
       return;
     }
@@ -56,8 +58,8 @@ export default function BulkOrdersPage() {
     await new Promise(r => setTimeout(r, 2000));
     setLoading(false);
 
-    toast.success("Inquiry Submitted Successfully!", {
-      description: "Our enterprise team will review your proposal and contact you within 24 hours.",
+    toast.success(t("bulk.toastSuccessTitle"), {
+      description: t("bulk.toastSuccessDesc"),
       duration: 5000
     });
 
@@ -85,17 +87,15 @@ export default function BulkOrdersPage() {
             {/* Left Content */}
             <div className="max-w-xl">
               <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                Elevate Your Brand with{" "}
+                {t("bulk.heroTitlePrefix")}{" "}
                 <span className="text-gradient-primary">
-                  Eco-Conscious
+                  {t("bulk.heroHighlight")}
                 </span>{" "}
-                Dining.
+                {t("bulk.heroTitleSuffix")}
               </h1>
 
               <p className="text-muted-foreground mb-8">
-                Amplify your sustainability efforts with ZESTRAW's premium
-                rice-straw tableware. Custom-branded, biodegradable, and designed
-                for the high-volume demands of modern hospitality.
+                {t("bulk.heroSubtitle")}
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -103,16 +103,16 @@ export default function BulkOrdersPage() {
                   href="#quote-form"
                   className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm"
                 >
-                  Request Enterprise Quote
+                  {t("bulk.requestQuote")}
                 </a>
 
                 <button className="px-6 py-3 rounded-full border border-border font-semibold text-sm hover:bg-accent transition-colors">
-                  ↓ Download B2B Catalog
+                  ↓ {t("bulk.downloadCatalog")}
                 </button>
               </div>
 
               <p className="text-xs text-muted-foreground mt-5">
-                Trusted by <strong>20+</strong> Hotels & Restaurants across India
+                {t("bulk.trustedByPre")} <strong>20+</strong> {t("bulk.trustedByPost")}
               </p>
             </div>
 
@@ -134,9 +134,9 @@ export default function BulkOrdersPage() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: <Truck className="w-6 h-6" />, title: "Enterprise Logistics", desc: "Reliable supply with fixed delivery times. Storage options and regular deliveries to keep your business running smoothly." },
-              { icon: <Leaf className="w-6 h-6" />, title: "Custom Branding", desc: "Add your logo with laser or mold printing. Turn your tableware into a strong brand identity for your customers." },
-              { icon: <BarChart3 className="w-6 h-6" />, title: "Impact Reporting", desc: "Get quarterly reports showing your CO₂ reduction and parali impact based on your order volume." },
+              { icon: <Truck className="w-6 h-6" />, title: t("bulk.feature1Title"), desc: t("bulk.feature1Desc") },
+              { icon: <Leaf className="w-6 h-6" />, title: t("bulk.feature2Title"), desc: t("bulk.feature2Desc") },
+              { icon: <BarChart3 className="w-6 h-6" />, title: t("bulk.feature3Title"), desc: t("bulk.feature3Desc") },
             ].map((f) => (
               <div key={f.title} className="text-center">
                 <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-primary mx-auto mb-4">{f.icon}</div>
@@ -152,59 +152,59 @@ export default function BulkOrdersPage() {
       <section id="quote-form" className="py-16">
         <div className="container mx-auto px-6 max-w-2xl">
           <div className="bg-card rounded-2xl border border-border p-8">
-            <h2 className="text-2xl font-bold text-center mb-2">Request a Wholesale Quote</h2>
-            <p className="text-sm text-muted-foreground text-center mb-8">Our enterprise team will get back to you with a custom proposal within 24 hours.</p>
+            <h2 className="text-2xl font-bold text-center mb-2">{t("bulk.formTitle")}</h2>
+            <p className="text-sm text-muted-foreground text-center mb-8">{t("bulk.formSubtitle")}</p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Business Name</label>
-                  <input type="text" placeholder="e.g. Green Earth Hotels" value={formData.businessName}
+                  <label className="text-sm font-medium mb-1 block">{t("bulk.businessName")}</label>
+                  <input type="text" placeholder={t("bulk.businessNamePlaceholder")} value={formData.businessName}
                     onChange={(e) => setFormData(p => ({ ...p, businessName: e.target.value }))}
                     className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Business Type</label>
-                  <input type="text" placeholder="e.g. Hotel Chain" value={formData.businessType}
+                  <label className="text-sm font-medium mb-1 block">{t("bulk.businessType")}</label>
+                  <input type="text" placeholder={t("bulk.businessTypePlaceholder")} value={formData.businessType}
                     onChange={(e) => setFormData(p => ({ ...p, businessType: e.target.value }))}
                     className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Full Name</label>
-                  <input type="text" placeholder="Jane Doe" value={formData.fullName}
+                  <label className="text-sm font-medium mb-1 block">{t("bulk.fullName")}</label>
+                  <input type="text" placeholder={t("bulk.fullNamePlaceholder")} value={formData.fullName}
                     onChange={(e) => setFormData(p => ({ ...p, fullName: e.target.value }))}
                     className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Work Email</label>
-                  <input type="email" placeholder="jane@company.com" value={formData.email}
+                  <label className="text-sm font-medium mb-1 block">{t("bulk.workEmail")}</label>
+                  <input type="email" placeholder={t("bulk.workEmailPlaceholder")} value={formData.email}
                     onChange={(e) => setFormData(p => ({ ...p, email: e.target.value }))}
                     className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Est. Monthly Volume</label>
-                  <input type="text" placeholder="e.g. 5000" value={formData.volume}
+                  <label className="text-sm font-medium mb-1 block">{t("bulk.monthlyVolume")}</label>
+                  <input type="text" placeholder={t("bulk.monthlyVolumePlaceholder")} value={formData.volume}
                     onChange={(e) => setFormData(p => ({ ...p, volume: e.target.value }))}
                     className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Preferred Lead Time</label>
-                  <input type="text" placeholder="e.g. Under 3 weeks" value={formData.leadTime}
+                  <label className="text-sm font-medium mb-1 block">{t("bulk.leadTime")}</label>
+                  <input type="text" placeholder={t("bulk.leadTimePlaceholder")} value={formData.leadTime}
                     onChange={(e) => setFormData(p => ({ ...p, leadTime: e.target.value }))}
                     className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
                 </div>
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-2 block">Products of Interest</label>
+                <label className="text-sm font-medium mb-2 block">{t("bulk.productsOfInterest")}</label>
                 <div className="flex flex-wrap gap-3">
                   {["Plates", "Bowls", "Trays", "Cutlery"].map((p) => (
                     <label key={p} className="flex items-center gap-2 text-sm cursor-pointer">
                       <input type="checkbox" checked={formData.products.includes(p)} onChange={() => toggleProduct(p)} className="w-4 h-4 rounded border-border text-primary" />
-                      {p}
+                      {t(`bulk.prod.${p}`)}
                     </label>
                   ))}
                 </div>
@@ -213,14 +213,14 @@ export default function BulkOrdersPage() {
               <div>
                 <label className="flex items-center gap-2 text-sm cursor-pointer mb-2">
                   <input type="checkbox" checked={formData.customDesign} onChange={(e) => setFormData(p => ({ ...p, customDesign: e.target.checked }))} className="w-4 h-4 rounded border-border text-primary" />
-                  I'm interested in custom logo embossing
+                  {t("bulk.customLogo")}
                 </label>
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-1 block">Branding Requirements</label>
+                <label className="text-sm font-medium mb-1 block">{t("bulk.brandingReqs")}</label>
                 <textarea
-                  placeholder="Tell us about your specific needs or branding requirements..."
+                  placeholder={t("bulk.brandingPlaceholder")}
                   value={formData.brandingReqs}
                   onChange={(e) => setFormData(p => ({ ...p, brandingReqs: e.target.value }))}
                   rows={3}
@@ -233,9 +233,9 @@ export default function BulkOrdersPage() {
                 disabled={loading}
                 className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60"
               >
-                {loading ? <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" /> : "Submit Inquiry"}
+                {loading ? <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" /> : t("bulk.submitInquiry")}
               </button>
-              <p className="text-[10px] text-muted-foreground text-center">By submitting, you agree to our B2B Privacy Policy and Terms of Service.</p>
+              <p className="text-[10px] text-muted-foreground text-center">{t("bulk.formConsent")}</p>
             </form>
           </div>
         </div>
@@ -244,11 +244,11 @@ export default function BulkOrdersPage() {
       {/* CTA */}
       <section className="bg-primary py-16 text-center">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-primary-foreground mb-4">Ready to make the switch?</h2>
-          <p className="text-primary-foreground/80 mb-8 max-w-md mx-auto">Join the growing network of conscious hospitality leaders in India. Let's build a greener future, one plate at a time.</p>
+          <h2 className="text-3xl font-bold text-primary-foreground mb-4">{t("bulk.ctaTitle")}</h2>
+          <p className="text-primary-foreground/80 mb-8 max-w-md mx-auto">{t("bulk.ctaSubtitle")}</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/shop" className="px-6 py-3 rounded-full bg-card text-foreground font-semibold text-sm">Contact Sales Team</Link>
-            <button className="px-6 py-3 rounded-full border border-primary-foreground/30 text-primary-foreground font-semibold text-sm">Live Chat</button>
+            <Link to="/shop" className="px-6 py-3 rounded-full bg-card text-foreground font-semibold text-sm">{t("bulk.contactSales")}</Link>
+            <button className="px-6 py-3 rounded-full border border-primary-foreground/30 text-primary-foreground font-semibold text-sm">{t("bulk.liveChat")}</button>
           </div>
         </div>
       </section>

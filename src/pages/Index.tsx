@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Droplets, Leaf, Shield, Flame, ChevronRight, Handshake, Flag, Recycle, Star } from "lucide-react";
 import heroImage from "@/assets/hero-tableware.jpg";
 import ReactCountryFlag from "react-country-flag";
@@ -25,6 +26,7 @@ const stagger = {
 };
 
 const Index = () => {
+  const { t } = useTranslation();
   return (
     <Layout>
       {/* Hero Section */}
@@ -41,8 +43,8 @@ const Index = () => {
                 variants={fadeUp}
                 className="text-4xl lg:text-5xl font-normal font-lora text-foreground leading-tight  mb-6"
               >
-                Where <br /> Great Meals <br /> meets<br />
-                <span className="text-orange-600">Greener</span> Choices.
+                {t("home.heroWhere")} <br /> {t("home.heroGreatMeals")} <br /> {t("home.heroMeets")}<br />
+                <span className="text-orange-600">{t("home.heroGreener")}</span> {t("home.heroChoices")}
               </motion.h1>
 
               <motion.div variants={fadeUp} className="flex flex-wrap gap-6 mb-8 mt-20">
@@ -50,13 +52,13 @@ const Index = () => {
                   to="/shop?category=ComboPack"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 transition-colors"
                 >
-                  Order a Sample Kit
+                  {t("home.orderSampleKit")}
                 </Link>
                 <Link
                   to="/shop"
                   className="inline-flex items-center gap-2 px-7 py-3.5 border border-border bg-card text-foreground rounded-full font-semibold hover:bg-accent transition-colors"
                 >
-                  Shop Now
+                  {t("home.shopNow")}
                 </Link>
               </motion.div>
 
@@ -93,15 +95,15 @@ const Index = () => {
               {[
                 {
                   icon: <Leaf className="w-8 h-8 text-eco" />,
-                  value: "Plastic-Free & Compostable",
+                  value: t("home.stat1"),
                 },
                 {
                   icon: <Flag className="w-8 h-8 text-primary" />,
-                  value: "Proudly Made in India",
+                  value: t("home.stat2"),
                 },
                 {
                   icon: <Handshake className="w-8 h-8 text-eco" />,
-                  value: "Supporting Local",
+                  value: t("home.stat3"),
                 },
               ].map((stat, index) => (
                 <div
@@ -129,12 +131,12 @@ const Index = () => {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
             <div className="flex justify-between items-end mb-10">
               <div>
-                <motion.h2 variants={fadeUp} className="text-3xl font-lora font-bold text-foreground">Conscious Collections</motion.h2>
-                <motion.p variants={fadeUp} className="text-muted-foreground mt-1">High-performance tableware that doesn't cost the Earth.</motion.p>
+                <motion.h2 variants={fadeUp} className="text-3xl font-lora font-bold text-foreground">{t("home.collectionsTitle")}</motion.h2>
+                <motion.p variants={fadeUp} className="text-muted-foreground mt-1">{t("home.collectionsSubtitle")}</motion.p>
               </div>
               <motion.div variants={fadeUp}>
                 <Link to="/shop" className="hidden md:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline group">
-                  View Full Catalog <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  {t("home.viewFullCatalog")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </motion.div>
             </div>
@@ -156,7 +158,7 @@ const Index = () => {
                     {/* Badge */}
                     {product.badge && (
                       <span className="absolute top-4 left-4 z-10 px-3 py-1 bg-primary text-white text-[11px] font-semibold rounded-full uppercase tracking-wide shadow">
-                        {product.badge}
+                        {product.badge === "Best Seller" ? t("home.badgeBestSeller") : t("home.badgeNew")}
                       </span>
                     )}
 
@@ -175,7 +177,7 @@ const Index = () => {
 
                         {/* Title */}
                         <h3 className="text-lg font-semibold font-lora tracking-tight text-neutral-900 group-hover:text-primary transition-colors duration-300">
-                          {product.name}
+                          {t(`shop.types.${product.category}`)}
                         </h3>
 
                         {/* CTA */}
@@ -183,7 +185,7 @@ const Index = () => {
 
                           {/* Sliding Text */}
                           <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-medium text-primary transition-all duration-500 group-hover:max-w-[90px]">
-                            Shop Now
+                            {t("home.shopNow")}
                           </span>
 
                           {/* Arrow */}
@@ -201,7 +203,7 @@ const Index = () => {
 
             <div className="mt-10 text-center md:hidden">
               <Link to="/shop" className="inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                View All Products <ChevronRight className="w-4 h-4" />
+                {t("home.viewAllProducts")} <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
           </motion.div>
@@ -212,16 +214,16 @@ const Index = () => {
       <section className="bg-card border-y border-border py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-10">
-            <h2 className="font-playfair text-3xl font-bold font-lora text-foreground mb-2">Why Choose ZESTRAW?</h2>
-            <p className="text-sm text-muted-foreground font-lora">Beyond sustainability, we deliver uncompromised quality.</p>
+            <h2 className="font-playfair text-3xl font-bold font-lora text-foreground mb-2">{t("home.whyTitle")}</h2>
+            <p className="text-sm text-muted-foreground font-lora">{t("home.whySubtitle")}</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {[
-              { icon: <Droplets size={24} className="text-orange-500 " />, title: "Water Resistant", desc: "Engineered to withstand liquids for 3+ hours without warping." },
-              { icon: <Leaf size={24} className="text-orange-500" />, title: "100% Compostable", desc: "Fully biodegradable in backyard compost within 90 days." },
-              { icon: <Shield size={24} className="text-orange-500" />, title: "Chemical-Free", desc: "Food grade certified. No glues, chemical binders, or plastic coatings." },
-              { icon: <Recycle size={24} className="text-orange-500" />, title: "Durable Design", desc: "Sturdy construction that resists snapping and bending." },
-              { icon: <Flame size={24} className="text-orange-500" />, title: "Heat Resistant", desc: "Microwave and oven safe up to 140°C for short durations." },
+              { icon: <Droplets size={24} className="text-orange-500 " />, title: t("home.feature1Title"), desc: t("home.feature1Desc") },
+              { icon: <Leaf size={24} className="text-orange-500" />, title: t("home.feature2Title"), desc: t("home.feature2Desc") },
+              { icon: <Shield size={24} className="text-orange-500" />, title: t("home.feature3Title"), desc: t("home.feature3Desc") },
+              { icon: <Recycle size={24} className="text-orange-500" />, title: t("home.feature4Title"), desc: t("home.feature4Desc") },
+              { icon: <Flame size={24} className="text-orange-500" />, title: t("home.feature5Title"), desc: t("home.feature5Desc") },
             ].map((item, i) => (
               <div key={i} className="text-center space-y-3">
                 <div className="flex justify-center mb-4">
@@ -255,9 +257,9 @@ const Index = () => {
 
               {/* Heading */}
               <h2 className="text-4xl md:text-6xl font-bold leading-tight">
-                Not sure yet?
+                {t("home.sampleHeading1")}
                 <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent py-8">
-                  Good — we've got a box for that.
+                  {t("home.sampleHeading2")}
                 </span>
               </h2>
 
@@ -268,7 +270,7 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/shop?category=ComboPack">
                   <Button size="lg" className="px-8 text-base">
-                    Order a Sample Kit
+                    {t("home.orderSampleKit")}
                   </Button>
                 </Link>
 

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, ArrowRight, User, Building2, CheckCircle2, Wheat } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/AuthContext";
 import { signUp } from "@/services/operations/authAPI";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,6 +13,7 @@ import heroImage from "@/assets/hero-tableware.jpg"
 import logo from "@/assets/logo.png"
 
 export default function SignupPage() {
+  const { t } = useTranslation();
   const [accountType, setAccountType] = useState<"retail" | "b2b">("retail");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,21 +29,21 @@ export default function SignupPage() {
 
   const validate = () => {
     const errs: Record<string, string> = {};
-    if (!fullName.trim()) errs.fullName = "Full name is required";
+    if (!fullName.trim()) errs.fullName = t("signup.errFullName");
     if (!email.trim()) {
       // Email is no longer required
     } else if (!validateEmail(email)) {
-      errs.email = "Please enter a valid email address (e.g., name@example.com)";
+      errs.email = t("signup.errEmail");
     }
     if (!phoneNumber.trim()) {
-      errs.phoneNumber = "Phone number is required";
+      errs.phoneNumber = t("signup.errPhoneRequired");
     } else if (!/^[0-9]{10}$/.test(phoneNumber)) {
-      errs.phoneNumber = "Please enter a valid 10-digit phone number";
+      errs.phoneNumber = t("signup.errPhoneInvalid");
     }
-    if (password.length < 8) errs.password = "Password must be at least 8 characters";
-    if (password !== confirmPassword) errs.confirmPassword = "Passwords do not match";
-    if (!agreed) errs.agreed = "You must agree to the terms";
-    if (!accountType) errs.accountType = "Account type is required";
+    if (password.length < 8) errs.password = t("signup.errPassword");
+    if (password !== confirmPassword) errs.confirmPassword = t("signup.errConfirm");
+    if (!agreed) errs.agreed = t("signup.errAgreed");
+    if (!accountType) errs.accountType = t("signup.errAccountType");
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -63,12 +65,12 @@ export default function SignupPage() {
             <img src={logo} alt="" className="w-28 md:w-32 h-auto" />
           </Link>
           <h1 className="text-4xl font-bold font-lora leading-tight mb-4">
-            Join the movement toward{" "}
-            <span className="text-gradient-primary font-lora italic">sustainable</span>{" "}
-            tableware.
+            {t("signup.heroTitlePrefix")}{" "}
+            <span className="text-gradient-primary font-lora italic">{t("signup.heroTitleHighlight")}</span>{" "}
+            {t("signup.heroTitleSuffix")}
           </h1>
           <p className="text-muted-foreground text-lg max-w-md">
-            We're turning agricultural waste into premium, biodegradable dining experiences. Choose your path and start making an impact today.
+            {t("signup.heroSubtitle")}
           </p>
         </div>
 
@@ -77,11 +79,11 @@ export default function SignupPage() {
           <div className="flex gap-8 mt-6">
             <div>
               <span className="text-2xl font-bold">1M+</span>
-              <p className="text-xs text-muted-foreground">Straws Replaced</p>
+              <p className="text-xs text-muted-foreground">{t("signup.strawsReplaced")}</p>
             </div>
             <div>
               <span className="text-2xl font-bold">500+</span>
-              <p className="text-xs text-muted-foreground">B2B Partners</p>
+              <p className="text-xs text-muted-foreground">{t("signup.b2bPartners")}</p>
             </div>
           </div>
         </div>
@@ -95,16 +97,16 @@ export default function SignupPage() {
       {/* Right Panel - Form */}
       <div className="flex flex-col justify-center px-6 lg:px-16 py-12">
         <Link to="/" className="text-sm text-muted-foreground mb-6 hover:text-foreground flex items-center gap-1">
-          ← Back to home
+          ← {t("common.backToHome")}
         </Link>
 
-        <h2 className="text-2xl font-bold font-lora mb-1">Create your account</h2>
-        <p className="text-muted-foreground text-sm mb-8">Welcome to the future of dining. Let's get started.</p>
+        <h2 className="text-2xl font-bold font-lora mb-1">{t("signup.title")}</h2>
+        <p className="text-muted-foreground text-sm mb-8">{t("signup.subtitle")}</p>
 
         <form onSubmit={handleSignup} className="space-y-5">
           {/* Account Type */}
           <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">SELECT YOUR ACCOUNT TYPE</label>
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">{t("signup.selectAccountType")}</label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
@@ -114,8 +116,8 @@ export default function SignupPage() {
               >
                 <User className={`w-6 h-6 ${accountType === "retail" ? "text-primary" : "text-muted-foreground"}`} />
                 <div>
-                  <span className={`text-sm font-semibold ${accountType === "retail" ? "text-primary" : ""}`}>Retail Customer</span>
-                  <p className="text-xs text-muted-foreground">For individual eco-conscious shoppers.</p>
+                  <span className={`text-sm font-semibold ${accountType === "retail" ? "text-primary" : ""}`}>{t("signup.retailCustomer")}</span>
+                  <p className="text-xs text-muted-foreground">{t("signup.retailDesc")}</p>
                 </div>
                 {accountType === "retail" && <CheckCircle2 className="w-4 h-4 text-primary absolute top-3 right-3" />}
               </button>
@@ -127,29 +129,29 @@ export default function SignupPage() {
               >
                 <Building2 className={`w-6 h-6 ${accountType === "b2b" ? "text-primary" : "text-muted-foreground"}`} />
                 <div>
-                  <span className={`text-sm font-semibold ${accountType === "b2b" ? "text-primary" : ""}`}>B2B Buyer</span>
-                  <p className="text-xs text-muted-foreground">For restaurants, events, and wholesalers.</p>
+                  <span className={`text-sm font-semibold ${accountType === "b2b" ? "text-primary" : ""}`}>{t("signup.b2bBuyer")}</span>
+                  <p className="text-xs text-muted-foreground">{t("signup.b2bDesc")}</p>
                 </div>
               </button>
             </div>
           </div>
 
           <div>
-            <label className="text-sm font-semibold mb-2 block">Full Name <span className="text-destructive">*</span></label>
-            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Jane Doe"
+            <label className="text-sm font-semibold mb-2 block">{t("signup.fullName")} <span className="text-destructive">*</span></label>
+            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder={t("signup.fullNamePlaceholder")}
               className="w-full px-4 py-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
             {errors.fullName && <p className="text-xs text-destructive mt-1">{errors.fullName}</p>}
           </div>
 
           <div>
-            <label className="text-sm font-semibold mb-2 block">Email Address</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="jane@example.com"
+            <label className="text-sm font-semibold mb-2 block">{t("signup.emailAddress")}</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("signup.emailPlaceholder")}
               className="w-full px-4 py-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
             {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
           </div>
 
           <div>
-            <label className="text-sm font-semibold mb-2 block">Phone Number <span className="text-destructive">*</span></label>
+            <label className="text-sm font-semibold mb-2 block">{t("signup.phoneNumber")} <span className="text-destructive">*</span></label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium">+91</span>
               <input
@@ -165,7 +167,7 @@ export default function SignupPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-sm font-semibold mb-2 block">Password <span className="text-destructive">*</span></label>
+              <label className="text-sm font-semibold mb-2 block">{t("signup.password")} <span className="text-destructive">*</span></label>
               <div className="relative">
                 <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••"
                   className="w-full px-4 py-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring pr-10" />
@@ -176,7 +178,7 @@ export default function SignupPage() {
               {errors.password && <p className="text-xs text-destructive mt-1">{errors.password}</p>}
             </div>
             <div>
-              <label className="text-sm font-semibold mb-2 block">Confirm Password <span className="text-destructive">*</span></label>
+              <label className="text-sm font-semibold mb-2 block">{t("signup.confirmPassword")} <span className="text-destructive">*</span></label>
               <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••"
                 className="w-full px-4 py-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
               {errors.confirmPassword && <p className="text-xs text-destructive mt-1">{errors.confirmPassword}</p>}
@@ -191,8 +193,8 @@ export default function SignupPage() {
               className="mt-0.5"
             />
             <label htmlFor="terms" className="text-xs text-muted-foreground cursor-pointer select-none">
-              I agree to the <Link to="/legal" className="text-primary font-semibold hover:underline">Terms of Service</Link> and{" "}
-              <Link to="/legal" className="text-primary font-semibold hover:underline">Privacy Policy</Link>, including our commitment to 100% plastic-free logistics.
+              {t("signup.agreePrefix")} <Link to="/legal" className="text-primary font-semibold hover:underline">{t("footer.links.termsOfService")}</Link> {t("signup.and")}{" "}
+              <Link to="/legal" className="text-primary font-semibold hover:underline">{t("footer.links.privacyPolicy")}</Link>{t("signup.agreeSuffix")}
             </label>
           </div>
           {errors.agreed && <p className="text-xs text-destructive">{errors.agreed}</p>}
@@ -205,13 +207,13 @@ export default function SignupPage() {
             {loading ? (
               <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
             ) : (
-              <>Create Account <ArrowRight className="w-4 h-4" /></>
+              <>{t("signup.createButton")} <ArrowRight className="w-4 h-4" /></>
             )}
           </button>
 
           <p className="text-sm text-center text-muted-foreground">
-            Already have an account?{" "}
-            <Link to="/login" className="text-primary font-semibold hover:underline">Log in</Link>
+            {t("signup.alreadyHaveAccount")}{" "}
+            <Link to="/login" className="text-primary font-semibold hover:underline">{t("signup.logIn")}</Link>
           </p>
         </form>
 

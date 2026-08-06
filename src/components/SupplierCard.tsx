@@ -3,12 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { CheckCircle2, MapPin, Package, Star, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 interface SupplierCardProps {
     supplier: Supplier;
 }
 
 const SupplierCard = ({ supplier }: SupplierCardProps) => {
+    const { t } = useTranslation();
     return (
         <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 border-border group bg-card/50 backdrop-blur-sm">
             <CardHeader className="p-0">
@@ -20,7 +22,7 @@ const SupplierCard = ({ supplier }: SupplierCardProps) => {
                         {supplier.verified && (
                             <Badge variant="secondary" className="bg-eco-green/10 text-eco-green border-eco-green/20 gap-1 px-2 py-0.5">
                                 <CheckCircle2 className="w-3 h-3" />
-                                Verified
+                                {t("marketplace.verified")}
                             </Badge>
                         )}
                     </div>
@@ -39,11 +41,11 @@ const SupplierCard = ({ supplier }: SupplierCardProps) => {
 
                     <div className="grid grid-cols-2 gap-4 py-4 border-y border-border/50">
                         <div>
-                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">MOQ</p>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">{t("marketplace.moq")}</p>
                             <p className="font-semibold text-sm">{supplier.moq} {supplier.unit}</p>
                         </div>
                         <div>
-                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Price Range</p>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">{t("marketplace.priceRange")}</p>
                             <p className="font-semibold text-sm text-primary">₹{supplier.priceMin} - ₹{supplier.priceMax}</p>
                         </div>
                     </div>
@@ -63,13 +65,13 @@ const SupplierCard = ({ supplier }: SupplierCardProps) => {
                             </div>
                             <span className="text-xs font-bold">{supplier.sustainabilityRating}/100</span>
                         </div>
-                        <p className="text-[10px] font-medium text-muted-foreground italic">Sustainability Score</p>
+                        <p className="text-[10px] font-medium text-muted-foreground italic">{t("marketplace.sustainabilityScore")}</p>
                     </div>
                 </div>
             </CardContent>
             <CardFooter className="px-6 pb-6 pt-0">
                 <Button className="w-full gap-2 group/btn" variant="outline">
-                    View Details
+                    {t("marketplace.viewDetails")}
                     <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                 </Button>
             </CardFooter>

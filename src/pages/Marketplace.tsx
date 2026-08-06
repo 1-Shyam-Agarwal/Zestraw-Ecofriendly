@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { Search, MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const marketplaceData = [
     {
@@ -48,6 +49,7 @@ const marketplaceData = [
 ];
 
 const MarketPlace = () => {
+    const { t } = useTranslation();
     return (
         <div className="min-h-screen bg-background flex flex-col">
             <Navbar />
@@ -59,7 +61,7 @@ const MarketPlace = () => {
                     <aside className="space-y-8">
                         <div className="space-y-4">
                             <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                                Location
+                                {t("marketplace.location")}
                             </h3>
                             <div className="space-y-3">
                                 {["Punjab", "Haryana"].map((loc) => (
@@ -82,19 +84,19 @@ const MarketPlace = () => {
                             <div className="relative w-full md:max-w-md">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search by company or location..."
+                                    placeholder={t("marketplace.searchPlaceholder")}
                                     className="pl-10 h-11"
                                 />
                             </div>
 
                             <Select defaultValue="latest">
                                 <SelectTrigger className="w-full md:w-[150px] h-11">
-                                    <SelectValue placeholder="Sort by" />
+                                    <SelectValue placeholder={t("marketplace.sortBy")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="latest">Latest</SelectItem>
-                                    <SelectItem value="price-low">Price: Low-High</SelectItem>
-                                    <SelectItem value="price-high">Price: High-Low</SelectItem>
+                                    <SelectItem value="latest">{t("marketplace.latest")}</SelectItem>
+                                    <SelectItem value="price-low">{t("marketplace.priceLowHigh")}</SelectItem>
+                                    <SelectItem value="price-high">{t("marketplace.priceHighLow")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -119,17 +121,17 @@ const MarketPlace = () => {
 
                                     {/* Price */}
                                     <p className="text-sm font-medium">
-                                        Price: <span className="font-semibold">{item.price} / Ton</span>
+                                        {t("marketplace.priceLabel")} <span className="font-semibold">{item.price} {t("marketplace.perTon")}</span>
                                     </p>
 
                                     {/* MOQ */}
                                     <p className="text-sm font-medium">
-                                        MOQ: <span className="font-semibold">{item.moq}</span>
+                                        {t("marketplace.moqLabel")} <span className="font-semibold">{item.moq}</span>
                                     </p>
 
                                     {/* Contact Button */}
                                     <Button className="w-full mt-2">
-                                        Contact Buyer
+                                        {t("marketplace.contactBuyer")}
                                     </Button>
                                 </div>
                             ))}
@@ -138,11 +140,11 @@ const MarketPlace = () => {
                         {/* Farmer Sell Form */}
                         <div className="bg-card border border-border rounded-xl p-6 space-y-6">
                             <h2 className="text-xl font-semibold">
-                                Sell Your Parali
+                                {t("marketplace.sellParali")}
                             </h2>
 
                             <p className="text-sm text-muted-foreground">
-                                Farmers can fill this form to sell crop residue (Parali).
+                                {t("marketplace.sellParaliDesc")}
                             </p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -150,40 +152,40 @@ const MarketPlace = () => {
                                 {/* Farmer Name */}
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">
-                                        Farmer Name
+                                        {t("marketplace.farmerName")}
                                     </label>
-                                    <Input placeholder="Enter your full name" />
+                                    <Input placeholder={t("marketplace.farmerNamePlaceholder")} />
                                 </div>
 
                                 {/* Contact Number */}
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">
-                                        Contact Number
+                                        {t("marketplace.contactNumber")}
                                     </label>
-                                    <Input type="tel" placeholder="Enter mobile number" />
+                                    <Input type="tel" placeholder={t("marketplace.contactNumberPlaceholder")} />
                                 </div>
 
                                 {/* Quantity Available */}
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">
-                                        Quantity Available (in Tons)
+                                        {t("marketplace.quantityAvailable")}
                                     </label>
-                                    <Input type="number" placeholder="Enter quantity in tons" />
+                                    <Input type="number" placeholder={t("marketplace.quantityPlaceholder")} />
                                 </div>
 
                                 {/* Location */}
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">
-                                        Location (Village / District / State)
+                                        {t("marketplace.locationField")}
                                     </label>
-                                    <Input placeholder="Enter your location" />
+                                    <Input placeholder={t("marketplace.locationPlaceholder")} />
                                 </div>
                             </div>
 
                             {/* Submit Button */}
                             <div>
                                 <Button className="w-full md:w-auto">
-                                    Submit Details
+                                    {t("marketplace.submitDetails")}
                                 </Button>
                             </div>
                         </div>

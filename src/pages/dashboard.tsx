@@ -8,8 +8,10 @@ import { useState, useEffect } from "react";
 import { getUserOrders } from "@/services/operations/orderAPI";
 import { PageLoader } from "@/components/PageLoader";
 import { calculateImpactFromItems, formatKg } from "@/lib/impactStats";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const { user, token } = useAuth();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
@@ -91,29 +93,29 @@ const Dashboard = () => {
 
   const statsProps = [
     {
-      label: "CO₂ Emissions Saved",
+      label: t("dashboard.stat1Label"),
       icon: <Leaf size={16} className="text-secondary" />,
       value: `${formatKg(impactStats.co2Saved)} kg`,
-      sub: "Helping keep carbon out of the atmosphere",
+      sub: t("dashboard.stat1Sub"),
     },
     {
-      label: "Parali Repurposed",
+      label: t("dashboard.stat2Label"),
       icon: <Recycle size={16} className="text-secondary" />,
       value: `${formatKg(impactStats.paraliRepurposed)} kg`,
-      sub: "Rice straw diverted from burning",
+      sub: t("dashboard.stat2Sub"),
     },
     {
-      label: "Plastic Items Displaced",
+      label: t("dashboard.stat3Label"),
       icon: <Shield size={16} className="text-secondary" />,
-      value: `${impactStats.plasticAvoided.toLocaleString()} units`,
-      sub: "Keeping our oceans cleaner",
+      value: `${impactStats.plasticAvoided.toLocaleString()} ${t("dashboard.units")}`,
+      sub: t("dashboard.stat3Sub"),
     },
   ];
 
   const sidebarLinks = [
-    { label: "Impact Tracker", icon: <Leaf size={18} />, href: "/dashboard" },
-    { label: "Track Orders", icon: <Truck size={18} />, href: "/orders" },
-    { label: "Profile Settings", icon: <Shield size={18} />, href: "/profile" },
+    { label: t("profile.impactTracker"), icon: <Leaf size={18} />, href: "/dashboard" },
+    { label: t("profile.trackOrders"), icon: <Truck size={18} />, href: "/orders" },
+    { label: t("profile.profileSettings"), icon: <Shield size={18} />, href: "/profile" },
   ];
 
   return (
@@ -130,7 +132,7 @@ const Dashboard = () => {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-bold truncate max-w-[150px]">{user?.fullName || 'User'}</span>
-                  <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Account Active</span>
+                  <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{t("dashboard.accountActive")}</span>
                 </div>
               </div>
               <nav className="space-y-1">
@@ -150,13 +152,13 @@ const Dashboard = () => {
           {/* Main Content */}
           <div className="space-y-6">
             <div>
-              <h1 className="font-lora text-3xl font-bold text-foreground mb-1">Your Environmental Impact</h1>
-              <p className="text-sm text-muted-foreground italic font-medium">Tracking your journey towards a circular economy and plastic-free dining.</p>
+              <h1 className="font-lora text-3xl font-bold text-foreground mb-1">{t("dashboard.title")}</h1>
+              <p className="text-sm text-muted-foreground italic font-medium">{t("dashboard.subtitle")}</p>
             </div>
 
             {/* Stats */}
             {loading ? (
-              <PageLoader message="Loading your impact data..." />
+              <PageLoader message={t("dashboard.loadingData")} />
             ) : (
               <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -177,19 +179,19 @@ const Dashboard = () => {
             <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
               <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
                 <div>
-                  <h2 className="font-lora text-xl font-bold text-foreground">Sustainability Progress</h2>
-                  <p className="text-xs text-muted-foreground font-medium italic">Monthly growth in your eco-footprint</p>
+                  <h2 className="font-lora text-xl font-bold text-foreground">{t("dashboard.progressTitle")}</h2>
+                  <p className="text-xs text-muted-foreground font-medium italic">{t("dashboard.progressSubtitle")}</p>
                 </div>
 
                 {/* Legend */}
                 <div className="flex items-center gap-4 bg-muted/30 px-4 py-2 rounded-full border border-border whitespace-nowrap">
                   <div className="flex items-center gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">CO₂ (kg)</span>
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">{t("dashboard.co2Legend")}</span>
                   </div>
                   <div className="flex items-center gap-1.5 border-l border-border pl-4">
                     <div className="w-2.5 h-2.5 rounded-full bg-[#8fb339]" />
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Parali (kg)</span>
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">{t("dashboard.paraliLegend")}</span>
                   </div>
                 </div>
               </div>
@@ -198,7 +200,7 @@ const Dashboard = () => {
                 {/* Y-Axis Title */}
                 <div className="absolute left-0 top-6 bottom-12 w-6 flex items-center justify-center pointer-events-none">
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest whitespace-nowrap -rotate-90">
-                    Impact (kg)
+                    {t("dashboard.yAxisTitle")}
                   </span>
                 </div>
 
@@ -310,7 +312,7 @@ const Dashboard = () => {
                 {/* X-Axis Title */}
                 <div className="mt-1 text-center">
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                    Month
+                    {t("dashboard.xAxisTitle")}
                   </span>
                 </div>
               </div>
@@ -321,13 +323,13 @@ const Dashboard = () => {
             {/* Calculator */}
             <div className="bg-card border border-border rounded-2xl p-6 shadow-sm overflow-hidden relative">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 pointer-events-none" />
-              <h2 className="font-lora text-xl font-bold text-foreground mb-2">Plan Your Next Eco-Event</h2>
-              <p className="text-sm text-muted-foreground mb-8">Measure the green impact of your upcoming gathering.</p>
+              <h2 className="font-lora text-xl font-bold text-foreground mb-2">{t("dashboard.calcTitle")}</h2>
+              <p className="text-sm text-muted-foreground mb-8">{t("dashboard.calcSubtitle")}</p>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-5">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block" htmlFor="eventGuests">Expected Guests</label>
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block" htmlFor="eventGuests">{t("dashboard.expectedGuests")}</label>
                     <input
                       id="eventGuests"
                       type="number"
@@ -337,7 +339,7 @@ const Dashboard = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block" htmlFor="mealCourses">Meal Courses</label>
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block" htmlFor="mealCourses">{t("dashboard.mealCourses")}</label>
                     <input
                       id="mealCourses"
                       type="number"
@@ -350,16 +352,16 @@ const Dashboard = () => {
                     onClick={() => { setEventGuests(150); setMealCourses(3); }}
                     className="w-full bg-primary text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-primary/20 active:scale-95 transition-all text-sm uppercase tracking-widest leading-none outline-none"
                   >
-                    Reset Calculator
+                    {t("dashboard.resetCalculator")}
                   </button>
                 </div>
 
                 <div className="bg-primary/10 border border-primary/20 rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-inner">
                   <Leaf size={40} className="text-primary mb-3 animate-pulse" />
-                  <div className="text-[10px] text-primary/70 mb-1 font-black uppercase tracking-tighter">Projected Plastic Saving</div>
+                  <div className="text-[10px] text-primary/70 mb-1 font-black uppercase tracking-tighter">{t("dashboard.projectedSaving")}</div>
                   <div className="font-lora text-5xl font-bold text-primary">{potentialSaving} kg</div>
                   <div className="text-xs text-muted-foreground mt-4 font-medium max-w-[200px]">
-                    Switching to ZESTRAW will divert this much waste from landfills.
+                    {t("dashboard.calcResultDesc")}
                   </div>
                 </div>
               </div>

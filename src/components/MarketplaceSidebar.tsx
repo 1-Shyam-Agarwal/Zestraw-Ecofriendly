@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Filter, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 interface MarketplaceSidebarProps {
     selectedLocations: string[];
@@ -25,12 +26,13 @@ const MarketplaceSidebar = ({
     onVerifiedChange,
     onReset,
 }: MarketplaceSidebarProps) => {
+    const { t } = useTranslation();
     return (
         <div className="space-y-8 py-2">
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                     <Filter className="w-4 h-4 text-primary" />
-                    <h3 className="font-lora font-bold text-lg">Filters</h3>
+                    <h3 className="font-lora font-bold text-lg">{t("marketplace.filters")}</h3>
                 </div>
                 {onReset && (
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary" onClick={onReset}>
@@ -41,7 +43,7 @@ const MarketplaceSidebar = ({
 
             {/* Locations */}
             <div className="space-y-4">
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Sourcing States</p>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t("marketplace.sourcingStates")}</p>
                 <div className="space-y-3">
                     {locations.map((loc) => (
                         <div key={loc} className="flex items-center space-x-3 group py-0.5">
@@ -65,8 +67,8 @@ const MarketplaceSidebar = ({
             {/* Capacity Range */}
             <div className="space-y-4 pt-4 border-t border-border/50">
                 <div className="flex justify-between items-center">
-                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Min. MOQ Capacity</p>
-                    <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">{capacityRange[0]} Tons</span>
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t("marketplace.minMoqCapacity")}</p>
+                    <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">{t("marketplace.tons", { value: capacityRange[0] })}</span>
                 </div>
                 <div className="px-1">
                     <Slider
@@ -88,8 +90,8 @@ const MarketplaceSidebar = ({
             <div className="space-y-4 pt-4 border-t border-border/50">
                 <div className="flex items-center justify-between bg-warm-cream/50 p-3 rounded-xl border border-border/50 shadow-sm">
                     <div className="space-y-0.5">
-                        <p className="text-xs font-bold text-foreground">Verified Only</p>
-                        <p className="text-[10px] text-muted-foreground leading-tight">Zestraw Inspected</p>
+                        <p className="text-xs font-bold text-foreground">{t("marketplace.verifiedOnly")}</p>
+                        <p className="text-[10px] text-muted-foreground leading-tight">{t("marketplace.zestrawInspected")}</p>
                     </div>
                     <Switch
                         checked={verifiedOnly}
@@ -100,9 +102,9 @@ const MarketplaceSidebar = ({
             </div>
 
             <div className="bg-primary/5 rounded-2xl p-4 border border-primary/10">
-                <p className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">Sustainable Note</p>
+                <p className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">{t("marketplace.sustainableNote")}</p>
                 <p className="text-[11px] text-muted-foreground leading-relaxed italic">
-                    "Verified suppliers have undergone a 14-point sustainability audit on parali collection and emission controls."
+                    {t("marketplace.sustainableNoteText")}
                 </p>
             </div>
         </div>

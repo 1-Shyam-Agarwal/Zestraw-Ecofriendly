@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ShoppingCart, User, Menu, X, LogOut, ChevronDown, Leaf, Truck, Recycle, Globe, Heart, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import logo from "../assets/logo.png";
 import {
   AlertDialog,
@@ -24,14 +26,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const navItems = [
-  { label: "Shop", href: "/shop" },
-  { label: "Our Story", href: "/our-story" },
-  { label: "Impact", href: "/impact" },
-  { label: "Bulk Orders", href: "/bulk-orders" },
-  { label: "Marketplace", href: "/marketplace" },
+  { key: "nav.shop", href: "/shop" },
+  { key: "nav.ourStory", href: "/our-story" },
+  { key: "nav.impact", href: "/impact" },
+  { key: "nav.bulkOrders", href: "/bulk-orders" },
+  { key: "nav.marketplace", href: "/marketplace" },
 ];
 
 export function Navbar() {
+  const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -77,7 +80,7 @@ export function Navbar() {
               >
                 <span className={`text-sm font-normal    tracking-tight transition-colors duration-300 ${isActive(item.href) ? "text-primary" : "text-foreground/70 group-hover:text-primary"
                   }`}>
-                  {item.label}
+                  {t(item.key)}
                 </span>
                 {isActive(item.href) && (
                   <motion.div
@@ -100,7 +103,7 @@ export function Navbar() {
             className="flex items-center gap-2 px-4 py-2 bg-green-600 rounded-full hover:bg-green-700 transition-all group shadow-sm hover:shadow-md"
             aria-label="Contact Us on WhatsApp"
           >
-            <span className="text-xs font-bold text-white hidden sm:inline tracking-tight">Contact Us</span>
+            <span className="text-xs font-bold text-white hidden sm:inline tracking-tight">{t("nav.contactUs")}</span>
             <svg
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -126,6 +129,8 @@ export function Navbar() {
             </AnimatePresence>
           </Link>
 
+          <LanguageSwitcher className="hidden md:flex" />
+
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -144,17 +149,17 @@ export function Navbar() {
                 <div className="space-y-0.5">
                   <Link to="/dashboard">
                     <DropdownMenuItem className="cursor-pointer rounded-lg py-2 focus:bg-primary/5 focus:text-primary transition-colors">
-                      <span className="text-sm font-medium">Dashboard</span>
+                      <span className="text-sm font-medium">{t("nav.dashboard")}</span>
                     </DropdownMenuItem>
                   </Link>
                   <Link to="/orders">
                     <DropdownMenuItem className="cursor-pointer rounded-lg py-2 focus:bg-primary/5 focus:text-primary transition-colors">
-                      <span className="text-sm font-medium">My Orders</span>
+                      <span className="text-sm font-medium">{t("nav.myOrders")}</span>
                     </DropdownMenuItem>
                   </Link>
                   <Link to="/profile">
                     <DropdownMenuItem className="cursor-pointer rounded-lg py-2 focus:bg-primary/5 focus:text-primary transition-colors">
-                      <span className="text-sm font-medium">Settings</span>
+                      <span className="text-sm font-medium">{t("nav.settings")}</span>
                     </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator className="my-1 bg-border/50" />
@@ -162,14 +167,14 @@ export function Navbar() {
                     onClick={() => setShowLogoutAlert(true)}
                     className="cursor-pointer rounded-lg py-2 text-destructive focus:bg-destructive/5"
                   >
-                    <span className="text-sm font-semibold">Log out</span>
+                    <span className="text-sm font-semibold">{t("nav.logout")}</span>
                   </DropdownMenuItem>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <Link to="/login" className="hidden md:inline-flex items-center h-10 px-6 rounded-full bg-primary text-primary-foreground font-black text-xs uppercase tracking-widest hover:shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
-              Sign in
+              {t("nav.signIn")}
             </Link>
           )}
           <button
@@ -205,8 +210,12 @@ export function Navbar() {
               >
                 <div className="flex-1 overflow-y-auto px-6 py-8">
                   <div className="space-y-6">
+                    <div className="flex items-center justify-between bg-secondary/30 border border-border rounded-2xl px-4 py-3">
+                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t("nav.language")}</p>
+                      <LanguageSwitcher />
+                    </div>
                     <div>
-                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">Discover</p>
+                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">{t("nav.discover")}</p>
                       <nav className="space-y-2">
                         {navItems.map((item) => (
                           <Link
@@ -218,7 +227,7 @@ export function Navbar() {
                               : "hover:bg-secondary/80 bg-secondary/30"
                               }`}
                           >
-                            {item.label}
+                            {t(item.key)}
                           </Link>
                         ))}
                       </nav>
@@ -226,20 +235,20 @@ export function Navbar() {
 
                     {user && (
                       <div className="pt-6 border-t border-border">
-                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">Member Area</p>
+                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">{t("nav.memberArea")}</p>
                         <div className="grid grid-cols-2 gap-3">
                           {[
-                            { icon: <Recycle className="w-5 h-5" />, label: "Tracker", href: "/dashboard" },
-                            { icon: <Truck className="w-5 h-5" />, label: "Orders", href: "/orders" },
+                            { icon: <Recycle className="w-5 h-5" />, key: "nav.tracker", href: "/dashboard" },
+                            { icon: <Truck className="w-5 h-5" />, key: "nav.ordersShort", href: "/orders" },
                           ].map((item) => (
                             <Link
-                              key={item.label}
+                              key={item.href}
                               to={item.href}
                               onClick={() => setMobileOpen(false)}
                               className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-secondary/30 border border-border group active:scale-95 transition-all"
                             >
                               <div className="p-2 bg-white rounded-xl shadow-sm group-hover:text-primary transition-colors">{item.icon}</div>
-                              <span className="text-xs font-black">{item.label}</span>
+                              <span className="text-xs font-black">{t(item.key)}</span>
                             </Link>
                           ))}
                         </div>
@@ -260,7 +269,7 @@ export function Navbar() {
                           onClick={() => setShowLogoutAlert(true)}
                           className="text-[11px] font-bold text-destructive flex items-center gap-1 hover:underline"
                         >
-                          <LogOut className="w-3 h-3" /> Log out
+                          <LogOut className="w-3 h-3" /> {t("nav.logout")}
                         </button>
                       </div>
                     </div>
@@ -270,7 +279,7 @@ export function Navbar() {
                       onClick={() => setMobileOpen(false)}
                       className="flex items-center justify-center w-full h-12 bg-primary text-primary-foreground rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg shadow-primary/10"
                     >
-                      Sign in to Account
+                      {t("nav.signInToAccount")}
                     </Link>
                   )}
                 </div>
@@ -285,11 +294,11 @@ export function Navbar() {
           <div className="p-8 text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
               <LogOut className="w-5 h-5 text-destructive" />
-              <AlertDialogTitle className="font-lora text-lg font-bold text-foreground m-0">Leaving already?</AlertDialogTitle>
+              <AlertDialogTitle className="font-lora text-lg font-bold text-foreground m-0">{t("nav.logoutTitle")}</AlertDialogTitle>
             </div>
 
             <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
-              We'll be here whenever you're ready to continue your sustainable journey. See you soon!
+              {t("nav.logoutMessage")}
             </p>
 
             <div className="space-y-3">
@@ -297,10 +306,10 @@ export function Navbar() {
                 onClick={handleLogout}
                 className="w-full py-4 bg-destructive text-white rounded-xl font-bold uppercase tracking-widest text-xs hover:opacity-90 transition-all shadow-lg active:scale-95"
               >
-                Sign out
+                {t("nav.signOut")}
               </AlertDialogAction>
               <AlertDialogCancel className="w-full py-4 bg-secondary text-foreground rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-secondary/80 border-none transition-all active:scale-95">
-                Stay signed in
+                {t("nav.staySignedIn")}
               </AlertDialogCancel>
             </div>
           </div>
